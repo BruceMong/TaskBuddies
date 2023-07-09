@@ -53,10 +53,14 @@ export class TaskUserController {
     return { message: 'TaskUser deleted successfully' };
   }
 
-  @Get(':taskId/validated-today')
-  async hasValidatedToday(@Param('taskId') taskId: number) {
-    const validated = await this.taskUserService.hasTaskBeenValidatedToday(
+  @Get(':taskId/validated-today/:onDate')
+  async hasValidatedToday(
+    @Param('taskId') taskId: number,
+    @Param('onDate') onDate: string,
+  ) {
+    const validated = await this.taskUserService.hasTaskBeenValidatedOnDate(
       taskId,
+      new Date(onDate),
     );
     return { validated };
   }

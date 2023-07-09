@@ -1,7 +1,7 @@
 // task-user.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThan, Repository } from 'typeorm';
+import { Between, MoreThan, Repository } from 'typeorm';
 import { TaskUserEntity } from './entities/task_user.entity';
 
 @Injectable()
@@ -67,17 +67,23 @@ export class TaskUserService {
     }
   }
 
-  async hasTaskBeenValidatedToday(taskId: number): Promise<boolean> {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Définit l'heure à 00:00:00 pour la comparaison
+  async hasTaskBeenValidatedOnDate(
+    taskId: number,
+    onDate: Date,
+  ): Promise<boolean> {
+    const startDate = new Date(onDate);
+    startDate.setHours(0, 0, 0, 0); // Définit l'heure de début à 00:00:00
+
+    const endDate = new Date(onDate);
+    endDate.setHours(23, 59, 59, 999); // Définit l'heure de fin à 23:59:59:999
 
     const taskUser = await this.taskUserRepository.findOne({
       where: {
         task: { id: taskId },
-        doneAt: MoreThan(today), // Vérifie que la tâche a été validée aujourd'hui
+        doneAt: Between(startDate, endDate), // Vérifie si la tâche a été validée pendant la journée spécifiée
       },
     });
 
-    return !!taskUser; // Renvoie true si la tâche a été validée aujourd'hui, sinon false
+    return !!taskUser; // Renvoie true si la tâche a été validée pendant la journée spécifiée, sinon false
   }
 }
