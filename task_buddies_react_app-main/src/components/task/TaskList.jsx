@@ -37,19 +37,21 @@ const TaskList = () => {
 			<div className="componentHeader">
 				<p>Tâches à réaliser 💪</p>
 			</div>
-			<DatePicker
-				selected={selectedDate}
-				onChange={(date) => setSelectedDate(date)}
-			/>
-
-			{tasks.map((task) => (
-				<TaskTile
-					key={task.id}
-					task={task}
-					fetchTasks={fetchTasks}
-					selectedDate={selectedDate}
+			<div className="bodyContainer">
+				<DatePicker
+					selected={selectedDate}
+					onChange={(date) => setSelectedDate(date)}
 				/>
-			))}
+
+				{tasks.map((task) => (
+					<TaskTile
+						key={task.id}
+						task={task}
+						fetchTasks={fetchTasks}
+						selectedDate={selectedDate}
+					/>
+				))}
+			</div>
 		</div>
 	);
 };
