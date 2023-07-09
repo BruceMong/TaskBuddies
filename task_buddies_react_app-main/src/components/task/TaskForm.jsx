@@ -192,10 +192,12 @@ const FormTask = () => {
 					onChange={(date) => setStartDate(date)}
 				/>
 			</div>
+			 {recurrenceType != "Unique" &&  
 			<div>
 				<label>Date de fin:</label>
 				<DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
 			</div>
+			}
 			<button type="submit">Ajouter</button>
 		</form>
 	);
