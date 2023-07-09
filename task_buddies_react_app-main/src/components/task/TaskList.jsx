@@ -1,0 +1,48 @@
+// TaskList.jsx
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { taskService } from "../../services/taskService";
+import TaskTile from "./TaskTile";
+
+const TaskList = () => {
+	const [tasks, setTasks] = useState([]);
+	const [selectedDate, setSelectedDate] = useState(new Date());
+
+	useEffect(() => {
+		fetchTasks();
+	}, [selectedDate]);
+
+	const fetchTasks = async () => {
+		try {
+			const fetchedTasks = await taskService.fetchTasksByDate(selectedDate);
+			const tasksWithValidation = await Promise.all(
+				fetchedTasks.map(async (task) => {
+					const validated = await taskService.hasTaskBeenValidatedToday(
+						task.id
+					);
+					return { ...task, validated };
+				})
+			);
+			setTasks(tasksWithValidation);
+		} catch (error) {
+			console.error("Error fetching tasks:", error);
+		}
+	};
+
+	return (
+		<div>
+			<h2>Task List</h2>
+			<DatePicker
+				selected={selectedDate}
+				onChange={(date) => setSelectedDate(date)}
+			/>
+
+			{tasks.map((task) => (
+				<TaskTile key={task.id} task={task} />
+			))}
+		</div>
+	);
+};
+
+export default TaskList;
