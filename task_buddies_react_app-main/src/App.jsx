@@ -1,35 +1,12 @@
 import React from "react";
-import {
-	BrowserRouter as Router,
-	Route,
-	Routes,
-	Navigate,
-} from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
+import { BrowserRouter as Router } from "react-router-dom";
+import Routers from "./routes/Router"; // Importez votre fichier Routers
 
-function App() {
-	const token = localStorage.getItem("token");
-
+const App = () => {
 	return (
-		<Router>
-			<div className="app-container">
-				<Routes>
-					{!token ? (
-						<>
-							<Route path="/login" element={<LoginPage />} />
-							<Route path="*" element={<Navigate to="/login" />} />
-						</>
-					) : (
-						<>
-							<Route path="/dashboard" element={<DashboardPage />} />
-							<Route path="*" element={<Navigate to="/dashboard" />} />
-						</>
-					)}
-				</Routes>
-			</div>
-		</Router>
+	<Router>
+		<Routers />
+	</Router>
 	);
-}
-
+  };
 export default App;

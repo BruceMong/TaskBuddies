@@ -6,16 +6,25 @@ const Signup = ({ toggleShowSignup }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [username, setUsername] = useState("");
+	const [isSigned, setIsSigned] = useState(false); // Ajout de l'état pour suivre l'état de connexion
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			await authService.signup({ email, password, username });
 			// Redirect to login or show success message
+			setIsSigned(true); // Met à jour l'état de connexion après une connexion réussie
+
 		} catch (error) {
 			console.error("Error during signup:", error);
 		}
 	};
+
+	// Si l'utilisateur est connecté, redirige vers le tableau de bord
+	if (isSigned) {
+		toggleShowSignup()
+	}
+
 
 	return (
 		<div className="authContainer">
