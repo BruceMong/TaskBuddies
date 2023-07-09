@@ -1,31 +1,23 @@
-// TaskTile.jsx
 import React from "react";
-import { taskService } from "../../services/taskService";
 import "../../styles/task.scss";
 
-const TaskTile = ({ task }) => {
-	const handleValidate = async () => {
-		try {
-			const validated = await taskService.hasTaskBeenValidatedToday(task.id);
-			if (validated) {
-				await taskService.deleteTaskIfValidatedToday(task.id);
-			} else {
-				await taskService.validateTask(task.id);
-			}
-			// Handle success
-			console.log("Task validated!");
-		} catch (error) {
-			// Handle error
-			console.error("Failed to validate task:", error);
-		}
-	};
+import {taskService} from  "../../services/taskService"
 
+const TaskTile = ({ task }) => {
+
+	console.log(task);
+	const handleClick = async () =>{
+		try {
+			await taskService.confirmTask({ id:task.id });
+
+		} catch (error) {
+			console.error("Error during signup:", error);
+		}
+	}
 	return (
-		<div className={`taskTileContainer ${task.validated ? "validated" : ""}`}>
+		<div className="taskTileContainer">
 			<p>{task.title}</p>
-			<button className="taskTileButton" onClick={handleValidate}>
-				✓
-			</button>
+			<button onClick={()=> {handleClick()} }className="taskTileButton">✓</button>
 		</div>
 	);
 };

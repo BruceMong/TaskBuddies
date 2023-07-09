@@ -1,4 +1,3 @@
-// TaskList.jsx
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,6 +7,7 @@ import TaskTile from "./TaskTile";
 const TaskList = () => {
 	const [tasks, setTasks] = useState([]);
 	const [selectedDate, setSelectedDate] = useState(new Date());
+	const token = localStorage.getItem("token");
 
 	useEffect(() => {
 		fetchTasks();
@@ -15,16 +15,11 @@ const TaskList = () => {
 
 	const fetchTasks = async () => {
 		try {
-			const fetchedTasks = await taskService.fetchTasksByDate(selectedDate);
-			const tasksWithValidation = await Promise.all(
-				fetchedTasks.map(async (task) => {
-					const validated = await taskService.hasTaskBeenValidatedToday(
-						task.id
-					);
-					return { ...task, validated };
-				})
+			const fetchedTasks = await taskService.fetchTasksByDate(
+				selectedDate,
+				token
 			);
-			setTasks(tasksWithValidation);
+			setTasks(fetchedTasks);
 		} catch (error) {
 			console.error("Error fetching tasks:", error);
 		}
@@ -39,7 +34,7 @@ const TaskList = () => {
 			/>
 
 			{tasks.map((task) => (
-				<TaskTile key={task.id} task={task} />
+				<TaskTile key={task._id} task={task} />
 			))}
 		</div>
 	);
