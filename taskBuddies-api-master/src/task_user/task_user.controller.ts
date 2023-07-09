@@ -19,12 +19,6 @@ import { UserEntity } from 'src/user/entities/user.entity';
 export class TaskUserController {
   constructor(private readonly taskUserService: TaskUserService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Body() taskUser: TaskUserEntity, @User() user: any) {
-    return this.taskUserService.create(taskUser, user);
-  }
-
   @Get()
   findAll() {
     return this.taskUserService.findAll();
@@ -38,6 +32,12 @@ export class TaskUserController {
   @Patch(':id')
   update(@Param('id') id: number, @Body() taskUser: Partial<TaskUserEntity>) {
     return this.taskUserService.update(id, taskUser);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  create(@Body() taskUser: TaskUserEntity, @User() user: any) {
+    return this.taskUserService.create(taskUser, user);
   }
 
   @UseGuards(JwtAuthGuard)
