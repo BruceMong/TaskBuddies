@@ -3,17 +3,24 @@ import { isToday } from "date-fns";
 import "../../styles/task.scss";
 import { taskService } from "../../services/taskService";
 
-const TaskTile = ({ task, fetchTasks, selectedDate }) => {
+import { useSelector, useDispatch } from "react-redux";
+import { fetchTasks } from "../../store/dashboard/task"; 
+
+
+const TaskTile = ({ task,  selectedDate }) => {
 	const isTodaySelected = isToday(selectedDate);
+	const { id, title, validated } = task;
+
+	const dispatch = useDispatch();
 
 	const handleValidate = () => {
-		if (task.validated) {
+		if (validated) {
 			taskService
-				.removeTaskUser(task.id)
+				.removeTaskUser(id)
 				.then(() => {
 					// Task user removed successfully
 					console.log("Task user removed!");
-					fetchTasks(); // Fetch tasks again after removal
+					dispatch(fetchTasks());
 				})
 				.catch((error) => {
 					// Handle removal error
@@ -21,11 +28,11 @@ const TaskTile = ({ task, fetchTasks, selectedDate }) => {
 				});
 		} else {
 			taskService
-				.addTaskUser(task.id)
+				.addTaskUser(id)
 				.then(() => {
 					// Task user added successfully
 					console.log("Task user added!");
-					fetchTasks(); // Fetch tasks again after addition
+					dispatch(fetchTasks());
 				})
 				.catch((error) => {
 					// Handle addition error
@@ -35,14 +42,14 @@ const TaskTile = ({ task, fetchTasks, selectedDate }) => {
 	};
 
 	return (
-		<div className={`taskTileContainer ${task.validated ? "validated" : ""}`}>
-			<p>{task.title}</p>
+		<div className={`taskTileContainer ${validated ? "validated" : ""}`}>
+			<p>{title}</p>
 			<button
 				className="taskTileButton"
 				onClick={handleValidate}
 				disabled={!isTodaySelected} // Disable the button if the selectedDate is not today
 			>
-				{task.validated ? "✓" : "✓"}
+				{validated ? "✓" : "✓"}
 			</button>
 		</div>
 	);

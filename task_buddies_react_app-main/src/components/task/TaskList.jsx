@@ -25,31 +25,18 @@ const TaskList = () => {
     dispatch(taskSliceActions.setSelectedDate(newDate.toISOString()));
   };
 
-  // Si le status est 'loading', nous affichons un indicateur de chargement.
-  if (status === "loading") {
-    return <div>Chargement...</div>;
-  }
 
-  // Si une erreur s'est produite, nous l'affichons.
-  if (error) {
-    return <div>Erreur : {error}</div>;
-  }
-
-  /* 	useEffect(() => {
-		fetchTasks();
-	}, [selectedDate]);
-
-	const fetchTasks = async () => {
+/*   const fetchTasks = async () => {
 		try {
-			const fetchedTasks = await taskService.fetchTasksByDate(
-				selectedDate,
-				token
-			);
-			setTasks(fetchedTasks);
-		} catch (error) {
-			console.error("Error fetching tasks:", error);
-		}
-	}; */
+			const fetchedTasks = await taskService.fetchTasksByDate(selectedDate);
+			const tasksWithValidation = await Promise.all(
+				fetchedTasks.map(async (task) => {
+					const validated = await taskService.hasTaskBeenValidatedOnDate(
+						task.id,
+						selectedDate
+					);
+					return { ...task, validated };
+				}) */
 
   return (
     <div className="componentContainer">
@@ -60,12 +47,13 @@ const TaskList = () => {
         selected={selectedDate}
         onChange={(date) => handleDateChange(date)}
       />
+      {status === "loading" && <div>Chargement...</div>}
+      {error && <div>Erreur : {error}</div>}
 
       {tasks.map((task) => (
         <TaskTile
           key={task.id}
           task={task}
-          fetchTasks={fetchTasks}
           selectedDate={selectedDate}
         />
       ))}
