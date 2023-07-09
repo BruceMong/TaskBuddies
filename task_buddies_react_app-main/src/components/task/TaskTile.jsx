@@ -42,7 +42,7 @@ const TaskTile = ({ task, fetchTasks, selectedDate }) => {
 				onClick={handleValidate}
 				disabled={!isTodaySelected} // Disable the button if the selectedDate is not today
 			>
-				{task.validated ? "✓" : "Add"}
+				{task.validated ? "✓" : "✓"}
 			</button>
 		</div>
 	);

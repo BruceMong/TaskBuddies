@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { taskService } from "../../services/taskService";
 import TaskTile from "./TaskTile";
+import "../../styles/task.scss";
 
 const TaskList = () => {
 	const [tasks, setTasks] = useState([]);
@@ -32,8 +33,10 @@ const TaskList = () => {
 	};
 
 	return (
-		<div>
-			<h2>Task List</h2>
+		<div className="componentContainer">
+			<div className="componentHeader">
+				<p>Tâches à réaliser 💪</p>
+			</div>
 			<DatePicker
 				selected={selectedDate}
 				onChange={(date) => setSelectedDate(date)}

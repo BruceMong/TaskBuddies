@@ -113,93 +113,101 @@ const FormTask = () => {
 	const dayOfMonthOptions = Array.from({ length: 31 }, (_, index) => index + 1);
 
 	return (
-		<form onSubmit={handleFormSubmit}>
-			<div>
-				<label htmlFor="title">Title:</label>
-				<input
-					type="text"
-					id="title"
-					value={title}
-					onChange={(event) => setTitle(event.target.value)}
-					required
-				/>
-			</div>
-			<div>
-				<label htmlFor="recurrenceType">Recurrence Type:</label>
-				<select
-					id="recurrenceType"
-					value={recurrenceType}
-					onChange={(event) => setRecurrenceType(event.target.value)}
-				>
-					<option value="Unique">Unique</option>
-					<option value="Semaine">Semaine</option>
-					<option value="Mois">Mois</option>
-					<option value="Intervalle">Intervalle</option>
-				</select>
-			</div>
-			{recurrenceType === "Semaine" && (
-				<div>
-					<label>Sélectionnez les jours de la semaine:</label>
-					<div>
-						{weekDays.map((day) => (
-							<label key={day.value}>
-								<input
-									type="checkbox"
-									checked={selectedWeekDays.includes(day.value)}
-									onChange={() => handleWeekDayToggle(day.value)}
-								/>
-								{day.name}
-							</label>
-						))}
-					</div>
-				</div>
-			)}
-			{recurrenceType === "Mois" && (
-				<div>
-					<label>Sélectionnez les jours du mois:</label>
-					<div>
-						{dayOfMonthOptions.map((day) => (
-							<label key={day}>
-								<input
-									type="checkbox"
-									checked={selectedDayOfMonth.includes(day)}
-									onChange={() => handleDayOfMonthToggle(day)}
-								/>
-								{day}
-							</label>
-						))}
-					</div>
-				</div>
-			)}
-			{recurrenceType === "Intervalle" && (
-				<div>
-					<label htmlFor="selectedInterval">Sélectionnez un intervalle:</label>
+		<div className="componentContainer">
+			<form onSubmit={handleFormSubmit}>
+				<div className="inputContainer">
+					<label htmlFor="title">Nom de la tâche</label>
 					<input
-						type="number"
-						id="selectedInterval"
-						value={selectedInterval}
-						onChange={(event) =>
-							setSelectedInterval(Number(event.target.value))
-						}
+						type="text"
+						id="title"
+						value={title}
+						onChange={(event) => setTitle(event.target.value)}
+						placeholder="Titre de la tâche"
 						required
 					/>
 				</div>
-			)}
-			<div>
-				<label>Date de début:</label>
-				<DatePicker
-					selected={startDate}
-					onChange={(date) => setStartDate(date)}
-				/>
-			</div>
-			 {recurrenceType != "Unique" &&  
-			<div>
-				<label>Date de fin:</label>
-				<DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
-			</div>
-			}
-			<button type="submit">Ajouter</button>
-		</form>
+				<div className="inputContainer">
+					<label htmlFor="recurrenceType">Type de récurrences</label>
+					<select
+						id="recurrenceType"
+						value={recurrenceType}
+						onChange={(event) => setRecurrenceType(event.target.value)}
+					>
+						<option value="Unique">Unique</option>
+						<option value="Semaine">Semaine</option>
+						<option value="Mois">Mois</option>
+						<option value="Intervalle">Intervalle</option>
+					</select>
+				</div>
+				{recurrenceType === "Semaine" && (
+					<div className="inputContainer">
+						<label>Sélectionnez les jours de la semaine:</label>
+						<div>
+							{weekDays.map((day) => (
+								<label key={day.value}>
+									<input
+										type="checkbox"
+										checked={selectedWeekDays.includes(day.value)}
+										onChange={() => handleWeekDayToggle(day.value)}
+									/>
+									{day.name}
+								</label>
+							))}
+						</div>
+					</div>
+				)}
+				{recurrenceType === "Mois" && (
+					<div>
+						<label>Sélectionnez les jours du mois:</label>
+						<div>
+							{dayOfMonthOptions.map((day) => (
+								<label key={day}>
+									<input
+										type="checkbox"
+										checked={selectedDayOfMonth.includes(day)}
+										onChange={() => handleDayOfMonthToggle(day)}
+									/>
+									{day}
+								</label>
+							))}
+						</div>
+					</div>
+				)}
+				{recurrenceType === "Intervalle" && (
+					<div>
+						<label htmlFor="selectedInterval">
+							Sélectionnez un intervalle:
+						</label>
+						<input
+							type="number"
+							id="selectedInterval"
+							value={selectedInterval}
+							onChange={(event) =>
+								setSelectedInterval(Number(event.target.value))
+							}
+							required
+						/>
+					</div>
+				)}
+				<div>
+					<label>Date de début:</label>
+					<DatePicker
+						selected={startDate}
+						onChange={(date) => setStartDate(date)}
+					/>
+				</div>
+				{recurrenceType != "Unique" && (
+					<div>
+						<label>Date de fin:</label>
+						<DatePicker
+							selected={endDate}
+							onChange={(date) => setEndDate(date)}
+						/>
+					</div>
+				)}
+				<button type="submit">Ajouter</button>
+			</form>
+		</div>
 	);
 };
 

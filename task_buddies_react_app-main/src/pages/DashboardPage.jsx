@@ -4,8 +4,7 @@ import TaskForm from "../components/task/TaskForm";
 
 const DashboardPage = () => {
 	return (
-		<div>
-			<h2>Dashboard</h2>
+		<div className="dashboardPage">
 			<TaskList />
 			<TaskForm />
 		</div>
