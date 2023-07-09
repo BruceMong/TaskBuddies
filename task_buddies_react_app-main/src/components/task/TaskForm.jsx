@@ -101,20 +101,23 @@ const FormTask = () => {
 	};
 
 	const weekDays = [
-		{ name: "Lundi", value: 1 },
-		{ name: "Mardi", value: 2 },
-		{ name: "Mercredi", value: 3 },
-		{ name: "Jeudi", value: 4 },
-		{ name: "Vendredi", value: 5 },
-		{ name: "Samedi", value: 6 },
-		{ name: "Dimanche", value: 7 },
+		{ name: "L", value: 1 },
+		{ name: "M", value: 2 },
+		{ name: "M", value: 3 },
+		{ name: "J", value: 4 },
+		{ name: "V", value: 5 },
+		{ name: "S", value: 6 },
+		{ name: "D", value: 7 },
 	];
 
 	const dayOfMonthOptions = Array.from({ length: 31 }, (_, index) => index + 1);
 
 	return (
 		<div className="componentContainer">
-			<form onSubmit={handleFormSubmit}>
+			<div className="componentHeader">
+				<p>Ajouter une tâche 💡</p>
+			</div>
+			<form className="bodyContainer" onSubmit={handleFormSubmit}>
 				<div className="inputContainer">
 					<label htmlFor="title">Nom de la tâche</label>
 					<input
@@ -142,39 +145,39 @@ const FormTask = () => {
 				{recurrenceType === "Semaine" && (
 					<div className="inputContainer">
 						<label>Sélectionnez les jours de la semaine:</label>
-						<div>
+						<div className="checkboxesContainer">
 							{weekDays.map((day) => (
-								<label key={day.value}>
+								<label key={day.value} className="checkbox-container">
 									<input
 										type="checkbox"
 										checked={selectedWeekDays.includes(day.value)}
 										onChange={() => handleWeekDayToggle(day.value)}
 									/>
-									{day.name}
+									<span className="checkmark">{day.name}</span>
 								</label>
 							))}
 						</div>
 					</div>
 				)}
 				{recurrenceType === "Mois" && (
-					<div>
+					<div className="inputContainer">
 						<label>Sélectionnez les jours du mois:</label>
-						<div>
+						<div className="checkboxesContainer" id="monthDayList">
 							{dayOfMonthOptions.map((day) => (
-								<label key={day}>
+								<label key={day} className="checkbox-container">
 									<input
 										type="checkbox"
 										checked={selectedDayOfMonth.includes(day)}
 										onChange={() => handleDayOfMonthToggle(day)}
 									/>
-									{day}
+									<span className="checkmark">{day}</span>
 								</label>
 							))}
 						</div>
 					</div>
 				)}
 				{recurrenceType === "Intervalle" && (
-					<div>
+					<div className="inputContainer">
 						<label htmlFor="selectedInterval">
 							Sélectionnez un intervalle:
 						</label>
@@ -189,15 +192,15 @@ const FormTask = () => {
 						/>
 					</div>
 				)}
-				<div>
-					<label>Date de début:</label>
+				<div className="inputContainer">
+					<label>Date{recurrenceType != "Unique" && "de début"} :</label>
 					<DatePicker
 						selected={startDate}
 						onChange={(date) => setStartDate(date)}
 					/>
 				</div>
 				{recurrenceType != "Unique" && (
-					<div>
+					<div className="inputContainer">
 						<label>Date de fin:</label>
 						<DatePicker
 							selected={endDate}
@@ -205,7 +208,10 @@ const FormTask = () => {
 						/>
 					</div>
 				)}
-				<button type="submit">Ajouter</button>
+
+				<div className="inputContainer">
+					<button type="submit">Ajouter</button>
+				</div>
 			</form>
 		</div>
 	);

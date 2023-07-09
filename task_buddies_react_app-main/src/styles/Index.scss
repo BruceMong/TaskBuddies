@@ -29,7 +29,6 @@ body {
 	margin: 0;
 	display: flex;
 	min-height: 100vh;
-	max-height: 100vh;
 }
 
 h1 {
@@ -54,6 +53,13 @@ button:hover {
 button:focus,
 button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
+}
+
+button:disabled {
+	background-color: $grayColor;
+	color: $grayDarkColor;
+	border-color: $grayColor;
+	cursor: not-allowed;
 }
 
 .secondaryBtn {
@@ -102,10 +108,33 @@ input:focus-visible {
 
 .dashboardPage {
 	display: flex;
-	flex-direction: wrap;
+
 	width: 100vw;
 	height: 100vh;
 	padding: 24px 32px;
 	box-sizing: border-box;
 	gap: 24px;
+}
+
+.loginPage {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+	box-sizing: border-box;
+}
+
+select {
+	border: 1px solid transparent;
+	border-radius: 34px;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: inherit;
+	background-color: $grayDarkColor;
+	transition: border-color 0.25s;
+	padding: 14px 18px;
+	box-sizing: border-box;
+	width: 100%;
+	appearance: none;
 }
