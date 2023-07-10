@@ -22,6 +22,9 @@ export class TagEntity extends Timestamp {
   @Column({ nullable: true })
   icon: string;
 
+  @Column({ nullable: true })
+  color: string;
+
   @ManyToOne(() => UserEntity, (user) => user.createdTags)
   createdBy: UserEntity;
 

@@ -127,3 +127,53 @@
 .checkbox-container input:checked ~ .checkmark::after {
 	color: #fff;
 }
+
+.tagIcon {
+	background-color: transparent;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tagColor {
+	width: 17px;
+	height: 17px;
+	border-radius: 50%;
+	padding: 0;
+	margin: 4px;
+}
+
+.iconContainer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+
+	gap: 8px;
+	padding: 24px;
+	box-sizing: border-box;
+	background-color: $grayDarkColor;
+	border-radius: 34px;
+}
+
+.colorContainer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 24px;
+	box-sizing: border-box;
+	background-color: $grayDarkColor;
+	border-radius: 34px;
+}
+
+.colorContainer::after {
+	content: "";
+	flex: auto;
+}
+
+.iconContainer::after {
+	content: "";
+	flex: auto;
+}
