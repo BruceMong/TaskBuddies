@@ -29,6 +29,5 @@ export class TagEntity extends Timestamp {
   group: GroupEntity;
 
   @ManyToMany(() => TaskEntity, (task) => task.tags)
-  @JoinTable()
   tasks: TaskEntity[];
 }

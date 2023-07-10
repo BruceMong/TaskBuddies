@@ -36,7 +36,9 @@ export class TaskEntity extends Timestamp {
   @ManyToOne(() => GroupEntity, (group) => group.tasks)
   group: GroupEntity;
 
-  @ManyToMany(() => TagEntity, (tag) => tag.tasks, { cascade: true })
+  @ManyToMany(() => TagEntity, (tag) => tag.tasks, {
+    cascade: ['insert', 'update'],
+  })
   @JoinTable()
   tags: TagEntity[];
 
