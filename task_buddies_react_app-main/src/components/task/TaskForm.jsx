@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { taskService } from "../../services/taskService";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTasks, taskSliceActions } from "../../store/dashboard/task"; 
+import { fetchTasks, taskSliceActions } from "../../store/dashboard/task";
 
 const FormTask = () => {
 	const token = localStorage.getItem("token");
@@ -19,17 +19,15 @@ const FormTask = () => {
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
 
-
-	const initForm = ()=>
-	{
-		setTitle("")
-		setRecurrenceType("Unique")
-		setSelectedWeekDays([])
-		setSelectedDayOfMonth([])
-		setSelectedInterval(null)
-		setStartDate(null)
-		setEndDate(null)
-	}
+	const initForm = () => {
+		setTitle("");
+		setRecurrenceType("Unique");
+		setSelectedWeekDays([]);
+		setSelectedDayOfMonth([]);
+		setSelectedInterval(null);
+		setStartDate(null);
+		setEndDate(null);
+	};
 
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
@@ -39,8 +37,7 @@ const FormTask = () => {
 
 			await taskService.addTask(title, recurrences, token);
 			dispatch(fetchTasks());
-			initForm()
-
+			initForm();
 		} catch (error) {
 			console.error("Failed to add task:", error);
 		}
