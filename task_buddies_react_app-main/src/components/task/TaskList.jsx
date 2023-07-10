@@ -23,6 +23,8 @@ const TaskList = () => {
   // Lorsque vous voulez modifier la date sélectionnée, convertissez la nouvelle Date en chaîne de caractères ISO.
   const handleDateChange = (newDate) => {
     dispatch(taskSliceActions.setSelectedDate(newDate.toISOString()));
+    dispatch(fetchTasks());
+
   };
 
 
