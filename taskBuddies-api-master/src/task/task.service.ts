@@ -19,6 +19,23 @@ export class TaskService {
     Object.assign(task, createTaskDto);
     task.author = user;
 
+    console.log('Task to save1:', task);
+
+    const assignUserToTag = async (tag: TagEntity, user) => {
+      if (!tag.id) {
+        tag.createdBy = user;
+        return tag;
+      }
+    };
+
+    if (task.tags) {
+      for (const tag of task.tags) {
+        await assignUserToTag(tag, user);
+      }
+    }
+
+    console.log('Task to save2:', task);
+
     try {
       const savedTask = await this.taskRepository.save(task);
       console.log('Task saved successfully:', savedTask);
