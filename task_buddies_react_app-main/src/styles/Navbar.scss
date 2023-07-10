@@ -1,0 +1,14 @@
+@import "Main";
+
+.logoNav {
+	height: 48px;
+}
+
+.navbarContainer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 24px;
+	box-sizing: border-box;
+	background-color: $grayDarkColor;
+}

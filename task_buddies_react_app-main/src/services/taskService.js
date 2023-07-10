@@ -3,6 +3,7 @@ const token = localStorage.getItem("token");
 
 export const taskService = {
 	async fetchTasksByDate(selectedDate) {
+		console.log(token);
 		try {
 			const response = await fetch(
 				`${API_BASE_URL}/task/date?date=${selectedDate.toISOString()}`,
