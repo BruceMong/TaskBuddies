@@ -1,13 +1,12 @@
 import React from "react";
 import { isToday } from "date-fns";
-import "../../styles/task.scss";
+import "../../styles/Dashboard.scss";
 import { taskService } from "../../services/taskService";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTasks } from "../../store/dashboard/task"; 
+import { fetchTasks } from "../../store/dashboard/task";
 
-
-const TaskTile = ({ task,  selectedDate }) => {
+const TaskTile = ({ task, selectedDate }) => {
 	const isTodaySelected = isToday(selectedDate);
 	const { id, title, validated } = task;
 
