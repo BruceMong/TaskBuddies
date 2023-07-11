@@ -18,6 +18,7 @@ export class TagService {
       const tag = new TagEntity();
       tag.title = createTagDto.title;
       tag.icon = createTagDto.icon;
+      tag.color = createTagDto.color;
       tag.createdBy = user;
 
       const savedTag = await this.tagRepository.save(tag);
@@ -63,6 +64,19 @@ export class TagService {
       return tag;
     } catch (error) {
       throw new Error('Error deleting tag');
+    }
+  }
+
+  async findByUserId(userId: number) {
+    try {
+      const tags = await this.tagRepository
+        .createQueryBuilder('tag')
+        .leftJoinAndSelect('tag.createdBy', 'createdBy')
+        .where('createdBy.id = :userId', { userId })
+        .getMany();
+      return tags;
+    } catch (error) {
+      throw new Error('Error finding tags');
     }
   }
 }

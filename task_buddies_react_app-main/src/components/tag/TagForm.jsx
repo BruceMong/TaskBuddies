@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../styles/Dashboard.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGolfBall, faGamepad } from "@fortawesome/free-solid-svg-icons";
+import { tagColors, tagIcons } from "../../utils/tagData";
 
 import { tagService } from "../../services/tagService";
 
@@ -10,64 +10,11 @@ const TagForm = () => {
 	const [icon, setIcon] = useState("");
 	const [color, setColor] = useState("#F1F1F4");
 
-	const tagIcons = [
-		{
-			name: "golf",
-			icon: faGolfBall,
-		},
-		{
-			name: "gamepad",
-			icon: faGamepad,
-		},
-	];
-
-	const tagColors = [
-		{
-			name: "red",
-			color: "#EB546F",
-		},
-		{
-			name: "orange",
-			color: "#E15E42",
-		},
-		{
-			name: "yellow",
-			color: "#FFC700",
-		},
-		{
-			name: "greenLight",
-			color: "#82D25D",
-		},
-		{
-			name: "green",
-			color: "#15AD70",
-		},
-		{
-			name: "blueLight",
-			color: "#68D0CA",
-		},
-		{
-			name: "blue",
-			color: "#73BDE7",
-		},
-		{
-			name: "blueDark",
-			color: "#7193ED",
-		},
-		{
-			name: "purple",
-			color: "#BF9FF1",
-		},
-		{
-			name: "pink",
-			color: "#F9C3D6",
-		},
-	];
-
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
 
 		try {
+			console.log("test color", color);
 			await tagService.addTag(title, icon, color);
 		} catch (error) {
 			console.error("Failed to add tag:", error);
@@ -94,14 +41,17 @@ const TagForm = () => {
 				<div className="inputContainer">
 					<label htmlFor="icon">Icone du tag</label>
 					<div className="iconContainer">
-						{tagIcons.map((icon) => (
+						{Object.keys(tagIcons).map((key) => (
 							<button
 								type="button"
 								className="tagIcon"
-								key={icon.name}
-								onClick={() => setIcon(icon.name)}
+								key={key}
+								onClick={() => setIcon(key)}
 							>
-								<FontAwesomeIcon icon={icon.icon} style={{ color: color }} />
+								<FontAwesomeIcon
+									icon={tagIcons[key]}
+									style={{ color: color }}
+								/>
 							</button>
 						))}
 					</div>

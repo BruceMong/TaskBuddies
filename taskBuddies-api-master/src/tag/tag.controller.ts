@@ -32,6 +32,11 @@ export class TagController {
     return this.tagService.findOne(+id);
   }
 
+  @Get('user/:id')
+  findByUserId(@Param('id') id: string) {
+    return this.tagService.findByUserId(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagService.update(+id, updateTagDto);
