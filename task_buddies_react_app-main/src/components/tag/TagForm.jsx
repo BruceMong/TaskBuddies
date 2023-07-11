@@ -5,10 +5,24 @@ import { tagColors, tagIcons } from "../../utils/tagData";
 
 import { tagService } from "../../services/tagService";
 
+
+import { useSelector, useDispatch } from "react-redux";
+import { fetchTagsByUser } from "../../store/dashboard/tag"; 
+
 const TagForm = () => {
+  const dispatch = useDispatch();
+
 	const [title, setTitle] = useState("");
 	const [icon, setIcon] = useState("");
 	const [color, setColor] = useState("#F1F1F4");
+
+
+
+	const initForm =  () => {
+		setTitle("")
+		setIcon("");
+		setColor("#F1F1F4");
+	}
 
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
@@ -16,6 +30,9 @@ const TagForm = () => {
 		try {
 			console.log("test color", color);
 			await tagService.addTag(title, icon, color);
+			initForm();
+    		dispatch(fetchTagsByUser());
+
 		} catch (error) {
 			console.error("Failed to add tag:", error);
 		}
