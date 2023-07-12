@@ -12,7 +12,6 @@ const DashboardPage = () => {
 			<TaskForm />
 			<DayStat />
 			<TagForm />
-			<TagList />
 		</div>
 	);
 };
