@@ -177,3 +177,18 @@
 	content: "";
 	flex: auto;
 }
+
+.tagTileContainer {
+	display: flex;
+	align-items: center;
+	border: solid 1px $grayColor;
+	width: fit-content;
+	padding: 0px 10px 0px 0px;
+	border-radius: 34px;
+}
+
+.tagTitle {
+	line-height: 6px;
+	font-size: 12px;
+	font-weight: 600;
+}
