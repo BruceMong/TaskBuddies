@@ -1,10 +1,11 @@
 import jwtDecode from "jwt-decode";
 
 const API_BASE_URL = process.env.API_URL;
-const token = localStorage.getItem("token");
 
 export const tagService = {
 	async addTag(title, icon, color) {
+const token = localStorage.getItem("token");
+
 		try {
 			const response = await fetch(`${API_BASE_URL}/tag`, {
 				method: "POST",
@@ -30,6 +31,8 @@ export const tagService = {
 	},
 
 	async fetchTagsByUser() {
+const token = localStorage.getItem("token");
+
 		const userId = jwtDecode(token).id;
 		console.log(userId);
 		try {

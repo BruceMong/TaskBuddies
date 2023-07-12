@@ -1,8 +1,10 @@
 const API_BASE_URL = process.env.API_URL;
-const token = localStorage.getItem("token");
 
 export const taskService = {
+
   async fetchTasks() {
+const token = localStorage.getItem("token");
+
     try {
       const response = await fetch(
         `${API_BASE_URL}/task`,
@@ -30,6 +32,8 @@ export const taskService = {
   },
 
   async fetchTasksByDate(selectedDate) {
+const token = localStorage.getItem("token");
+
     try {
       const response = await fetch(
         `${API_BASE_URL}/task/date?date=${selectedDate.toISOString()}`,
@@ -57,6 +61,8 @@ export const taskService = {
   },
 
   async addTask(title, recurrences) {
+const token = localStorage.getItem("token");
+
     try {
       const response = await fetch(`${API_BASE_URL}/task`, {
         method: "POST",
@@ -80,6 +86,8 @@ export const taskService = {
     }
   },
   async addTaskUser(taskId) {
+const token = localStorage.getItem("token");
+
     try {
       const response = await fetch(`${API_BASE_URL}/task-user`, {
         method: "POST",
@@ -105,6 +113,8 @@ export const taskService = {
   },
 
   async removeTaskUser(taskId) {
+const token = localStorage.getItem("token");
+
     try {
       const response = await fetch(`${API_BASE_URL}/task-user/${taskId}`, {
         method: "DELETE",
@@ -124,6 +134,8 @@ export const taskService = {
     }
   },
   async hasTaskBeenValidatedOnDate(taskId, onDate) {
+const token = localStorage.getItem("token");
+
     try {
       const response = await fetch(
         `${API_BASE_URL}/task-user/${taskId}/validated-today/${onDate}`,
