@@ -187,6 +187,10 @@
 	border-radius: 34px;
 }
 
+.tagTileContainer.active {
+	border: solid 1px $blueDarkColor;
+}
+
 .tagTitle {
 	line-height: 6px;
 	font-size: 12px;
@@ -201,4 +205,12 @@
 	box-sizing: border-box;
 	overflow-x: scroll;
 	gap: 6px;
+}
+
+.tagColor.active {
+	border: solid 2px $whiteColor;
+}
+
+.tagIcon.active {
+	border: solid 2px $whiteColor;
 }

@@ -5,34 +5,29 @@ import { tagColors, tagIcons } from "../../utils/tagData";
 
 import { tagService } from "../../services/tagService";
 
-
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTagsByUser } from "../../store/dashboard/tag"; 
+import { fetchTagsByUser } from "../../store/dashboard/tag";
 
 const TagForm = () => {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	const [title, setTitle] = useState("");
 	const [icon, setIcon] = useState("");
-	const [color, setColor] = useState("#F1F1F4");
+	const [hexColor, setHexColor] = useState("#F1F1F4");
 
-
-
-	const initForm =  () => {
-		setTitle("")
+	const initForm = () => {
+		setTitle("");
 		setIcon("");
-		setColor("#F1F1F4");
-	}
+		setHexColor("#F1F1F4");
+	};
 
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
 
 		try {
-			console.log("test color", color);
-			await tagService.addTag(title, icon, color);
+			await tagService.addTag(title, icon, hexColor);
 			initForm();
-    		dispatch(fetchTagsByUser());
-
+			dispatch(fetchTagsByUser());
 		} catch (error) {
 			console.error("Failed to add tag:", error);
 		}
@@ -61,13 +56,13 @@ const TagForm = () => {
 						{Object.keys(tagIcons).map((key) => (
 							<button
 								type="button"
-								className="tagIcon"
+								className={`tagIcon ${icon === key ? "active" : ""}`}
 								key={key}
 								onClick={() => setIcon(key)}
 							>
 								<FontAwesomeIcon
 									icon={tagIcons[key]}
-									style={{ color: color }}
+									style={{ color: hexColor }}
 								/>
 							</button>
 						))}
@@ -79,9 +74,11 @@ const TagForm = () => {
 						{tagColors.map((color) => (
 							<button
 								type="button"
-								className="tagColor"
+								className={`tagColor ${
+									hexColor === color.color ? "active" : ""
+								}`}
 								key={color.name}
-								onClick={() => setColor(color.color)}
+								onClick={() => setHexColor(color.color)}
 								style={{ backgroundColor: color.color }}
 							></button>
 						))}

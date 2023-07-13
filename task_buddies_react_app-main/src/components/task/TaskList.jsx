@@ -16,6 +16,12 @@ const TaskList = () => {
 	const selectedDate = new Date(selectedDateStr);
 	console.log(selectedDate);
 
+	const selectedTags = useSelector((state) => state.task.selectedTags);
+
+	useEffect(() => {
+		dispatch(fetchTasks());
+	}, [dispatch, selectedTags]);
+
 	// Utilisez useEffect pour déclencher le fetch des tâches lorsque le composant est monté.
 	useEffect(() => {
 		dispatch(fetchTasks());
@@ -24,20 +30,7 @@ const TaskList = () => {
 	// Lorsque vous voulez modifier la date sélectionnée, convertissez la nouvelle Date en chaîne de caractères ISO.
 	const handleDateChange = (newDate) => {
 		dispatch(taskSliceActions.setSelectedDate(newDate.toISOString()));
-		dispatch(fetchTasks());
 	};
-
-	/*   const fetchTasks = async () => {
-		try {
-			const fetchedTasks = await taskService.fetchTasksByDate(selectedDate);
-			const tasksWithValidation = await Promise.all(
-				fetchedTasks.map(async (task) => {
-					const validated = await taskService.hasTaskBeenValidatedOnDate(
-						task.id,
-						selectedDate
-					);
-					return { ...task, validated };
-				}) */
 
 	return (
 		<div className="componentContainer">

@@ -1,15 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { tagIcons } from "../../utils/tagData";
 
-const TagTile = ({ tag }) => {
+const TagTile = ({ tag, onTagClick, isActive }) => {
 	console.log(tag);
+
 	return (
 		<div
-			className="tagTileContainer"
+			className={`tagTileContainer ${isActive ? "active" : ""}`}
 			style={{
 				color: tag.color,
 				border: `1px solid ${tag.color}`,
 			}}
+			onClick={() => onTagClick(tag.id)}
 		>
 			<div className="tagIcon">
 				<FontAwesomeIcon

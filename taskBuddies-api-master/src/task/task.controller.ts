@@ -32,9 +32,13 @@ export class TaskController {
   }
 
   @Get('date')
-  findOnDate(@Query('date') date: string, @User() user: UserEntity) {
+  findOnDate(
+    @Query('date') date: string,
+    @Query('tags') tags: [],
+    @User() user: UserEntity,
+  ) {
     const taskDate = date ? new Date(date) : new Date();
-    return this.taskService.getTaskOnDate(taskDate, user);
+    return this.taskService.getTasksOnDate(taskDate, user, tags);
   }
 
   @Get(':id')

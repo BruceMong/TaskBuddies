@@ -28,12 +28,12 @@ export const taskService = {
 		}
 	},
 
-	async fetchTasksByDate(selectedDate) {
+	async fetchTasksByDate(selectedDate, tagsStr) {
 		const token = localStorage.getItem("token");
 
 		try {
 			const response = await fetch(
-				`${API_BASE_URL}/task/date?date=${selectedDate.toISOString()}`,
+				`${API_BASE_URL}/task/date?date=${selectedDate.toISOString()}&tags=${tagsStr}`,
 				{
 					headers: {
 						"Content-Type": "application/json",

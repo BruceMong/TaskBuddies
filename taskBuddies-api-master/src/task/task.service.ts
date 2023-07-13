@@ -69,13 +69,24 @@ export class TaskService {
     await this.taskRepository.softDelete(id);
   }
 
-  async getTaskOnDate(date: Date = new Date(), user: UserEntity) {
+  async getTasksOnDate(
+    date: Date = new Date(),
+    user: UserEntity,
+    tags: number[] = [],
+  ) {
     const tasks = await this.taskRepository.find({
       where: { deletedAt: IsNull(), author: { id: user.id } },
-      relations: ['recurrences', 'author', 'taskUsers'],
+      relations: ['recurrences', 'author', 'taskUsers', 'tags'],
     });
 
-    const tasksOnDate = tasks.filter((task) => {
+    // Filter tasks based on tags if provided
+    const filteredTasks = tags.length
+      ? tasks.filter((task) =>
+          task.tags.some((taskTag) => tags.includes(taskTag.id)),
+        )
+      : tasks;
+
+    const tasksOnDate = filteredTasks.filter((task) => {
       return task.recurrences.some((recurrence) => {
         const taskStartDate = recurrence.start_date || task.createdAt;
         const taskEndDate = recurrence.end_date || null;
