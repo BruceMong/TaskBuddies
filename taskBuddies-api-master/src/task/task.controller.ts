@@ -8,6 +8,7 @@ import {
   Query,
   Patch,
   UseGuards,
+  ParseArrayPipe,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -64,5 +65,15 @@ export class TaskController {
     @Param('groupId') groupId: number,
   ) {
     return this.taskService.createWithGroup(task, user, groupId);
+  }
+
+  @Get('group/:groupId/date/:date')
+  getOnDateWithGroup(
+    @Param('groupId') groupId: number,
+    @Param('date') date: string,
+    @Query('tags') tags: number[],
+  ) {
+    const taskDate = date ? new Date(date) : new Date();
+    return this.taskService.getTasksOnDateWithGroup(groupId, taskDate, tags);
   }
 }

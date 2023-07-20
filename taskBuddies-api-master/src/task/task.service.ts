@@ -153,4 +153,70 @@ export class TaskService {
     const newTask = this.taskRepository.create(task);
     return this.taskRepository.save(newTask);
   }
+
+  async getTasksOnDateWithGroup(
+    groupId: number,
+    date: Date = new Date(),
+    tags: number[] = [],
+  ) {
+    const tasks = await this.taskRepository
+      .createQueryBuilder('task')
+      .leftJoinAndSelect('task.group', 'group')
+      .where('group.id = :groupId', { groupId })
+      .andWhere('task.deletedAt IS NULL')
+      .leftJoinAndSelect('task.recurrences', 'recurrences')
+      .leftJoinAndSelect('task.author', 'author')
+      .leftJoinAndSelect('task.taskUsers', 'taskUsers')
+      .leftJoinAndSelect('task.tags', 'tags')
+      .getMany();
+
+    // Filtre les tâches en fonction des tags si fournis
+    const filteredTasks = tags.length
+      ? tasks.filter((task) =>
+          task.tags.some((taskTag) => tags.includes(taskTag.id)),
+        )
+      : tasks;
+
+    const tasksOnDate = filteredTasks.filter((task) => {
+      return task.recurrences.some((recurrence) => {
+        const taskStartDate = recurrence.start_date || task.createdAt;
+        const taskEndDate = recurrence.end_date || null;
+        const interval = recurrence.recurrence_interval || null;
+        const dayOfWeek = recurrence.day_of_week || null;
+        const dayOfMonth = recurrence.day_of_month || null;
+
+        // Vérifie pour une seule occurrence de tâche
+        if (!taskEndDate && !interval && !dayOfWeek && !dayOfMonth) {
+          return taskStartDate.toDateString() === date.toDateString();
+        }
+
+        // Vérifie pour une récurrence hebdomadaire
+        if (dayOfWeek) {
+          return date.getDay() === dayOfWeek;
+        }
+
+        // Vérifie pour une récurrence mensuelle
+        if (dayOfMonth) {
+          return date.getDate() === dayOfMonth;
+        }
+
+        // Vérifie pour une récurrence avec intervalle
+        if (interval) {
+          const daysDifference = Math.floor(
+            (date.getTime() - taskStartDate.getTime()) / (1000 * 60 * 60 * 24),
+          );
+          return daysDifference % interval === 0;
+        }
+
+        // Vérifie pour une récurrence entre la date de début et de fin
+        if (taskStartDate <= date && (!taskEndDate || taskEndDate >= date)) {
+          return true;
+        }
+
+        return false;
+      });
+    });
+
+    return tasksOnDate;
+  }
 }

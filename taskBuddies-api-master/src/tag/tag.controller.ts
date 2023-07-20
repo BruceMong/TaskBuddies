@@ -56,4 +56,9 @@ export class TagController {
   ) {
     return this.tagService.createTagWithGroup(tag, user, groupId);
   }
+
+  @Get('group/:groupId')
+  findByGroupId(@Param('groupId') groupId: number) {
+    return this.tagService.findByGroupId(groupId);
+  }
 }

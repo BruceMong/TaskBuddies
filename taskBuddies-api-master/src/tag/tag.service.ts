@@ -99,4 +99,17 @@ export class TagService {
     const newTag = this.tagRepository.create(tag);
     return this.tagRepository.save(newTag);
   }
+
+  async findByGroupId(groupId: number) {
+    try {
+      const tags = await this.tagRepository
+        .createQueryBuilder('tag')
+        .leftJoinAndSelect('tag.group', 'group')
+        .where('group.id = :groupId', { groupId })
+        .getMany();
+      return tags;
+    } catch (error) {
+      throw new Error('Erreur lors de la recherche des tags');
+    }
+  }
 }
