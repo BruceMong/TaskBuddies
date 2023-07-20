@@ -4,6 +4,7 @@ import { Repository, IsNull } from 'typeorm';
 import { TaskEntity } from './entities/task.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { TagEntity } from 'src/tag/entities/tag.entity';
+import { GroupEntity } from 'src/group/entities/group.entity';
 
 @Injectable()
 export class TaskService {
@@ -12,6 +13,8 @@ export class TaskService {
     private taskRepository: Repository<TaskEntity>,
     @InjectRepository(TagEntity)
     private tagRepository: Repository<TagEntity>,
+    @InjectRepository(GroupEntity)
+    private groupRepository: Repository<GroupEntity>,
   ) {}
 
   async create(createTaskDto, user: UserEntity) {
@@ -127,5 +130,27 @@ export class TaskService {
     });
 
     return tasksOnDate;
+  }
+
+  async createWithGroup(task: Partial<TaskEntity>, user: UserEntity, groupId) {
+    const group = await this.groupRepository
+      .createQueryBuilder('group')
+      .leftJoinAndSelect('group.createdBy', 'createdBy')
+      .where('group.id = :id', { id: groupId })
+      .getOne();
+    if (!group) {
+      throw new Error('Group not found');
+    }
+    console.log('Group found:', group);
+    console.log('User:', user);
+    console.log('Group created by:', group.createdBy);
+    if (!group.createdBy || group.createdBy.id !== user.id) {
+      throw new Error('User is not the creator of the group');
+    }
+
+    task.group = group;
+
+    const newTask = this.taskRepository.create(task);
+    return this.taskRepository.save(newTask);
   }
 }

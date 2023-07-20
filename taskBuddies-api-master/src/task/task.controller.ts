@@ -15,6 +15,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-passport.guard';
 import { User } from '../config/decorators/user.decorator';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { TaskEntity } from './entities/task.entity';
 
 @Controller('task')
 @UseGuards(JwtAuthGuard)
@@ -54,5 +55,14 @@ export class TaskController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.taskService.remove(+id);
+  }
+
+  @Post('group/:groupId')
+  createWithGroup(
+    @Body() task: Partial<TaskEntity>,
+    @User() user: UserEntity,
+    @Param('groupId') groupId: number,
+  ) {
+    return this.taskService.createWithGroup(task, user, groupId);
   }
 }
