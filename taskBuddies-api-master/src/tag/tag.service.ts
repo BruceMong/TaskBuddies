@@ -5,12 +5,15 @@ import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagEntity } from './entities/tag.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { GroupEntity } from 'src/group/entities/group.entity';
 
 @Injectable()
 export class TagService {
   constructor(
     @InjectRepository(TagEntity)
     private readonly tagRepository: Repository<TagEntity>,
+    @InjectRepository(GroupEntity)
+    private readonly groupRepository: Repository<GroupEntity>,
   ) {}
 
   async create(createTagDto: CreateTagDto, user: UserEntity) {
@@ -78,5 +81,22 @@ export class TagService {
     } catch (error) {
       throw new Error('Error finding tags');
     }
+  }
+
+  async createTagWithGroup(tag: Partial<TagEntity>, user: UserEntity, groupId) {
+    const group = await this.groupRepository
+      .createQueryBuilder('group')
+      .leftJoinAndSelect('group.createdBy', 'createdBy')
+      .where('group.id = :id', { id: groupId })
+      .getOne();
+
+    if (!group.createdBy || group.createdBy.id !== user.id) {
+      throw new Error('User is not the creator of the group');
+    }
+
+    tag.group = group;
+
+    const newTag = this.tagRepository.create(tag);
+    return this.tagRepository.save(newTag);
   }
 }

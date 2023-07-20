@@ -12,6 +12,7 @@ import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { User } from '../config/decorators/user.decorator';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { TagEntity } from './entities/tag.entity';
 
 @Controller('tag')
 export class TagController {
@@ -45,5 +46,14 @@ export class TagController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.tagService.remove(+id);
+  }
+
+  @Post('group/:groupId')
+  createTagWithGroup(
+    @Body() tag: Partial<TagEntity>,
+    @User() user: UserEntity,
+    @Param('groupId') groupId: number,
+  ) {
+    return this.tagService.createTagWithGroup(tag, user, groupId);
   }
 }
