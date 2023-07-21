@@ -57,6 +57,4 @@ export const groupService = {
 			throw error;
 		}
 	},
-
-	// Ajoutez d'autres méthodes au besoin (par exemple, pour récupérer les groupes de l'utilisateur)
 };

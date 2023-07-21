@@ -27,6 +27,13 @@ export class GroupController {
     return this.groupService.findAll();
   }
 
+  @Get('user')
+  async findByUser(@User() user: UserEntity) {
+    console.log('user:', user);
+    const groups = await this.groupService.findByUser(user);
+    return groups;
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.groupService.findOne(+id);
