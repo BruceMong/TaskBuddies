@@ -5,6 +5,7 @@ import TagForm from "../components/tag/TagForm";
 import DayStat from "../components/task/DayStat";
 import TagList from "../components/tag/TagList";
 import GroupForm from "../components/group/GroupForm";
+import GroupList from "../components/group/GroupList";
 
 const DashboardPage = () => {
 	return (
@@ -14,6 +15,7 @@ const DashboardPage = () => {
 			<DayStat />
 			<TagForm />
 			<GroupForm />
+			<GroupList />
 		</div>
 	);
 };

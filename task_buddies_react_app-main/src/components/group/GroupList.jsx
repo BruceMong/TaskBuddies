@@ -2,34 +2,38 @@ import React, { useEffect, useState } from "react";
 import { groupService } from "../../services/groupService";
 
 const GroupList = () => {
-	const [userGroups, setUserGroups] = useState([]);
-	const [createdGroups, setCreatedGroups] = useState([]);
+	const [groups, setGroups] = useState([]);
+	const [status, setStatus] = useState("idle");
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		const fetchGroups = async () => {
+			setStatus("loading");
 			try {
-				const fetchedUserGroups = await groupService.fetchUserGroups();
-				setUserGroups(fetchedUserGroups);
-
-				const fetchedCreatedGroups = await groupService.fetchCreatedGroups();
-				setCreatedGroups(fetchedCreatedGroups);
+				const fetchedGroups = await groupService.fetchGroupsByUser();
+				setGroups(fetchedGroups);
+				setStatus("succeeded");
 			} catch (error) {
-				console.error(error);
+				setError(error);
+				setStatus("failed");
 			}
 		};
 
 		fetchGroups();
 	}, []);
 
+	if (status === "loading") {
+		return <div>Chargement...</div>;
+	}
+
+	if (status === "failed") {
+		return <div>Erreur : {error.message}</div>;
+	}
+
 	return (
 		<div>
-			<h2>Groupes auxquels j'appartiens</h2>
-			{userGroups.map((group) => (
-				<div key={group.id}>{group.name}</div>
-			))}
-
-			<h2>Groupes que j'ai créés</h2>
-			{createdGroups.map((group) => (
+			<h2>Mes groupes</h2>
+			{groups.map((group) => (
 				<div key={group.id}>{group.name}</div>
 			))}
 		</div>

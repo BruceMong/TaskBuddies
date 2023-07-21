@@ -33,7 +33,8 @@ export const groupService = {
 		}
 	},
 
-	async joinGroup(entryCode, token) {
+	async joinGroup(entryCode) {
+		const token = localStorage.getItem("token");
 		const config = {
 			headers: { Authorization: `Bearer ${token}` },
 		};
@@ -54,6 +55,28 @@ export const groupService = {
 				"Erreur lors de la tentative de rejoindre le groupe :",
 				error
 			);
+			throw error;
+		}
+	},
+	async fetchGroupsByUser() {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/group/user`, {
+				method: "GET",
+				headers: config.headers,
+			});
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error("Erreur lors de la récupération des groupes");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des groupes :", error);
 			throw error;
 		}
 	},

@@ -133,7 +133,26 @@ export class GroupService {
   }
 
   async findByUser(user: UserEntity) {
-    console.log('User:', user);
+    try {
+      const groups = await this.groupRepository
+        .createQueryBuilder('group')
+        .innerJoin('group.users', 'user', 'user.id = :userId', {
+          userId: user.id,
+        })
+        .getMany();
+
+      if (!groups) {
+        throw new Error('No groups found for the provided user.');
+      }
+
+      return groups;
+    } catch (error) {
+      console.error('Error finding groups by user:', error);
+      throw error;
+    }
+  }
+
+  async findByCreatedUser(user: UserEntity) {
     try {
       const groups = await this.groupRepository.find({
         where: { createdBy: { id: user.id } },
