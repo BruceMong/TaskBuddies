@@ -152,7 +152,7 @@ export class GroupService {
     }
   }
 
-  async findByCreatedUser(user: UserEntity) {
+  async findByCreatorUser(user: UserEntity) {
     try {
       const groups = await this.groupRepository.find({
         where: { createdBy: { id: user.id } },

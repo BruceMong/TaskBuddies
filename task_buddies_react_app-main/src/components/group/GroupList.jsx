@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { groupService } from "../../services/groupService";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+	fetchMemberGroups,
+	fetchCreatedGroups,
+} from "../../store/dashboard/group";
 
 const GroupList = () => {
-	const [groups, setGroups] = useState([]);
-	const [status, setStatus] = useState("idle");
-	const [error, setError] = useState(null);
+	const dispatch = useDispatch();
+	const { memberGroups, createdGroups, status, error } = useSelector(
+		(state) => state.group
+	);
 
 	useEffect(() => {
-		const fetchGroups = async () => {
-			setStatus("loading");
-			try {
-				const fetchedGroups = await groupService.fetchGroupsByUser();
-				setGroups(fetchedGroups);
-				setStatus("succeeded");
-			} catch (error) {
-				setError(error);
-				setStatus("failed");
-			}
-		};
-
-		fetchGroups();
-	}, []);
+		dispatch(fetchMemberGroups());
+		dispatch(fetchCreatedGroups());
+	}, [dispatch]);
 
 	if (status === "loading") {
 		return <div>Chargement...</div>;
@@ -31,11 +25,28 @@ const GroupList = () => {
 	}
 
 	return (
-		<div>
-			<h2>Mes groupes</h2>
-			{groups.map((group) => (
-				<div key={group.id}>{group.name}</div>
-			))}
+		<div className="componentContainer">
+			<div className="componentHeader">
+				<p>Groupes 💡</p>
+			</div>
+			<div className="bodyContainer">
+				{memberGroups.length > 0 && (
+					<>
+						<h2>Groupes auxquels j'appartiens</h2>
+						{memberGroups.map((group) => (
+							<div key={group.id}>{group.name}</div>
+						))}
+					</>
+				)}
+				{createdGroups.length > 0 && (
+					<>
+						<h2>Groupes que j'ai créés</h2>
+						{createdGroups.map((group) => (
+							<div key={group.id}>{group.name}</div>
+						))}
+					</>
+				)}
+			</div>
 		</div>
 	);
 };

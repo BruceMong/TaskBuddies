@@ -33,9 +33,9 @@ export class GroupController {
     return groups;
   }
 
-  @Get('createdBy')
+  @Get('creator')
   async findByCreatedBy(@User() user: UserEntity) {
-    const groups = await this.groupService.findByCreatedUser(user);
+    const groups = await this.groupService.findByCreatorUser(user);
     return groups;
   }
 

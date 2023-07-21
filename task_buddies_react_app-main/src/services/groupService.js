@@ -80,4 +80,26 @@ export const groupService = {
 			throw error;
 		}
 	},
+	async fetchGroupsByCreator() {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/group/creator`, {
+				method: "GET",
+				headers: config.headers,
+			});
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error("Erreur lors de la récupération des groupes");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des groupes :", error);
+			throw error;
+		}
+	},
 };

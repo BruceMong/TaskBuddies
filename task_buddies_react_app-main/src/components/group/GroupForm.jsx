@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { groupService } from "../../services/groupService";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCreatedGroups, createGroup } from "../../store/dashboard/group";
 
 const GroupForm = () => {
+	const dispatch = useDispatch();
+	const { status, error } = useSelector((state) => state.group);
 	const [groupName, setGroupName] = useState("");
 
 	const handleFormSubmit = async (event) => {
@@ -9,7 +12,8 @@ const GroupForm = () => {
 		console.log("groupName", groupName);
 
 		try {
-			await groupService.createGroup(groupName);
+			await dispatch(createGroup(groupName));
+			dispatch(fetchCreatedGroups());
 		} catch (error) {
 			console.error("Erreur lors de la création du groupe :", error);
 		}
@@ -33,9 +37,13 @@ const GroupForm = () => {
 					/>
 				</div>
 				<div className="inputContainer">
-					<button type="submit">Créer</button>
+					<button type="submit" disabled={status === "loading"}>
+						Créer
+					</button>
 				</div>
 			</form>
+			{status === "loading" && <p>Chargement...</p>}
+			{error && <p>Erreur : {error}</p>}
 		</div>
 	);
 };
