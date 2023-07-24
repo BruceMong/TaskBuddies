@@ -5,6 +5,8 @@ import TaskTile from "./TaskTile";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, taskSliceActions } from "../../store/dashboard/task"; 
+import DoughnutChart from "../../components/stats/DoughnutChart.jsx";
+
 
 const Daystat = () => {
   //const [tasks, setTasks] = useState([]);
@@ -23,6 +25,7 @@ const Daystat = () => {
   <p>Ma journée</p>
 </div>
 <p>Pourcentage de tâches validées : {percentageValidated}%</p>
+<DoughnutChart/>
 
 </div>
 );
