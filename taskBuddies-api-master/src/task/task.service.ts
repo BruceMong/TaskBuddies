@@ -17,6 +17,25 @@ export class TaskService {
     private groupRepository: Repository<GroupEntity>,
   ) {}
 
+  private async assignUserToTag(tag: TagEntity, user: UserEntity) {
+    if (!tag.id) {
+      if (!tag.title) {
+        throw new Error('Tag title cannot be null');
+      }
+      tag.createdBy = user;
+      return tag;
+    } else {
+      const existingTag = await this.tagRepository
+        .createQueryBuilder('tag')
+        .where('tag.id = :id', { id: tag.id })
+        .getOne();
+      if (!existingTag) {
+        throw new Error(`Tag with id ${tag.id} not found`);
+      }
+      return existingTag;
+    }
+  }
+
   async create(createTaskDto, user: UserEntity) {
     const task = new TaskEntity();
     Object.assign(task, createTaskDto);
@@ -24,16 +43,9 @@ export class TaskService {
 
     console.log('Task to save1:', task);
 
-    const assignUserToTag = async (tag: TagEntity, user) => {
-      if (!tag.id) {
-        tag.createdBy = user;
-        return tag;
-      }
-    };
-
     if (task.tags) {
       for (const tag of task.tags) {
-        await assignUserToTag(tag, user);
+        await this.assignUserToTag(tag, user);
       }
     }
 
