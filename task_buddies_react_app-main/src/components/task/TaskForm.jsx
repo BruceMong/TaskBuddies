@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { taskService } from "../../services/taskService";
+import TagList from "../tag/TagList";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, taskSliceActions } from "../../store/dashboard/task";
+
+import TagListForForm from "../tag/TagListForForm";
 
 const FormTask = () => {
 	const token = localStorage.getItem("token");
@@ -18,6 +21,7 @@ const FormTask = () => {
 	const [selectedInterval, setSelectedInterval] = useState(null);
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
+	const [idSelected, setIdSelected] = useState(null);
 
 	const initForm = () => {
 		setTitle("");
@@ -35,7 +39,7 @@ const FormTask = () => {
 		try {
 			const recurrences = generateRecurrenceData();
 
-			await taskService.addTask(title, recurrences, token);
+			await taskService.addTask(title, recurrences, idSelected);
 			dispatch(fetchTasks());
 			initForm();
 		} catch (error) {
@@ -225,7 +229,7 @@ const FormTask = () => {
 						/>
 					</div>
 				)}
-
+				<TagListForForm idSelected={idSelected} setIdSelected={setIdSelected} />
 				<div className="inputContainer">
 					<button type="submit">Ajouter</button>
 				</div>

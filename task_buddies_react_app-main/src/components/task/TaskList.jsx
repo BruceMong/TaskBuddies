@@ -32,12 +32,24 @@ const TaskList = () => {
 		dispatch(taskSliceActions.setSelectedDate(newDate.toISOString()));
 	};
 
+	const handleTagClickFilter = (tagId) => {
+		let newSelectedTags;
+
+		if (selectedTags.includes(tagId)) {
+			newSelectedTags = selectedTags.filter((id) => id !== tagId);
+		} else {
+			newSelectedTags = [...selectedTags, tagId];
+		}
+
+		dispatch(taskSliceActions.setSelectedTags(newSelectedTags));
+	};
+
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
 				<p>Tâches à réaliser 💪</p>
 			</div>
-			<TagList />
+			<TagList handleAction={handleTagClickFilter} />
 			<div className="bodyContainer">
 				{status === "loading" && <div>Chargement...</div>}
 				{error && <div>Erreur : {error}</div>}

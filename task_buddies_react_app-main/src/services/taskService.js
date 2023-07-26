@@ -57,9 +57,10 @@ export const taskService = {
 		}
 	},
 
-	async addTask(title, recurrences) {
+	async addTask(title, recurrences, idSelected) {
 		const token = localStorage.getItem("token");
-
+		const selectedTags = [idSelected];
+		console.log(selectedTags);
 		try {
 			const response = await fetch(`${API_BASE_URL}/task`, {
 				method: "POST",
@@ -70,15 +71,18 @@ export const taskService = {
 				body: JSON.stringify({
 					title,
 					recurrences,
+					tags: selectedTags.map((tagId) => ({ id: tagId })),
 				}),
 			});
 
-			if (response.ok) {
-				// Task added successfully
-			} else {
+			if (!response.ok) {
 				throw new Error("Failed to add task");
 			}
+
+			const data = await response.json();
+			return data;
 		} catch (error) {
+			console.error("Error:", error);
 			throw new Error("Failed to add task");
 		}
 	},
