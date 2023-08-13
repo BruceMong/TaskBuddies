@@ -102,4 +102,52 @@ export const groupService = {
 			throw error;
 		}
 	},
+	async fetchGroupById(groupId) {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/group/${groupId}`, {
+				method: "GET",
+				headers: config.headers,
+			});
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error("Erreur lors de la récupération du groupe");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération du groupe :", error);
+			throw error;
+		}
+	},
+	async createTaskWithGroup(title, recurrences, groupId) {
+		const token = localStorage.getItem("token");
+		try {
+			const response = await fetch(`${API_BASE_URL}/task/group/${groupId}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({
+					title,
+					recurrences,
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to create task");
+			}
+
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.error("Error:", error);
+			throw new Error("Failed to create task");
+		}
+	},
 };

@@ -4,7 +4,7 @@ const API_BASE_URL = process.env.API_URL;
 
 export const tagService = {
 	async addTag(title, icon, color) {
-const token = localStorage.getItem("token");
+		const token = localStorage.getItem("token");
 
 		try {
 			const response = await fetch(`${API_BASE_URL}/tag`, {
@@ -31,10 +31,10 @@ const token = localStorage.getItem("token");
 	},
 
 	async fetchTagsByUser() {
-const token = localStorage.getItem("token");
+		const token = localStorage.getItem("token");
 
 		const userId = jwtDecode(token).id;
-		console.log(userId);
+
 		try {
 			const response = await fetch(`${API_BASE_URL}/tag/user/${userId}`, {
 				method: "GET",

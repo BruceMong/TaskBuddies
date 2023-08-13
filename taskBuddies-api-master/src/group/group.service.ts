@@ -69,7 +69,12 @@ export class GroupService {
   }
 
   findOne(id: number) {
-    const group = this.groupRepository.findBy({ id });
+    const group = this.groupRepository.findOne({
+      where: { id },
+      relations: ['users', 'createdBy', 'tasks', 'tasks.recurrences', 'tags'],
+    });
+
+    return group;
   }
 
   async update(id: number, updateGroupDto: UpdateGroupDto) {

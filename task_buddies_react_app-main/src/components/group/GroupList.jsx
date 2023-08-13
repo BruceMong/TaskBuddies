@@ -5,6 +5,8 @@ import {
 	fetchCreatedGroups,
 } from "../../store/dashboard/group";
 
+import { Link } from "react-router-dom";
+
 const GroupList = () => {
 	const dispatch = useDispatch();
 	const { memberGroups, createdGroups, status, error } = useSelector(
@@ -34,7 +36,9 @@ const GroupList = () => {
 					<>
 						<h2>Groupes auxquels j'appartiens</h2>
 						{memberGroups.map((group) => (
-							<div key={group.id}>{group.name}</div>
+							<div key={group.id}>
+								<Link to={`/group/${group.id}`}>{group.name}</Link>
+							</div>
 						))}
 					</>
 				)}
@@ -42,7 +46,9 @@ const GroupList = () => {
 					<>
 						<h2>Groupes que j'ai créés</h2>
 						{createdGroups.map((group) => (
-							<div key={group.id}>{group.name}</div>
+							<div key={group.id}>
+								<Link to={`/group/${group.id}`}>{group.name}</Link>
+							</div>
 						))}
 					</>
 				)}

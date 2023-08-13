@@ -2,8 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { tagIcons } from "../../utils/tagData";
 
 const TagTile = ({ tag, onTagClick, isActive }) => {
-	console.log(tag);
-
 	return (
 		<div
 			className={`tagTileContainer ${isActive ? "active" : ""}`}
