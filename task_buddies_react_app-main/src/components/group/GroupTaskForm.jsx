@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { groupService } from "../../services/groupService";
 import TagList from "../tag/TagList";
+import { fetchGroupTasks } from "../../store/dashboard/task";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, taskSliceActions } from "../../store/dashboard/task";
@@ -40,7 +41,7 @@ const GroupTaskForm = ({ groupId }) => {
 			const recurrences = generateRecurrenceData();
 
 			await groupService.createTaskWithGroup(title, recurrences, groupId);
-			dispatch(fetchTasks());
+			dispatch(fetchGroupTasks(groupId));
 			initForm();
 		} catch (error) {
 			console.error("Failed to add task:", error);

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { groupService } from "../services/groupService";
 import UserList from "../components/group/UserList";
 import GroupTaskForm from "../components/group/GroupTaskForm";
+import GroupTaskList from "../components/group/GroupTaskList";
 
 const GroupPage = () => {
 	const { id } = useParams();
@@ -22,6 +23,7 @@ const GroupPage = () => {
 			<p>Code d'entrée : {group.entryCode}</p>
 			<UserList users={group.users} createdBy={group.createdBy} />
 			<GroupTaskForm groupId={id} />
+			<GroupTaskList groupId={id} />
 		</div>
 	);
 };

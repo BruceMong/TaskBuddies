@@ -1,31 +1,58 @@
-// // src/components/task/GroupTaskList.jsx
-// import React, { useEffect } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { fetchTasksByGroup } from "../../store/dashboard/task";
-// import TaskTile from "../task/TaskTile";
+import React, { useEffect } from "react";
+import GroupTaskTile from "./GroupTaskTile";
+import TagList from "../tag/TagList";
 
-// const GroupTaskList = ({ groupId }) => {
-// 	const dispatch = useDispatch();
-// 	const { tasks, status, error } = useSelector((state) => state.task);
+import { useSelector, useDispatch } from "react-redux";
+import { fetchGroupTasks, taskSliceActions } from "../../store/dashboard/task";
 
-// 	useEffect(() => {
-// 		dispatch(fetchTasksByGroup(groupId));
-// 	}, [dispatch, groupId]);
+const GroupTaskList = ({ groupId }) => {
+	const dispatch = useDispatch();
+	const { groupTasks, status, error } = useSelector((state) => state.task);
+	const selectedDateStr = useSelector((state) => state.task.selectedDate);
+	const selectedDate = new Date(selectedDateStr);
+	const selectedTags = useSelector((state) => state.task.selectedTags);
 
-// 	return (
-// 		<div className="componentContainer">
-// 			<div className="componentHeader">
-// 				<p>Tâches à réaliser 💪</p>
-// 			</div>
-// 			<div className="bodyContainer">
-// 				{status === "loading" && <div>Chargement...</div>}
-// 				{error && <div>Erreur : {error}</div>}
-// 				{tasks.map((task) => (
-// 					<TaskTile key={task.id} task={task} />
-// 				))}
-// 			</div>
-// 		</div>
-// 	);
-// };
+	useEffect(() => {
+		dispatch(fetchGroupTasks(groupId));
+	}, [dispatch, selectedTags, groupId]);
 
-// export default GroupTaskList;
+	const handleDateChange = (newDate) => {
+		dispatch(taskSliceActions.setSelectedDate(newDate.toISOString()));
+	};
+
+	const handleTagClickFilter = (tagId) => {
+		let newSelectedTags;
+
+		if (selectedTags.includes(tagId)) {
+			newSelectedTags = selectedTags.filter((id) => id !== tagId);
+		} else {
+			newSelectedTags = [...selectedTags, tagId];
+		}
+
+		dispatch(taskSliceActions.setSelectedTags(newSelectedTags));
+	};
+
+	return (
+		<div className="componentContainer">
+			<div className="componentHeader">
+				<p>Tâches de groupe à réaliser 💪</p>
+			</div>
+			<TagList handleAction={handleTagClickFilter} />
+			<div className="bodyContainer">
+				{status === "loading" && <div>Chargement...</div>}
+				{error && <div>Erreur : {error}</div>}
+
+				{groupTasks.map((task) => (
+					<GroupTaskTile
+						key={task.id}
+						task={task}
+						selectedDate={selectedDate}
+						groupId={groupId}
+					/>
+				))}
+			</div>
+		</div>
+	);
+};
+
+export default GroupTaskList;

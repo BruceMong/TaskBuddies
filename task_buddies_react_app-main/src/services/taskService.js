@@ -158,4 +158,33 @@ export const taskService = {
 			throw new Error("Failed to check task validation");
 		}
 	},
+
+	async fetchGroupTasks(groupId, selectedDate, tagsStr) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(
+				`${API_BASE_URL}/task/group/${groupId}/date/${selectedDate.toISOString()}?tags=${tagsStr}`,
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			if (response.ok) {
+				const tasks = await response.json();
+				return tasks.map((task) => ({
+					id: task.id,
+					title: task.title,
+					// Map other properties as needed
+				}));
+			} else {
+				throw new Error("Failed to load group tasks");
+			}
+		} catch (error) {
+			throw new Error("Failed to load group tasks");
+		}
+	},
 };
