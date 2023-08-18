@@ -39,12 +39,26 @@ export const createGroup = createAsyncThunk(
 	}
 );
 
+// Action asynchrone
+export const fetchUserGroups = createAsyncThunk(
+	"group/fetchUserGroups",
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await groupService.fetchGroupsByUser();
+			return response;
+		} catch (err) {
+			return rejectWithValue(err.message);
+		}
+	}
+);
+
 // Slice
 const groupSlice = createSlice({
 	name: "group",
 	initialState: {
 		memberGroups: [],
 		createdGroups: [],
+		userGroups: [],
 		status: "idle",
 		error: null,
 	},
@@ -81,6 +95,17 @@ const groupSlice = createSlice({
 			.addCase(createGroup.fulfilled, (state, action) => {
 				state.status = "idle";
 				state.createdGroups.push(action.payload);
+			})
+			.addCase(fetchUserGroups.pending, (state) => {
+				state.status = "loading";
+			})
+			.addCase(fetchUserGroups.fulfilled, (state, action) => {
+				state.status = "idle";
+				state.userGroups = action.payload; // Pas de filtre ici
+			})
+			.addCase(fetchUserGroups.rejected, (state, action) => {
+				state.status = "idle";
+				state.error = action.error.message;
 			});
 	},
 });

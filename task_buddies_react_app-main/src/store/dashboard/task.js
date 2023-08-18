@@ -40,25 +40,31 @@ export const fetchTasks = createAsyncThunk(
 // L'action asynchrone pour récupérer les tâches de groupe.
 export const fetchGroupTasks = createAsyncThunk(
 	"task/fetchGroupTasks",
-	async (groupId, { getState, rejectWithValue }) => {
+	async (groupIds, { getState, rejectWithValue }) => {
 		const { selectedDate, selectedTags } = getState().task;
 		const tagsStr = selectedTags.join(",");
 		try {
-			const fetchedTasks = await taskService.fetchGroupTasks(
-				groupId,
-				new Date(selectedDate),
-				tagsStr
-			);
-			const tasksWithValidation = await Promise.all(
-				fetchedTasks.map(async (task) => {
-					const validated = await taskService.hasTaskBeenValidatedOnDate(
-						task.id,
-						selectedDate
+			const groupTasksObj = {};
+			await Promise.all(
+				groupIds.map(async (groupId) => {
+					const fetchedTasks = await taskService.fetchGroupTasks(
+						groupId,
+						new Date(selectedDate),
+						tagsStr
 					);
-					return { ...task, validated };
+					const tasksWithValidation = await Promise.all(
+						fetchedTasks.map(async (task) => {
+							const validated = await taskService.hasTaskBeenValidatedOnDate(
+								task.id,
+								selectedDate
+							);
+							return { ...task, validated };
+						})
+					);
+					groupTasksObj[groupId] = tasksWithValidation;
 				})
 			);
-			return tasksWithValidation;
+			return groupTasksObj;
 		} catch (err) {
 			return rejectWithValue(err.message);
 		}
@@ -71,7 +77,7 @@ const taskSlice = createSlice({
 	initialState: {
 		// L'état initial du slice.
 		tasks: [], // La liste des tâches.
-		groupTasks: [], // La liste des tâches de groupe.
+		groupTasks: {}, // La liste des tâches de groupe.
 		status: "idle", // Le statut de l'état (idle, loading, etc.).
 		error: null, // L'erreur éventuelle lors de la récupération des tâches.
 		selectedDate: new Date().toISOString(), // La date sélectionnée.
@@ -110,8 +116,9 @@ const taskSlice = createSlice({
 			})
 			.addCase(fetchGroupTasks.fulfilled, (state, action) => {
 				state.status = "idle";
-				state.groupTasks = action.payload;
+				state.groupTasks = { ...state.groupTasks, ...action.payload };
 			})
+
 			.addCase(fetchGroupTasks.rejected, (state, action) => {
 				state.status = "idle";
 				state.error = action.error.message;

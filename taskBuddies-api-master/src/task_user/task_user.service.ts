@@ -38,7 +38,7 @@ export class TaskUserService {
   }
 
   async findAll() {
-    return this.taskUserRepository.find({ relations: ['task'] });
+    return this.taskUserRepository.find({ relations: ['task', 'user'] });
   }
 
   async findOne(id: number) {
@@ -69,21 +69,47 @@ export class TaskUserService {
 
   async hasTaskBeenValidatedOnDate(
     taskId: number,
+    userId: number,
     onDate: Date,
   ): Promise<boolean> {
     const startDate = new Date(onDate);
-    startDate.setHours(0, 0, 0, 0); // Définit l'heure de début à 00:00:00
+    startDate.setHours(0, 0, 0, 0);
 
     const endDate = new Date(onDate);
-    endDate.setHours(23, 59, 59, 999); // Définit l'heure de fin à 23:59:59:999
+    endDate.setHours(23, 59, 59, 999);
 
     const taskUser = await this.taskUserRepository.findOne({
       where: {
         task: { id: taskId },
-        doneAt: Between(startDate, endDate), // Vérifie si la tâche a été validée pendant la journée spécifiée
+        user: { id: userId }, // Ajoutez l'utilisateur à la clause where
+        doneAt: Between(startDate, endDate),
       },
     });
 
-    return !!taskUser; // Renvoie true si la tâche a été validée pendant la journée spécifiée, sinon false
+    return !!taskUser;
+  }
+
+  async fetchTaskUsersByGroupAndDate(
+    groupId: number,
+    onDate: Date,
+  ): Promise<TaskUserEntity[]> {
+    const date = new Date(onDate);
+    date.setHours(0, 0, 0, 0);
+
+    const nextDate = new Date(onDate);
+    nextDate.setDate(nextDate.getDate() + 1);
+    nextDate.setHours(0, 0, 0, 0);
+
+    return this.taskUserRepository
+      .createQueryBuilder('taskUser')
+      .innerJoinAndSelect('taskUser.task', 'task')
+      .innerJoinAndSelect('taskUser.user', 'user') // Ajoute la relation à l'utilisateur
+      .where('task.group.id = :groupId', { groupId })
+      .andWhere('taskUser.doneAt >= :date AND taskUser.doneAt < :nextDate', {
+        date,
+        nextDate,
+      })
+      .orderBy('taskUser.doneAt', 'DESC') // Ajoute un ordre inverse sur la date de réalisation
+      .getMany();
   }
 }

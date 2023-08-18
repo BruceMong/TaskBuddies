@@ -55,13 +55,26 @@ export class TaskUserController {
 
   @Get(':taskId/validated-today/:onDate')
   async hasValidatedToday(
+    @User() user: UserEntity,
     @Param('taskId') taskId: number,
     @Param('onDate') onDate: string,
   ) {
     const validated = await this.taskUserService.hasTaskBeenValidatedOnDate(
       taskId,
+      user.id, // Passez l'ID de l'utilisateur à la méthode
       new Date(onDate),
     );
     return { validated };
+  }
+
+  @Get('group/:groupId/date/:onDate')
+  async fetchTaskUsersByGroupAndDate(
+    @Param('groupId') groupId: number,
+    @Param('onDate') onDate: string,
+  ): Promise<TaskUserEntity[]> {
+    return this.taskUserService.fetchTaskUsersByGroupAndDate(
+      groupId,
+      new Date(onDate),
+    );
   }
 }

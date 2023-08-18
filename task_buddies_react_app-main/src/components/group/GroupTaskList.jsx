@@ -13,11 +13,12 @@ const GroupTaskList = ({ groupId }) => {
 	const selectedTags = useSelector((state) => state.task.selectedTags);
 
 	useEffect(() => {
-		dispatch(fetchGroupTasks(groupId));
-	}, [dispatch, selectedTags, groupId]);
+		dispatch(fetchGroupTasks([groupId]));
+	}, [dispatch, selectedTags, groupId, selectedDateStr]); // selectedDateStr est déjà présent ici
 
 	const handleDateChange = (newDate) => {
 		dispatch(taskSliceActions.setSelectedDate(newDate.toISOString()));
+		dispatch(fetchGroupTasks([groupId])); // Utilisez un tableau pour passer l'ID du groupe
 	};
 
 	const handleTagClickFilter = (tagId) => {
@@ -42,14 +43,18 @@ const GroupTaskList = ({ groupId }) => {
 				{status === "loading" && <div>Chargement...</div>}
 				{error && <div>Erreur : {error}</div>}
 
-				{groupTasks.map((task) => (
-					<GroupTaskTile
-						key={task.id}
-						task={task}
-						selectedDate={selectedDate}
-						groupId={groupId}
-					/>
-				))}
+				{groupTasks[groupId]?.map(
+					(
+						task // Utilisez la notation de point d'interrogation pour vérifier si les tâches du groupe existent
+					) => (
+						<GroupTaskTile
+							key={task.id}
+							task={task}
+							selectedDate={selectedDate}
+							groupId={groupId}
+						/>
+					)
+				)}
 			</div>
 		</div>
 	);

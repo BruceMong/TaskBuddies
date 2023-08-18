@@ -150,4 +150,26 @@ export const groupService = {
 			throw new Error("Failed to create task");
 		}
 	},
+	async joinGroup(entryCode) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/group/join/${entryCode}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			if (response.ok) {
+				const group = await response.json();
+				return group;
+			} else {
+				throw new Error("Échec de la tentative de rejoindre le groupe");
+			}
+		} catch (error) {
+			throw new Error("Échec de la tentative de rejoindre le groupe");
+		}
+	},
 };

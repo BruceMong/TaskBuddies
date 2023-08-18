@@ -187,4 +187,31 @@ export const taskService = {
 			throw new Error("Failed to load group tasks");
 		}
 	},
+
+	async fetchTaskUsersByGroupAndDate(groupId, onDate) {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+
+		try {
+			const response = await fetch(
+				`${API_BASE_URL}/task-user/group/${groupId}/date/${onDate}`,
+				{
+					method: "GET",
+					headers: config.headers,
+				}
+			);
+
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				throw new Error("Erreur lors de la récupération des TaskUsers");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des TaskUsers :", error);
+			throw error;
+		}
+	},
 };

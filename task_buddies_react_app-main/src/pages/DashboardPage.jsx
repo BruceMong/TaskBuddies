@@ -6,6 +6,7 @@ import DayStat from "../components/task/DayStat";
 import TagList from "../components/tag/TagList";
 import GroupForm from "../components/group/GroupForm";
 import GroupList from "../components/group/GroupList";
+import GroupJoin from "../components/group/GroupJoin";
 
 const DashboardPage = () => {
 	return (
@@ -16,6 +17,7 @@ const DashboardPage = () => {
 			<TagForm />
 			<GroupForm />
 			<GroupList />
+			<GroupJoin />
 		</div>
 	);
 };
