@@ -18,7 +18,7 @@ export const taskService = {
 				return tasks.map((task) => ({
 					id: task.id,
 					title: task.title,
-					// Map other properties as needed
+					tags: task.tags,
 				}));
 			} else {
 				throw new Error("Failed to load tasks");
@@ -47,7 +47,7 @@ export const taskService = {
 				return tasks.map((task) => ({
 					id: task.id,
 					title: task.title,
-					// Map other properties as needed
+					tags: task.tags,
 				}));
 			} else {
 				throw new Error("Failed to load tasks");
@@ -175,10 +175,11 @@ export const taskService = {
 
 			if (response.ok) {
 				const tasks = await response.json();
+				console.log(tasks);
 				return tasks.map((task) => ({
 					id: task.id,
 					title: task.title,
-					// Map other properties as needed
+					tags: task.tags,
 				}));
 			} else {
 				throw new Error("Failed to load group tasks");

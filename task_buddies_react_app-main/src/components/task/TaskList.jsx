@@ -19,7 +19,6 @@ const TaskList = () => {
 	const { userGroups } = useSelector((state) => state.group);
 	const selectedDateStr = useSelector((state) => state.task.selectedDate);
 	const selectedDate = new Date(selectedDateStr);
-	console.log(selectedDate);
 
 	const selectedTags = useSelector((state) => state.task.selectedTags);
 
