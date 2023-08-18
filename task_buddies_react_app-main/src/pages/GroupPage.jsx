@@ -5,6 +5,7 @@ import UserList from "../components/group/UserList";
 import GroupTaskForm from "../components/group/GroupTaskForm";
 import GroupTaskList from "../components/group/GroupTaskList";
 import GroupTaskUserList from "../components/group/GroupTaskUserList";
+import GroupTagForm from "../components/tag/GroupTagForm";
 
 const GroupPage = () => {
 	const { id } = useParams();
@@ -24,6 +25,7 @@ const GroupPage = () => {
 			<p>Code d'entrée : {group.entryCode}</p>
 			<UserList users={group.users} createdBy={group.createdBy} />
 			<GroupTaskForm groupId={id} />
+			<GroupTagForm groupId={id} />
 			<GroupTaskList groupId={id} />
 			<GroupTaskUserList groupId={id} />
 		</div>

@@ -52,4 +52,48 @@ export const tagService = {
 			throw new Error("Failed to load tags");
 		}
 	},
+	async fetchGroupTags(groupId) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/tag/group/${groupId}`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			if (response.ok) {
+				const tags = await response.json();
+				return tags;
+			} else {
+				throw new Error("Failed to load group tags");
+			}
+		} catch (error) {
+			throw new Error("Failed to load group tags");
+		}
+	},
+	async addGroupTag(groupId, title, icon, hexColor) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/tag/group/${groupId}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ title, icon, color: hexColor }),
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				throw new Error("Failed to add group tag");
+			}
+		} catch (error) {
+			throw new Error("Failed to add group tag");
+		}
+	},
 };

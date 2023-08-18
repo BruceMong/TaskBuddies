@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { groupService } from "../../services/groupService";
+import { taskService } from "../../services/taskService";
 import TagList from "../tag/TagList";
 import { fetchGroupTasks } from "../../store/dashboard/task";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, taskSliceActions } from "../../store/dashboard/task";
-
-import TagListForForm from "../tag/TagListForForm";
+import GroupTagListForForm from "../tag/GroupTagListForForm";
 
 const GroupTaskForm = ({ groupId }) => {
 	const token = localStorage.getItem("token");
@@ -40,11 +39,16 @@ const GroupTaskForm = ({ groupId }) => {
 		try {
 			const recurrences = generateRecurrenceData();
 
-			await groupService.createTaskWithGroup(title, recurrences, groupId);
-			dispatch(fetchGroupTasks(groupId));
+			await taskService.createTaskWithGroup(
+				title,
+				recurrences,
+				groupId,
+				idSelected
+			);
+			dispatch(fetchGroupTasks([groupId]));
 			initForm();
 		} catch (error) {
-			console.error("Failed to add task:", error);
+			console.error("Failed to add group task:", error);
 		}
 	};
 
@@ -230,7 +234,12 @@ const GroupTaskForm = ({ groupId }) => {
 						/>
 					</div>
 				)}
-				<TagListForForm idSelected={idSelected} setIdSelected={setIdSelected} />
+				<GroupTagListForForm
+					groupId={[groupId]}
+					idSelected={idSelected}
+					setIdSelected={setIdSelected}
+				/>
+
 				<div className="inputContainer">
 					<button type="submit">Ajouter</button>
 				</div>

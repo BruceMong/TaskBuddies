@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import GroupTaskTile from "./GroupTaskTile";
-import TagList from "../tag/TagList";
+import GroupTagList from "../tag/GroupTagList";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupTasks, taskSliceActions } from "../../store/dashboard/task";
@@ -11,10 +11,10 @@ const GroupTaskList = ({ groupId }) => {
 	const selectedDateStr = useSelector((state) => state.task.selectedDate);
 	const selectedDate = new Date(selectedDateStr);
 	const selectedTags = useSelector((state) => state.task.selectedTags);
-
+	// GroupTaskList.jsx
 	useEffect(() => {
 		dispatch(fetchGroupTasks([groupId]));
-	}, [dispatch, selectedTags, groupId, selectedDateStr]); // selectedDateStr est déjà présent ici
+	}, [dispatch, selectedTags, groupId, selectedDateStr]);
 
 	const handleDateChange = (newDate) => {
 		dispatch(taskSliceActions.setSelectedDate(newDate.toISOString()));
@@ -38,7 +38,7 @@ const GroupTaskList = ({ groupId }) => {
 			<div className="componentHeader">
 				<p>Tâches de groupe à réaliser 💪</p>
 			</div>
-			<TagList handleAction={handleTagClickFilter} />
+			<GroupTagList groupId={groupId} />
 			<div className="bodyContainer">
 				{status === "loading" && <div>Chargement...</div>}
 				{error && <div>Erreur : {error}</div>}

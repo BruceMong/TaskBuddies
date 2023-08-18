@@ -60,7 +60,7 @@ export const taskService = {
 	async addTask(title, recurrences, idSelected) {
 		const token = localStorage.getItem("token");
 		const selectedTags = [idSelected];
-		console.log(selectedTags);
+
 		try {
 			const response = await fetch(`${API_BASE_URL}/task`, {
 				method: "POST",
@@ -212,6 +212,35 @@ export const taskService = {
 		} catch (error) {
 			console.error("Erreur lors de la récupération des TaskUsers :", error);
 			throw error;
+		}
+	},
+
+	async createTaskWithGroup(title, recurrences, groupId, idSelected) {
+		const token = localStorage.getItem("token");
+		const selectedTags = [idSelected];
+		try {
+			const response = await fetch(`${API_BASE_URL}/task/group/${groupId}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({
+					title,
+					recurrences,
+					tags: selectedTags.map((tagId) => ({ id: tagId })),
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to create task");
+			}
+
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.error("Error:", error);
+			throw new Error("Failed to create task");
 		}
 	},
 };

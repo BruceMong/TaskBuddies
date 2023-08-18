@@ -72,7 +72,7 @@ export class TaskService {
   async findOne(id: number) {
     return this.taskRepository.find({
       where: { id },
-      relations: ['recurrences', 'author', 'taskUsers'],
+      relations: ['recurrences', 'author', 'taskUsers', 'tags', 'group'],
     });
   }
 
