@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { taskService } from "../../services/taskService";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import GroupTaskUserTile from "./GroupTaskUserTile";
+import { fetchGroupTaskUsers } from "../../store/dashboard/taskUser";
 
 const GroupTaskUserList = ({ groupId }) => {
-	const [taskUsers, setTaskUsers] = useState([]);
-	const selectedDateStr = useSelector((state) => state.task.selectedDate);
+	const dispatch = useDispatch();
+	const { groupTaskUsers, status, error } = useSelector(
+		(state) => state.taskUser
+	);
+	const selectedTags = useSelector((state) => state.task.selectedTags);
 
 	useEffect(() => {
-		taskService
-			.fetchTaskUsersByGroupAndDate(groupId, selectedDateStr)
-			.then((data) => setTaskUsers(data));
-	}, [groupId, selectedDateStr]);
+		dispatch(fetchGroupTaskUsers([groupId]));
+	}, [dispatch, groupId, selectedTags]);
 
 	return (
-		<div>
-			{taskUsers.map((taskUser) => (
-				<GroupTaskUserTile key={taskUser.id} taskUser={taskUser} />
-			))}
+		<div className="componentContainer">
+			<div className="componentHeader">
+				<p>Utilisateurs de tâches de groupe 💪</p>
+			</div>
+			<div className="bodyContainer">
+				{status === "loading" && <div>Chargement...</div>}
+				{error && <div>Erreur : {error}</div>}
+				{groupTaskUsers[groupId]?.map((taskUser) => (
+					<GroupTaskUserTile key={taskUser.id} taskUser={taskUser} />
+				))}
+			</div>
 		</div>
 	);
 };

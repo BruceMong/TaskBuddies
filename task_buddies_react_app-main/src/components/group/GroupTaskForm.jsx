@@ -143,6 +143,11 @@ const GroupTaskForm = ({ groupId }) => {
 			<div className="componentHeader">
 				<p>Ajouter une tâche 💡</p>
 			</div>
+			<GroupTagListForForm
+				groupId={[groupId]}
+				idSelected={idSelected}
+				setIdSelected={setIdSelected}
+			/>
 			<form className="bodyContainer" onSubmit={handleFormSubmit}>
 				<div className="inputContainer">
 					<label htmlFor="title">Nom de la tâche</label>
@@ -234,11 +239,6 @@ const GroupTaskForm = ({ groupId }) => {
 						/>
 					</div>
 				)}
-				<GroupTagListForForm
-					groupId={[groupId]}
-					idSelected={idSelected}
-					setIdSelected={setIdSelected}
-				/>
 
 				<div className="inputContainer">
 					<button type="submit">Ajouter</button>

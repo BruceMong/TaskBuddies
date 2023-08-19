@@ -138,6 +138,7 @@ const FormTask = () => {
 			<div className="componentHeader">
 				<p>Ajouter une tâche 💡</p>
 			</div>
+			<TagListForForm idSelected={idSelected} setIdSelected={setIdSelected} />
 			<form className="bodyContainer" onSubmit={handleFormSubmit}>
 				<div className="inputContainer">
 					<label htmlFor="title">Nom de la tâche</label>
@@ -229,7 +230,7 @@ const FormTask = () => {
 						/>
 					</div>
 				)}
-				<TagListForForm idSelected={idSelected} setIdSelected={setIdSelected} />
+
 				<div className="inputContainer">
 					<button type="submit">Ajouter</button>
 				</div>

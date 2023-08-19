@@ -7,7 +7,7 @@ const TagTile = ({ tag, onTagClick, isActive }) => {
 			className={`tagTileContainer ${isActive ? "active" : ""}`}
 			style={{
 				color: tag.color,
-				border: `1px solid ${tag.color}`,
+				border: isActive ? `1px solid ${tag.color}` : "1px solid #e0e0e0",
 			}}
 			onClick={() => onTagClick(tag.id)}
 		>

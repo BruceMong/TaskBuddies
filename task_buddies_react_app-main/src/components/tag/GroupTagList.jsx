@@ -36,6 +36,7 @@ const GroupTagList = ({ groupId }) => {
 					key={tag.id}
 					tag={tag}
 					onTagClick={() => handleTagClick(tag.id)}
+					isActive={selectedTags.includes(tag.id)}
 				/>
 			))}
 		</div>

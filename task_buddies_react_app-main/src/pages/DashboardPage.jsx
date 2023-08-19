@@ -13,11 +13,11 @@ const DashboardPage = () => {
 		<div className="dashboardPage">
 			<TaskList />
 			<TaskForm />
-			<DayStat />
+			{/* <DayStat /> */}
 			<TagForm />
-			<GroupForm />
+			{/* <GroupForm /> */}
 			<GroupList />
-			<GroupJoin />
+			{/* <GroupJoin /> */}
 		</div>
 	);
 };

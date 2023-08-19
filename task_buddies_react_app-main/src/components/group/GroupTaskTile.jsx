@@ -7,6 +7,7 @@ import { tagIcons } from "../../utils/tagData";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupTasks } from "../../store/dashboard/task";
+import { fetchGroupTaskUsers } from "../../store/dashboard/taskUser";
 
 const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 	const isTodaySelected = isToday(selectedDate);
@@ -21,9 +22,8 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 				.removeTaskUser(id)
 				.then(() => {
 					console.log("Task user removed!");
-					dispatch(fetchGroupTasks([groupId])).catch((error) => {
-						console.error("Failed to fetch group tasks:", error);
-					});
+					dispatch(fetchGroupTasks([groupId]));
+					dispatch(fetchGroupTaskUsers([groupId]));
 				})
 				.catch((error) => {
 					console.error("Failed to remove task user:", error);
@@ -33,9 +33,8 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 				.addTaskUser(id)
 				.then(() => {
 					console.log("Task user added!");
-					dispatch(fetchGroupTasks([groupId])).catch((error) => {
-						console.error("Failed to fetch group tasks:", error);
-					});
+					dispatch(fetchGroupTasks([groupId]));
+					dispatch(fetchGroupTaskUsers([groupId]));
 				})
 				.catch((error) => {
 					console.error("Failed to add task user:", error);
@@ -48,20 +47,23 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 			className={`taskTileContainer ${validated ? "validated" : ""}`}
 			style={
 				validated
-					? { borderColor: tagColor, borderWidth: "2px", borderStyle: "solid" }
+					? { borderColor: tagColor, borderWidth: "1px", borderStyle: "solid" }
 					: {}
 			}
 		>
-			{tagIcon && (
-				<FontAwesomeIcon icon={tagIcon} style={{ color: tagColor }} />
-			)}
-			<p style={{ color: tagColor }}>{title}</p>
+			<div className={"taskTileContent"}>
+				{tagIcon && (
+					<FontAwesomeIcon icon={tagIcon} style={{ color: tagColor }} />
+				)}
+				<p style={{ color: tagColor }}>{title}</p>
+			</div>
 			<button
 				className="taskTileButton"
 				onClick={handleValidate}
 				disabled={!isTodaySelected}
+				style={{ borderColor: tagColor, borderWidth: 1, borderStyle: "solid" }}
 			>
-				{validated ? "✓" : "✓"}
+				{validated ? <span style={{ color: tagColor }}>✓</span> : " "}
 			</button>
 		</div>
 	);

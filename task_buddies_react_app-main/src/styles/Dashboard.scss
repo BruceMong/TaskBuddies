@@ -4,7 +4,7 @@
 	background-color: $grayDarkColor;
 	border-radius: 34px;
 	padding: 0px 18px;
-	margin: 10px 0;
+	margin: 5px 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -12,21 +12,32 @@
 	cursor: pointer;
 	width: 100%;
 	box-sizing: border-box;
+	height: 46px;
 }
 
 .taskTileContainer:hover {
 	background-color: $grayColor;
 }
 
+.taskTileContent {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
 .taskTileButton {
 	background-color: transparent;
 	border: none;
 	cursor: pointer;
+	height: 32px;
+	width: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .validated {
-	text-decoration: line-through;
-	border-color: $blueDarkColor;
+	background-color: $blackColor;
 }
 
 .componentContainer {
@@ -204,8 +215,9 @@
 	padding: 6px 24px 6px 24px;
 	width: 100%;
 	box-sizing: border-box;
-	overflow-x: scroll;
+	overflow-x: auto;
 	gap: 6px;
+	border-bottom: 1px solid $grayColor;
 }
 
 .tagColor.active {
