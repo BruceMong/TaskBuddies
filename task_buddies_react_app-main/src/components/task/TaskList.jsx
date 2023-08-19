@@ -27,8 +27,9 @@ const TaskList = () => {
 	}, [dispatch, selectedTags]);
 
 	useEffect(() => {
-		dispatch(fetchUserGroups());
-	}, [dispatch]);
+		const groupIds = userGroups.map((group) => group.id);
+		dispatch(fetchGroupTasks(groupIds));
+	}, [dispatch, userGroups, selectedDateStr, selectedTags]); // Ajoutez selectedTags ici
 
 	// Utilisez useEffect pour déclencher le fetch des tâches lorsque le composant est monté.
 	useEffect(() => {

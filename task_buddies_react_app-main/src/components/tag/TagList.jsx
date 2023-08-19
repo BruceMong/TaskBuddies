@@ -4,11 +4,24 @@ import TagTile from "./TagTile";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTagsByUser } from "../../store/dashboard/tag";
 import { fetchTasks, taskSliceActions } from "../../store/dashboard/task"; // Import fetchTasks action
+import { fetchGroupTags } from "../../store/dashboard/tag";
+
+import { fetchUserGroups } from "../../store/dashboard/group";
 
 const TagList = ({ handleAction }) => {
 	const dispatch = useDispatch();
-	const { tags, status, error } = useSelector((state) => state.tag);
+	const { tags, groupTags, status, error } = useSelector((state) => state.tag);
 	const selectedTags = useSelector((state) => state.task.selectedTags); // Get selectedTags from the state
+	const { userGroups } = useSelector((state) => state.group);
+
+	useEffect(() => {
+		const groupIds = userGroups.map((group) => group.id);
+		dispatch(fetchGroupTags(groupIds));
+	}, [dispatch, userGroups]);
+
+	useEffect(() => {
+		dispatch(fetchUserGroups());
+	}, [dispatch]);
 
 	// Utilisez useEffect pour déclencher le fetch des tâches lorsque le composant est monté.
 	useEffect(() => {
@@ -20,11 +33,21 @@ const TagList = ({ handleAction }) => {
 		dispatch(fetchTasks());
 	}, [dispatch, selectedTags]);
 
+	useEffect(() => {
+		dispatch(fetchUserGroups());
+	}, [dispatch]);
+
+	// ...
+	const personalTags = tags;
+	const groupTagsArray = Object.values(groupTags).flat();
+
+	const allTags = [...personalTags, ...groupTagsArray];
+
 	return (
 		<div className="tagsContainer">
 			{status === "loading" && <div>Chargement...</div>}
 			{error && <div>Erreur : {error}</div>}
-			{tags.map((tag) => (
+			{allTags.map((tag) => (
 				<TagTile
 					key={tag.id}
 					tag={tag}

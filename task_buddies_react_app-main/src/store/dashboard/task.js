@@ -4,12 +4,10 @@ import { taskService } from "../../services/taskService"; // Importation du serv
 // L'action asynchrone qui fait le fetch.
 // Cette action est utilisée pour récupérer les tâches à partir de l'API.
 export const fetchTasks = createAsyncThunk(
-	"task/fetchTasks", // Le nom de l'action.
+	"task/fetchTasks",
 	async (_, { getState, rejectWithValue }) => {
-		// Récupération de l'état actuel.
-		const { selectedDate, selectedTags } = getState().task;
-		// Conversion des tags sélectionnés en une chaîne de caractères.
-		const tagsStr = selectedTags.join(",");
+		const { selectedDate, selectedTags, selectedGroupTags } = getState().task;
+		const tagsStr = [...selectedTags, ...selectedGroupTags].join(",");
 		try {
 			// Tentative de récupération des tâches à partir de l'API.
 			const fetchedTasks = await taskService.fetchTasksByDate(
@@ -41,8 +39,8 @@ export const fetchTasks = createAsyncThunk(
 export const fetchGroupTasks = createAsyncThunk(
 	"task/fetchGroupTasks",
 	async (groupIds, { getState, rejectWithValue }) => {
-		const { selectedDate, selectedTags } = getState().task;
-		const tagsStr = selectedTags.join(",");
+		const { selectedDate, selectedTags, selectedGroupTags } = getState().task;
+		const tagsStr = [...selectedTags, ...selectedGroupTags].join(",");
 		try {
 			const groupTasksObj = {};
 			await Promise.all(
@@ -82,6 +80,7 @@ const taskSlice = createSlice({
 		error: null, // L'erreur éventuelle lors de la récupération des tâches.
 		selectedDate: new Date().toISOString(), // La date sélectionnée.
 		selectedTags: [], // Les tags sélectionnés.
+		selectedGroupTags: [], // Les tags de groupe sélectionnés.
 	},
 
 	// Les reducers pour mettre à jour l'état.
@@ -93,6 +92,9 @@ const taskSlice = createSlice({
 		setSelectedTags: (state, action) => {
 			// Le reducer pour mettre à jour les tags sélectionnés.
 			state.selectedTags = action.payload;
+		},
+		setSelectedGroupTags: (state, action) => {
+			state.selectedGroupTags = action.payload;
 		},
 	},
 
