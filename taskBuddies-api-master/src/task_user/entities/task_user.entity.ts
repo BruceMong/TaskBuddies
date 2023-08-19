@@ -24,8 +24,6 @@ export class TaskUserEntity extends Timestamp {
   @ManyToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
   user: UserEntity;
 
-  @ManyToOne(() => TaskUserCommentEntity, (comment) => comment.task_user, {
-    cascade: true,
-  })
+  @OneToMany(() => TaskUserCommentEntity, (comment) => comment.task_user)
   comments: TaskUserCommentEntity[];
 }

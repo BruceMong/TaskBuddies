@@ -1,1 +1,3 @@
-export class CreateTaskUserCommentDto {}
+export class CreateTaskUserCommentDto {
+  content: string;
+}

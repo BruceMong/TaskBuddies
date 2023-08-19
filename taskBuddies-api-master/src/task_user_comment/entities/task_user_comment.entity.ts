@@ -13,8 +13,6 @@ export class TaskUserCommentEntity {
   @ManyToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
   author: UserEntity;
 
-  @ManyToOne(() => TaskUserEntity, (taskUser) => taskUser.comments, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => TaskUserEntity, (taskUser) => taskUser.comments)
   task_user: TaskUserEntity;
 }
