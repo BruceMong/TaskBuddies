@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import GroupTaskUserTile from "./GroupTaskUserTile";
+import CommentTile from "./CommentTile";
 import { fetchGroupTaskUsers } from "../../store/dashboard/taskUser";
 
 const GroupTaskUserList = ({ groupId }) => {
@@ -8,11 +9,11 @@ const GroupTaskUserList = ({ groupId }) => {
 	const { groupTaskUsers, status, error } = useSelector(
 		(state) => state.taskUser
 	);
-	const selectedTags = useSelector((state) => state.task.selectedTags);
+	const { comments } = useSelector((state) => state.comment);
 
 	useEffect(() => {
 		dispatch(fetchGroupTaskUsers([groupId]));
-	}, [dispatch, groupId, selectedTags]);
+	}, [dispatch, groupId]);
 
 	return (
 		<div className="componentContainer">
@@ -23,7 +24,12 @@ const GroupTaskUserList = ({ groupId }) => {
 				{status === "loading" && <div>Chargement...</div>}
 				{error && <div>Erreur : {error}</div>}
 				{groupTaskUsers[groupId]?.map((taskUser) => (
-					<GroupTaskUserTile key={taskUser.id} taskUser={taskUser} />
+					<div key={taskUser.id}>
+						<GroupTaskUserTile taskUser={taskUser} />
+						{comments[taskUser.id]?.map((comment) => (
+							<CommentTile key={comment.id} comment={comment} />
+						))}
+					</div>
 				))}
 			</div>
 		</div>

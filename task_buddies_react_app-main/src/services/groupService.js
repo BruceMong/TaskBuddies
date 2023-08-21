@@ -172,4 +172,62 @@ export const groupService = {
 			throw new Error("Échec de la tentative de rejoindre le groupe");
 		}
 	},
+	async createComment(taskUserId, content) {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+		};
+
+		const bodyParameters = {
+			content: content,
+		};
+
+		try {
+			const response = await fetch(
+				`${API_BASE_URL}/task-user-comment/${taskUserId}`,
+				{
+					method: "POST",
+					headers: config.headers,
+					body: JSON.stringify(bodyParameters),
+				}
+			);
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error("Erreur lors de la création du commentaire");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la création du commentaire :", error);
+			throw error;
+		}
+	},
+	async fetchCommentsByTaskUser(taskUserId) {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+
+		try {
+			const response = await fetch(
+				`${API_BASE_URL}/task-user-comment/${taskUserId}`,
+				{
+					method: "GET",
+					headers: config.headers,
+				}
+			);
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error("Erreur lors de la récupération des commentaires");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des commentaires :", error);
+			throw error;
+		}
+	},
 };
