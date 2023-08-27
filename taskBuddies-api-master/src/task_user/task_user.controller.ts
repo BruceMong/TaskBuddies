@@ -77,4 +77,30 @@ export class TaskUserController {
       new Date(onDate),
     );
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('user/:userId/date-range/:startDate/:endDate')
+  async fetchTasksByUserAndDateRange(
+    @Param('userId') userId: number,
+    @Param('startDate') startDate: string,
+    @Param('endDate') endDate: string,
+  ): Promise<TaskUserEntity[]> {
+    return this.taskUserService.fetchTasksByUserAndDateRange(
+      userId,
+      new Date(startDate),
+      new Date(endDate),
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('user/date/:onDate')
+  async fetchTasksByUserAndDate(
+    @User() user: UserEntity,
+    @Param('onDate') onDate: string,
+  ): Promise<TaskUserEntity[]> {
+    return this.taskUserService.fetchTasksByUserAndDate(
+      user, // Passez l'entité utilisateur complète
+      new Date(onDate),
+    );
+  }
 }

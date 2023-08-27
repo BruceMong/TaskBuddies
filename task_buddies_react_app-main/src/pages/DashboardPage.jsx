@@ -7,12 +7,14 @@ import TagList from "../components/tag/TagList";
 import GroupForm from "../components/group/GroupForm";
 import GroupList from "../components/group/GroupList";
 import GroupJoin from "../components/group/GroupJoin";
+import DayDoughnut from "../components/charts/DayDoughnut";
 
 const DashboardPage = () => {
 	return (
 		<div className="dashboardPage">
 			<TaskList />
 			<TaskForm />
+			<DayDoughnut />
 			{/* <DayStat /> */}
 			<TagForm />
 			{/* <GroupForm /> */}

@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, MoreThan, Repository } from 'typeorm';
 import { TaskUserEntity } from './entities/task_user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { User } from 'src/config/decorators/user.decorator';
 
 @Injectable()
 export class TaskUserService {
@@ -89,6 +91,32 @@ export class TaskUserService {
     return !!taskUser;
   }
 
+  async fetchTasksByUserAndDate(
+    @User() user: UserEntity,
+    onDate: Date,
+  ): Promise<TaskUserEntity[]> {
+    // Définir les heures pour la date
+    const start = new Date(onDate);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(onDate);
+    end.setHours(23, 59, 59, 999);
+
+    // Requête pour obtenir les tâches de l'utilisateur pour la date spécifiée
+    return this.taskUserRepository
+      .createQueryBuilder('taskUser')
+      .innerJoinAndSelect('taskUser.task', 'task')
+      .innerJoinAndSelect('taskUser.user', 'user')
+      .innerJoinAndSelect('task.tags', 'tags') // Ajoute le tag à la requête
+      .where('taskUser.user.id = :userId', { userId: user.id }) // Utilisez l'ID de l'utilisateur à partir du décorateur User
+      .andWhere('taskUser.doneAt >= :start AND taskUser.doneAt <= :end', {
+        start,
+        end,
+      })
+      .orderBy('taskUser.doneAt', 'ASC')
+      .getMany();
+  }
+
   async fetchTaskUsersByGroupAndDate(
     groupId: number,
     onDate: Date,
@@ -110,6 +138,32 @@ export class TaskUserService {
         nextDate,
       })
       .orderBy('taskUser.doneAt', 'DESC') // Ajoute un ordre inverse sur la date de réalisation
+      .getMany();
+  }
+
+  async fetchTasksByUserAndDateRange(
+    userId: number,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<TaskUserEntity[]> {
+    // Définir les heures pour les dates de début et de fin
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    // Requête pour obtenir les tâches de l'utilisateur entre les dates spécifiées
+    return this.taskUserRepository
+      .createQueryBuilder('taskUser')
+      .innerJoinAndSelect('taskUser.task', 'task')
+      .innerJoinAndSelect('taskUser.user', 'user')
+      .where('taskUser.user.id = :userId', { userId })
+      .andWhere('taskUser.doneAt >= :start AND taskUser.doneAt <= :end', {
+        start,
+        end,
+      })
+      .orderBy('taskUser.doneAt', 'ASC')
       .getMany();
   }
 }
