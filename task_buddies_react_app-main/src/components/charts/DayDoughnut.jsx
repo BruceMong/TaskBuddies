@@ -8,15 +8,16 @@ import { fetchTaskUsers } from "../../store/dashboard/taskUser";
 // Enregistrement des éléments nécessaires pour ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// Définition du composant DayDoughnut
-const DayDoughnut = () => {
-	// Utilisation du hook useDispatch pour dispatcher des actions
-	const dispatch = useDispatch();
+import { taskSliceActions } from "../../store/dashboard/task";
 
-	// Utilisation du hook useEffect pour dispatcher l'action fetchTaskUsers au montage du composant
+const DayDoughnut = () => {
+	const dispatch = useDispatch();
+	const selectedDateStr = useSelector((state) => state.task.selectedDate);
+	const selectedDate = new Date(selectedDateStr);
+
 	useEffect(() => {
-		dispatch(fetchTaskUsers());
-	}, [dispatch]);
+		dispatch(fetchTaskUsers(selectedDateStr));
+	}, [dispatch, selectedDateStr]);
 
 	// Utilisation du hook useSelector pour accéder à l'état du store Redux
 	const { taskUsers } = useSelector((state) => state.taskUser);
