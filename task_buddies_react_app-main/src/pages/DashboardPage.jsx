@@ -68,7 +68,17 @@ const DashboardPage = () => {
 				)}
 			</div>
 
-			<CommentsCenter />
+			<div className="columnComponent">
+				<StatLine />
+				<CommentsCenter />
+			</div>
+			<div className="columnComponent">
+				<StatLine />
+				<CommentsCenter />
+				{/* <FetchTaskUsersLastWeek /> */}
+				{/* <FetchTaskUsersLastWeek /> */}
+			</div>
+
 			{/* <FetchTaskUsersLastWeek /> */}
 			{/* <GroupForm /> */}
 			{/* <GroupJoin /> */}
