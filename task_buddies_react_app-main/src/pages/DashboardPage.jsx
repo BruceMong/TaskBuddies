@@ -60,7 +60,7 @@ const DashboardPage = () => {
 			</div>
 
 			<TagForm />
-			<GroupForm />
+			{/* <GroupForm /> */}
 			{/* <GroupJoin /> */}
 		</div>
 	);

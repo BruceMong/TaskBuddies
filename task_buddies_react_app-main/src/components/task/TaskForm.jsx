@@ -44,6 +44,7 @@ const FormTask = ({ handleBackClick }) => {
 			await taskService.addTask(title, recurrences, idSelected);
 			dispatch(fetchTasks());
 			initForm();
+			handleBackClick();
 		} catch (error) {
 			console.error("Failed to add task:", error);
 		}
