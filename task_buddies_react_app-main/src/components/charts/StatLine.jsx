@@ -1,7 +1,7 @@
 // Importation des dépendances nécessaires
 import React, { useEffect, useState } from "react";
 
-import LineChart from "../charts/LineChart.jsx";
+import LineChart from "./LineChart.jsx";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaskUsersDateRange } from "../../store/dashboard/taskUser";
@@ -35,6 +35,7 @@ const StatLine = () => {
 
 	// Convertir l'objet en tableau
 	const taskUsersArray = Object.values(taskUsersLastWeek);
+	
 	console.log(taskUsersArray);
 
 	return (
