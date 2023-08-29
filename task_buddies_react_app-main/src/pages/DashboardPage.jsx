@@ -41,8 +41,10 @@ const DashboardPage = () => {
 			<TaskList />
 
 			<div className="columnComponent">
-				<DayDoughnut />
-				<StatLine />
+
+				<DayDoughnut /> 
+				<StatLine/>
+
 				{showJoinForm && (
 					<GroupJoin
 						handleCreateClick={handleCreateClick}
