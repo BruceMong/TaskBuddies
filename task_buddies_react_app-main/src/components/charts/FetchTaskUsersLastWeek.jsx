@@ -19,17 +19,19 @@ const FetchTaskUsersLastWeek = () => {
 
 		// Créer le tableau abscisseDate
 		const days = [];
-		for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+		for (
+			let d = new Date(startDate);
+			d <= endDate;
+			d.setDate(d.getDate() + 1)
+		) {
 			const dayNames = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 			days.push(dayNames[d.getDay()]);
 		}
 		setAbscisseDate(days);
-
 	}, [dispatch]);
 
 	// Convertir l'objet en tableau
 	const taskUsersArray = Object.values(taskUsersLastWeek);
-	console.log(taskUsersArray);
 
 	return (
 		<div className="componentContainer">

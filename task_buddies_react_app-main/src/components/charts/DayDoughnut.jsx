@@ -18,8 +18,6 @@ const DayDoughnut = () => {
 
 	const { taskUsers } = useSelector((state) => state.taskUser);
 
-	console.log("mes putains de taskUsers", taskUsers);
-
 	// Vérification si taskUsers est un tableau, sinon on crée un tableau vide
 	const { tasks } = useSelector((state) => state.task);
 	// Récupération des tâches de groupe à partir du store Redux

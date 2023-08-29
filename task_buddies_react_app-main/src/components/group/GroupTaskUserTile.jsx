@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import CommentForm from "./CommentForm";
 import { fetchCommentsByTaskUser } from "../../store/dashboard/comment";
+import { Color } from "three";
 
 const GroupTaskUserTile = ({ taskUser }) => {
 	const dispatch = useDispatch();
@@ -18,8 +19,15 @@ const GroupTaskUserTile = ({ taskUser }) => {
 
 	return (
 		<div>
-			{taskUser.user.username} a réalisé {taskUser.task.title} à{" "}
-			{doneAt.getHours()}:{doneAt.getMinutes()}
+			<div>
+				<p>
+					{taskUser.user.username} a réalisé{" "}
+					<small style={{ color: taskUser.tags.color }}>
+						{taskUser.title}{" "}
+					</small>
+					à {doneAt.getHours()}:{doneAt.getMinutes()}
+				</p>
+			</div>
 			<button onClick={handleCommentButtonClick}>Commenter</button>
 			{showCommentForm && <CommentForm taskUserId={taskUser.id} />}
 		</div>
