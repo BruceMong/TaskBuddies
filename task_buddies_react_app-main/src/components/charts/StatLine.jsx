@@ -3,14 +3,39 @@ import React, { useEffect, useState } from "react";
 
 import LineChart from "../charts/LineChart.jsx";
 
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTaskUsersDateRange } from "../../store/dashboard/taskUser";
 
 const StatLine = () => {
 	const [timeframe, setTimeframe] = useState('week'); // 'week' ou 'month'
 
+	const dispatch = useDispatch();
+	const taskUsersLastWeek = useSelector(
+		(state) => state.taskUser.taskUsersDateRange
+	);
 
-	//du coup il faut le modifier selon la date actuel et le timeframe choisie par l'user
-	const labelOrdonee = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+	const [abscisseDate, setAbscisseDate] = useState([]);
+
+	useEffect(() => {
+		const endDate = new Date();
+		const startDate = new Date();
+		startDate.setDate(endDate.getDate() - 7); // Définir la date de début à 7 jours avant la date de fin
+
+		dispatch(fetchTaskUsersDateRange({ startDate, endDate }));
+
+		// Créer le tableau abscisseDate
+		const days = [];
+		for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+			const dayNames = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+			days.push(dayNames[d.getDay()]);
+		}
+		setAbscisseDate(days);
+
+	}, [dispatch]);
+
+	// Convertir l'objet en tableau
+	const taskUsersArray = Object.values(taskUsersLastWeek);
+	console.log(taskUsersArray);
 
 	return (
 		<div className="componentContainer">
@@ -23,7 +48,7 @@ const StatLine = () => {
 					<option value="week">Par semaine</option>
 					<option value="month">Par mois</option>
 				</select>
-				{/* <LineChart labelOrdonee={labelOrdonee} /> */}
+				<LineChart  /> 
 			</div>
 		</div>
 	);

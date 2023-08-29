@@ -40,7 +40,7 @@ const DashboardPage = () => {
 			<TaskList />
 
 			<div className="columnComponent">
-				<DayDoughnut />
+				{/* <DayDoughnut /> */}
 				<StatLine/>
 				{showJoinForm && (
 					<GroupJoin
