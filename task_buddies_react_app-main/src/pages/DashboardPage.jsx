@@ -72,6 +72,8 @@ const DashboardPage = () => {
 			<div className="columnComponent">
 				<StatLine />
 				<CommentsCenter />
+				{/* <FetchTaskUsersLastWeek /> */}
+				{/* <FetchTaskUsersLastWeek /> */}
 			</div>
 			{/* <FetchTaskUsersLastWeek /> */}
 			{/* <GroupForm /> */}
