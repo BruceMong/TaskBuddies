@@ -1,8 +1,14 @@
+// Importation des dépendances nécessaires
 import React, { useEffect, useState } from "react";
+
+import LineChart from "../charts/LineChart.jsx";
+
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaskUsersDateRange } from "../../store/dashboard/taskUser";
 
-const FetchTaskUsersLastWeek = () => {
+const StatLine = () => {
+	const [timeframe, setTimeframe] = useState('week'); // 'week' ou 'month'
+
 	const dispatch = useDispatch();
 	const taskUsersLastWeek = useSelector(
 		(state) => state.taskUser.taskUsersDateRange
@@ -34,21 +40,19 @@ const FetchTaskUsersLastWeek = () => {
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
-				<p>Liste des TaskUsers des 7 derniers jours</p>
-				<p>Jours: {abscisseDate.join(", ")}</p>
+				<p>Tâches par {timeframe === 'week' ? 'semaine' : 'mois'} 📈</p>
+
 			</div>
 			<div className="bodyContainer">
-				<ul>
-					{taskUsersArray.map((taskUser, index) => (
-						<li key={index}>
-							{/* Affichez les informations que vous voulez ici */}
-							{taskUser.title}
-						</li>
-					))}
-				</ul>
+				<select onChange={(e) => setTimeframe(e.target.value)} value={timeframe}>
+					<option value="week">Par semaine</option>
+					<option value="month">Par mois</option>
+				</select>
+				<LineChart  /> 
 			</div>
 		</div>
 	);
 };
 
-export default FetchTaskUsersLastWeek;
+// Exportation du composant DayDoughnut
+export default StatLine;
