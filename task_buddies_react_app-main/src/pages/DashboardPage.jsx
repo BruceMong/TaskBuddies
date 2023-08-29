@@ -41,7 +41,9 @@ const DashboardPage = () => {
 			<TaskList />
 
 			<div className="columnComponent">
-				<DayDoughnut />
+
+				<DayDoughnut /> 
+				<StatLine/>
 
 				{showJoinForm && (
 					<GroupJoin
@@ -65,14 +67,8 @@ const DashboardPage = () => {
 					/>
 				)}
 			</div>
-			<div className="columnComponent">
-				<StatLine />
-				<CommentsCenter />
-			</div>
-			<div className="columnComponent">
-				<StatLine />
-				<CommentsCenter />
-			</div>
+
+			<CommentsCenter />
 			{/* <FetchTaskUsersLastWeek /> */}
 			{/* <GroupForm /> */}
 			{/* <GroupJoin /> */}
