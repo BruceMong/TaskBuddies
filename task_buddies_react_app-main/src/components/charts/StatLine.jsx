@@ -1,107 +1,109 @@
 // Importation des dépendances nécessaires
 import React, { useEffect, useState } from "react";
-
-
-import LineChart from "./LineChart.jsx";
-
-
+import { Line } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaskUsersDateRange } from "../../store/dashboard/taskUser";
+import {
+	Chart as ChartJS,
+	ArcElement,
+	Tooltip,
+	Legend,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+	LineElement,
+} from "chart.js";
+
+ChartJS.register(
+	ArcElement,
+	Tooltip,
+	Legend,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+	LineElement
+);
 
 const StatLine = () => {
 	const [timeframe, setTimeframe] = useState("week"); // 'week' ou 'month'
-
 	const dispatch = useDispatch();
-	const taskUsersLastWeek = useSelector(
+	const taskUsersData = useSelector(
 		(state) => state.taskUser.taskUsersDateRange
 	);
+	const taskUsers = Array.isArray(taskUsersData) ? taskUsersData : [];
 
-	const [abscisseDate, setAbscisseDate] = useState([]);
+	useEffect(() => {
+		const endDate = new Date();
+		let startDate = new Date();
 
-// ...
-useEffect(() => {
-	const endDate = new Date();
-	let startDate = new Date();
-	
-	if (timeframe === 'week') {
-	  startDate.setDate(endDate.getDate() - 7);
-	} else if (timeframe === 'month') {
-	  startDate.setDate(endDate.getDate() - 30);
-	}
-  
-	dispatch(fetchTaskUsersDateRange({ startDate, endDate }));
-  
+		if (timeframe === "week") {
+			startDate.setDate(endDate.getDate() - 6);
+		} else if (timeframe === "month") {
+			startDate.setDate(endDate.getDate() - 29);
+		}
+
+		dispatch(fetchTaskUsersDateRange({ startDate, endDate }));
+	}, [dispatch, timeframe]);
+
 	// Créer le tableau abscisseDate
-	const days = [];
-	for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-	  const dayNames = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
-	  days.push(dayNames[d.getDay()]);
+	const abscisseDate = [];
+	for (let i = 0; i < (timeframe === "week" ? 7 : 30); i++) {
+		const d = new Date();
+		d.setDate(d.getDate() - i);
+		abscisseDate.unshift(`${d.getDate()}/${d.getMonth() + 1}`);
 	}
-	setAbscisseDate(days);
-  
-  }, [dispatch, timeframe]);
-  // ...
-  
 
-	// Convertir l'objet en tableau
-	const taskUsersArray = Object.values(taskUsersLastWeek);
-	
-	// ...
-// Après avoir obtenu taskUsersArray
-const tags = {};
+	// Initialiser les tableaux pour chaque tag avec des zéros et récupérer les couleurs des tags
+	const tags = {};
+	const tagColors = {};
+	taskUsers.forEach((taskUser) => {
+		const {
+			tags: { title, color },
+			doneAt,
+		} = taskUser;
+		if (!tags[title]) {
+			tags[title] = Array(abscisseDate.length).fill(0);
+			tagColors[title] = color; // Stocker la couleur du tag
+		}
 
+		// Trouver l'index correspondant dans abscisseDate
+		const doneAtDate = new Date(doneAt);
+		const doneAtIndex = abscisseDate.indexOf(
+			`${doneAtDate.getDate()}/${doneAtDate.getMonth() + 1}`
+		);
 
-// Initialiser les tableaux pour chaque tag avec des zéros
-taskUsersArray.forEach(taskUser => {
-  const { tags: { title } } = taskUser;
-  if (!tags[title]) {
-    tags[title] = Array(abscisseDate.length).fill(0);
-  }
-});
+		if (doneAtIndex !== -1) {
+			tags[title][doneAtIndex] += 1;
+		}
+	});
 
-// Remplir les tableaux avec les données correspondantes
-taskUsersArray.forEach(taskUser => {
-	const { tags: { title }, doneAt } = taskUser;
-	const doneAtDate = new Date(doneAt);
-	
-	// Extraire le jour de la date (1-7 pour Lundi-Dimanche)
-	const dayOfWeek = doneAtDate.getDay() + 1;
-	
-	// Trouver l'index correspondant dans abscisseDate
-	const dayIndex = abscisseDate.findIndex(day => dayOfWeek === abscisseDate.indexOf(day) + 1);
-	
-	//console.log(taskUser.title + " " + dayIndex + " " + doneAtDate + " " + dayOfWeek);
-	
-	if (dayIndex !== -1) {
-	  tags[title][dayIndex] += 1;
-	}
-  });
-  
-console.log(tags)
-console.log(abscisseDate)
-
-// ...
-
-
+	// Créer les données pour le graphique
+	const chartData = {
+		labels: abscisseDate,
+		datasets: Object.entries(tags).map(([tag, data]) => ({
+			label: tag,
+			data: data,
+			fill: false,
+			borderColor:
+				tagColors[tag] ||
+				"#" + Math.floor(Math.random() * 16777215).toString(16), // Utiliser la couleur du tag ou une couleur aléatoire si la couleur du tag n'est pas définie
+			tension: 0.0,
+			pointRadius: 3,
+		})),
+	};
 
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
-				<p>Tâches par {timeframe === "week" ? "semaine" : "mois"} 📈</p>
+				<p>Statistiques des tâches 📈</p>
 			</div>
-
-			<div className="bodyContainer antiMalefice" >
-				<select onChange={(e) => setTimeframe(e.target.value)} value={timeframe}>
-					<option value="week">Par semaine</option>
-					<option value="month">Par mois</option>
-				</select>
-				<LineChart tagsData={tags} abscisseDate={abscisseDate} taskUsersArray={taskUsersArray} />
-
-
-			</div>
+			<select onChange={(e) => setTimeframe(e.target.value)} value={timeframe}>
+				<option value="week">7 derniers jours</option>
+				<option value="month">30 derniers jours</option>
+			</select>
+			<Line data={chartData} />
 		</div>
 	);
 };
 
-// Exportation du composant DayDoughnut
 export default StatLine;

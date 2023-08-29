@@ -25,6 +25,14 @@ const GroupList = ({ handleCreateClick, handleJoinClick, handleListClick }) => {
 		dispatch(fetchCreatedGroups());
 	}, [dispatch]);
 
+	if (status === "loading") {
+		return <div>Chargement...</div>;
+	}
+
+	if (status === "failed") {
+		return <div>Erreur : {error.message}</div>;
+	}
+
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
