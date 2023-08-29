@@ -1,11 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Chart as ChartJS, LineElement, Tooltip, Legend } from "chart.js";
-import { Line } from "react-chartjs-2";
 
-// Enregistrement des éléments nécessaires pour ChartJS
-ChartJS.register(LineElement, Tooltip, Legend);
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const LineChart = () => {
+
   const [randomData, setRandomData] = useState([]);
 
   useEffect(() => {
@@ -14,7 +32,23 @@ const LineChart = () => {
     setRandomData(data);
   }, []);
 
-  // Création des données pour le graphique
+
+const options = {
+  responsive: true,
+  interaction: {
+    mode: 'index' ,
+    intersect: false,
+  },
+  stacked: false,
+  scales: {
+    y: {
+      type: 'linear' ,
+      display: true,
+      position: 'left' ,
+    },
+    
+  },
+};
   const chartData = {
     labels: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct"],
     datasets: [
@@ -27,11 +61,10 @@ const LineChart = () => {
       },
     ],
   };
+  console.log(chartData)
 
   // Rendu du composant Line avec les options et les données définies
-  return (
-        <Line data={chartData} />
-  );
+  return <Line options={options} data={chartData} />;
 };
 
 // Exportation du composant RandomLineChart
