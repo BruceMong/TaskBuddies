@@ -29,7 +29,7 @@ const FetchTaskUsersLastWeek = () => {
 
 	// Convertir l'objet en tableau
 	const taskUsersArray = Object.values(taskUsersLastWeek);
-	console.log(taskUsersArray);
+	//console.log(taskUsersArray);
 
 	return (
 		<div className="componentContainer">

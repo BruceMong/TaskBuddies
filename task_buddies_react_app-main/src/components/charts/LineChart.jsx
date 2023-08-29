@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import React from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,50 +21,54 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = () => {
-
-  const [randomData, setRandomData] = useState([]);
-
-  useEffect(() => {
-    // Générer des données aléatoires pour le graphique
-    const data = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
-    setRandomData(data);
-  }, []);
-
-
-const options = {
-  responsive: true,
-  interaction: {
-    mode: 'index' ,
-    intersect: false,
-  },
-  stacked: false,
-  scales: {
-    y: {
-      type: 'linear' ,
-      display: true,
-      position: 'left' ,
+const LineChart = ({ tagsData, abscisseDate, taskUsersArray }) => {
+  const options = {
+    responsive: true,
+    interaction: {
+      mode: 'index',
+      intersect: false,
     },
-    
-  },
-};
-  const chartData = {
-    labels: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct"],
-    datasets: [
-      {
-        label: "Données aléatoires",
-        data: randomData,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderWidth: 2,
+    stacked: false,
+    scales: {
+      y: {
+        type: 'linear',
+        display: true,
+        position: 'left',
       },
-    ],
+    },
   };
-  console.log(chartData)
+  const getColorForTag = (tag) => {
+    // Recherchez la tâche correspondante dans taskUsersArray
+    const task = taskUsersArray.find(taskUser => taskUser.tags.title === tag);
+    
+    // Si la tâche a été trouvée, retournez la couleur
+    if (task) {
+      return task.tags.color;
+    }
+  
+    // Si la tâche n'a pas été trouvée, retournez une couleur par défaut
+    return "#000000"; // Noir par défaut
+  };
+  
+  
+  // Convertir les données des tags en datasets pour le graphique
+  const datasets = Object.entries(tagsData).map(([tag, data]) => {
+    const color = getColorForTag(tag); // Obtenir la couleur pour ce tag
+    return {
+      label: tag,
+      data: data,
+      borderColor: color,
+      borderWidth: 2,
+    };
+  });
+  const chartData = {
+    labels: abscisseDate,
+    datasets: datasets,
+  };
 
-  // Rendu du composant Line avec les options et les données définies
+
+
   return <Line options={options} data={chartData} />;
 };
 
-// Exportation du composant RandomLineChart
 export default LineChart;
