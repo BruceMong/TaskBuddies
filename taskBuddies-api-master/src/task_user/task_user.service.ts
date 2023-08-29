@@ -142,7 +142,7 @@ export class TaskUserService {
   }
 
   async fetchTasksByUserAndDateRange(
-    userId: number,
+    @User() user: UserEntity,
     startDate: Date,
     endDate: Date,
   ): Promise<TaskUserEntity[]> {
@@ -157,8 +157,9 @@ export class TaskUserService {
     return this.taskUserRepository
       .createQueryBuilder('taskUser')
       .innerJoinAndSelect('taskUser.task', 'task')
+      .innerJoinAndSelect('task.tags', 'tags') // Ajoute les tags à la requête
       .innerJoinAndSelect('taskUser.user', 'user')
-      .where('taskUser.user.id = :userId', { userId })
+      .where('taskUser.user.id = :userId', { userId: user.id }) // Utilisez l'ID de l'utilisateur à partir du décorateur User
       .andWhere('taskUser.doneAt >= :start AND taskUser.doneAt <= :end', {
         start,
         end,

@@ -175,7 +175,6 @@ export const taskService = {
 
 			if (response.ok) {
 				const tasks = await response.json();
-				console.log(tasks);
 				return tasks.map((task) => ({
 					id: task.id,
 					title: task.title,
@@ -268,6 +267,35 @@ export const taskService = {
 		} catch (error) {
 			console.error("Error:", error);
 			throw new Error("Failed to create task");
+		}
+	},
+
+	async fetchTaskUsersDateRange(startDate, endDate) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(
+				`${API_BASE_URL}/task-user/user/date-range/${startDate}/${endDate}`,
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			if (response.ok) {
+				const taskUsers = await response.json();
+				return taskUsers.map((taskUser) => ({
+					id: taskUser.id,
+					title: taskUser.task.title,
+					tags: taskUser.task.tags[0],
+				}));
+			} else {
+				throw new Error("Failed to load tasks");
+			}
+		} catch (error) {
+			throw new Error("Failed to load tasks");
 		}
 	},
 };

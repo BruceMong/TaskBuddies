@@ -6,6 +6,7 @@ import GroupForm from "../components/group/GroupForm";
 import GroupList from "../components/group/GroupList";
 import GroupJoin from "../components/group/GroupJoin";
 import DayDoughnut from "../components/charts/DayDoughnut";
+import FetchTaskUsersLastWeek from "../components/charts/FetchTaskUsersLastWeek";
 import "../styles/Dashboard.scss";
 
 const DashboardPage = () => {
@@ -60,6 +61,7 @@ const DashboardPage = () => {
 			</div>
 
 			<TagForm />
+			<FetchTaskUsersLastWeek />
 			{/* <GroupForm /> */}
 			{/* <GroupJoin /> */}
 		</div>
