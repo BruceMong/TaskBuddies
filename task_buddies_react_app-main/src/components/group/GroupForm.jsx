@@ -16,7 +16,6 @@ const GroupForm = ({ handleCreateClick, handleJoinClick, handleListClick }) => {
 
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
-		console.log("groupName", groupName);
 
 		try {
 			await dispatch(createGroup(groupName));

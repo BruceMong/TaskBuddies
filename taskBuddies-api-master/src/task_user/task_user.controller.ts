@@ -93,6 +93,20 @@ export class TaskUserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('user/group/date-range/:startDate/:endDate')
+  async fetchTaskUsersInGroupByDateRange(
+    @User() user: UserEntity,
+    @Param('startDate') startDate: string,
+    @Param('endDate') endDate: string,
+  ): Promise<TaskUserEntity[]> {
+    return this.taskUserService.fetchTaskUsersInGroupByDateRange(
+      user, // Utilisez le décorateur User pour passer l'entité utilisateur complète
+      new Date(startDate),
+      new Date(endDate),
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('user/date/:onDate')
   async fetchTasksByUserAndDate(
     @User() user: UserEntity,

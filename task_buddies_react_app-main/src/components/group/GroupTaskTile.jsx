@@ -22,7 +22,6 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 			taskService
 				.removeTaskUser(id)
 				.then(() => {
-					console.log("Task user removed!");
 					dispatch(fetchGroupTasks([groupId]));
 					dispatch(fetchTaskUsers());
 					dispatch(fetchGroupTaskUsers([groupId]));
@@ -34,7 +33,6 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 			taskService
 				.addTaskUser(id)
 				.then(() => {
-					console.log("Task user added!");
 					dispatch(fetchGroupTasks([groupId]));
 					dispatch(fetchTaskUsers());
 					dispatch(fetchGroupTaskUsers([groupId]));

@@ -1,13 +1,15 @@
 // Importation des dépendances nécessaires
 import React, { useEffect, useState } from "react";
 
+
 import LineChart from "./LineChart.jsx";
+
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaskUsersDateRange } from "../../store/dashboard/taskUser";
 
 const StatLine = () => {
-	const [timeframe, setTimeframe] = useState('week'); // 'week' ou 'month'
+	const [timeframe, setTimeframe] = useState("week"); // 'week' ou 'month'
 
 	const dispatch = useDispatch();
 	const taskUsersLastWeek = useSelector(
@@ -48,6 +50,7 @@ useEffect(() => {
 // Après avoir obtenu taskUsersArray
 const tags = {};
 
+
 // Initialiser les tableaux pour chaque tag avec des zéros
 taskUsersArray.forEach(taskUser => {
   const { tags: { title } } = taskUser;
@@ -80,18 +83,20 @@ console.log(abscisseDate)
 // ...
 
 
+
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
-				<p>Tâches par {timeframe === 'week' ? 'semaine' : 'mois'} 📈</p>
-
+				<p>Tâches par {timeframe === "week" ? "semaine" : "mois"} 📈</p>
 			</div>
+
 			<div className="bodyContainer antiMalefice" >
 				<select onChange={(e) => setTimeframe(e.target.value)} value={timeframe}>
 					<option value="week">Par semaine</option>
 					<option value="month">Par mois</option>
 				</select>
 				<LineChart tagsData={tags} abscisseDate={abscisseDate} taskUsersArray={taskUsersArray} />
+
 
 			</div>
 		</div>

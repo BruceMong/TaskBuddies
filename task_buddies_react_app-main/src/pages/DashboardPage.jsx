@@ -6,6 +6,7 @@ import GroupForm from "../components/group/GroupForm";
 import GroupList from "../components/group/GroupList";
 import GroupJoin from "../components/group/GroupJoin";
 import DayDoughnut from "../components/charts/DayDoughnut";
+import CommentsCenter from "../components/group/CommentsCenter";
 
 import StatLine from "../components/charts/StatLine";
 
@@ -40,8 +41,10 @@ const DashboardPage = () => {
 			<TaskList />
 
 			<div className="columnComponent">
+
 				<DayDoughnut /> 
 				<StatLine/>
+
 				{showJoinForm && (
 					<GroupJoin
 						handleCreateClick={handleCreateClick}
@@ -65,8 +68,8 @@ const DashboardPage = () => {
 				)}
 			</div>
 
-			<TagForm />
-			<FetchTaskUsersLastWeek />
+			<CommentsCenter />
+			{/* <FetchTaskUsersLastWeek /> */}
 			{/* <GroupForm /> */}
 			{/* <GroupJoin /> */}
 		</div>

@@ -1,11 +1,11 @@
+// CommentTile.jsx
 import React from "react";
 
-const CommentTile = ({ comment }) => {
+const CommentTile = ({ comment, taskTitle, tagColor }) => {
 	return (
-		<div>
-			<p>
-				{comment.author.username} : {comment.content}
-			</p>
+		<div key={comment.id}>
+			<p>{comment.author.username + " : " + comment.content}</p>
+			<small style={{ color: tagColor }}>{taskTitle}</small>
 		</div>
 	);
 };

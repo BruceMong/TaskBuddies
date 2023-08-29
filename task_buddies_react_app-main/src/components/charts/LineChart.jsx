@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Chart as ChartJS,
@@ -72,3 +73,4 @@ const LineChart = ({ tagsData, abscisseDate, taskUsersArray }) => {
 };
 
 export default LineChart;
+

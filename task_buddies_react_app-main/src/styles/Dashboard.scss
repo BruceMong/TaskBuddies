@@ -1,9 +1,11 @@
 @import "Main.scss";
 .columnComponent {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 100%;
+
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	height: 100%;
+
 }
 
 .headerBtn {

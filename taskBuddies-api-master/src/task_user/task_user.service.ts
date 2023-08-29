@@ -132,12 +132,42 @@ export class TaskUserService {
       .createQueryBuilder('taskUser')
       .innerJoinAndSelect('taskUser.task', 'task')
       .innerJoinAndSelect('taskUser.user', 'user') // Ajoute la relation à l'utilisateur
+      .innerJoinAndSelect('task.tags', 'tags') // Ajoute les tags à la requête
+
       .where('task.group.id = :groupId', { groupId })
       .andWhere('taskUser.doneAt >= :date AND taskUser.doneAt < :nextDate', {
         date,
         nextDate,
       })
       .orderBy('taskUser.doneAt', 'DESC') // Ajoute un ordre inverse sur la date de réalisation
+      .getMany();
+  }
+
+  async fetchTaskUsersInGroupByDateRange(
+    @User() user: UserEntity,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<TaskUserEntity[]> {
+    // Définir les heures pour les dates de début et de fin
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    // Requête pour obtenir les tâches de l'utilisateur entre les dates spécifiées
+    return this.taskUserRepository
+      .createQueryBuilder('taskUser')
+      .innerJoinAndSelect('taskUser.task', 'task')
+      .innerJoinAndSelect('task.tags', 'tags') // Ajoute les tags à la requête
+      .innerJoinAndSelect('taskUser.user', 'user')
+      .where('taskUser.user.id = :userId', { userId: user.id }) // Utilisez l'ID de l'utilisateur à partir du décorateur User
+      .andWhere('taskUser.doneAt >= :start AND taskUser.doneAt <= :end', {
+        start,
+        end,
+      })
+      .andWhere('task.group IS NOT NULL') // Ajoute une condition pour vérifier si la tâche est attribuée à un groupe
+      .orderBy('taskUser.doneAt', 'DESC')
       .getMany();
   }
 

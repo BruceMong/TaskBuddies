@@ -5,174 +5,165 @@ import { useDispatch } from "react-redux";
 import { fetchTasks } from "../../store/dashboard/task";
 
 const TaskFormUpdate = ({ currentTask }) => {
+	const token = localStorage.getItem("token");
 
-console.log(currentTask);
-  const token = localStorage.getItem("token");
+	const dispatch = useDispatch();
 
-  const dispatch = useDispatch();
+	const [title, setTitle] = useState(currentTask.title);
+	const [recurrenceType, setRecurrenceType] = useState(
+		currentTask.recurrenceType
+	);
+	const [selectedWeekDays, setSelectedWeekDays] = useState(
+		currentTask.selectedWeekDays
+	);
+	const [selectedDayOfMonth, setSelectedDayOfMonth] = useState(
+		currentTask.selectedDayOfMonth
+	);
+	const [selectedInterval, setSelectedInterval] = useState(
+		currentTask.selectedInterval
+	);
+	const [startDate, setStartDate] = useState(new Date(currentTask.startDate));
+	const [endDate, setEndDate] = useState(new Date(currentTask.endDate));
 
-  const [title, setTitle] = useState(currentTask.title);
-  const [recurrenceType, setRecurrenceType] = useState(
-    currentTask.recurrenceType
-  );
-  const [selectedWeekDays, setSelectedWeekDays] = useState(
-    currentTask.selectedWeekDays
-  );
-  const [selectedDayOfMonth, setSelectedDayOfMonth] = useState(
-    currentTask.selectedDayOfMonth
-  );
-  const [selectedInterval, setSelectedInterval] = useState(
-    currentTask.selectedInterval
-  );
-  const [startDate, setStartDate] = useState(new Date(currentTask.startDate));
-  const [endDate, setEndDate] = useState(new Date(currentTask.endDate));
+	const initForm = () => {
+		setTitle(currentTask.title);
+		setRecurrenceType(currentTask.recurrenceType);
+		setSelectedWeekDays(currentTask.selectedWeekDays);
+		setSelectedDayOfMonth(currentTask.selectedDayOfMonth);
+		setSelectedInterval(currentTask.selectedInterval);
+		setStartDate(currentTask.startDate);
+		setEndDate(currentTask.endDate);
+	};
 
-  const initForm = () => {
-    setTitle(currentTask.title);
-    setRecurrenceType(currentTask.recurrenceType);
-    setSelectedWeekDays(currentTask.selectedWeekDays);
-    setSelectedDayOfMonth(currentTask.selectedDayOfMonth);
-    setSelectedInterval(currentTask.selectedInterval);
-    setStartDate(currentTask.startDate);
-    setEndDate(currentTask.endDate);
-  };
+	useEffect(() => {
+		initForm();
+	}, [currentTask]);
 
-    useEffect(() => {
-      initForm();
-    }, [currentTask]);
+	const handleFormSubmit = async (event) => {
+		event.preventDefault();
 
+		try {
+			const recurrences = generateRecurrenceData();
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
+			await taskService.updateTask(currentTask.id, title, recurrences, token);
+			dispatch(fetchTasks());
+			initForm();
+		} catch (error) {
+			console.error("Failed to update task:", error);
+		}
+	};
 
-    try {
-      const recurrences = generateRecurrenceData();
+	const handleWeekDayToggle = (day) => {
+		const updatedWeekDays = [...selectedWeekDays];
+		const index = updatedWeekDays.indexOf(day);
 
-      await taskService.updateTask(currentTask.id, title, recurrences, token);
-      dispatch(fetchTasks());
-      initForm();
-    } catch (error) {
-      console.error("Failed to update task:", error);
-    }
-  };
+		if (index !== -1) {
+			updatedWeekDays.splice(index, 1);
+		} else {
+			updatedWeekDays.push(day);
+		}
 
-  const handleWeekDayToggle = (day) => {
-    const updatedWeekDays = [...selectedWeekDays];
-    const index = updatedWeekDays.indexOf(day);
+		setSelectedWeekDays(updatedWeekDays);
+	};
 
-    if (index !== -1) {
-      updatedWeekDays.splice(index, 1);
-    } else {
-      updatedWeekDays.push(day);
-    }
+	const handleDayOfMonthToggle = (day) => {
+		const updatedDaysOfMonth = [...selectedDayOfMonth];
+		const index = updatedDaysOfMonth.indexOf(day);
 
-    setSelectedWeekDays(updatedWeekDays);
-  };
+		if (index !== -1) {
+			updatedDaysOfMonth.splice(index, 1);
+		} else {
+			updatedDaysOfMonth.push(day);
+		}
 
-  const handleDayOfMonthToggle = (day) => {
-    const updatedDaysOfMonth = [...selectedDayOfMonth];
-    const index = updatedDaysOfMonth.indexOf(day);
+		setSelectedDayOfMonth(updatedDaysOfMonth);
+	};
 
-    if (index !== -1) {
-      updatedDaysOfMonth.splice(index, 1);
-    } else {
-      updatedDaysOfMonth.push(day);
-    }
+	const generateRecurrenceData = () => {
+		const recurrences = [];
 
-    setSelectedDayOfMonth(updatedDaysOfMonth);
-  };
+		if (recurrenceType === "Unique") {
+			const recurrenceData = {
+				start_date: startDate?.toISOString(),
+				end_date: null,
+				day_of_week: null,
+				day_of_month: null,
+				recurrence_interval: null,
+			};
+			recurrences.push(recurrenceData);
+		} else if (recurrenceType === "Semaine") {
+			selectedWeekDays.forEach((day) => {
+				const recurrenceData = {
+					start_date: startDate?.toISOString(),
+					end_date: endDate?.toISOString(),
+					day_of_week: day,
+					day_of_month: null,
+					recurrence_interval: null,
+				};
+				recurrences.push(recurrenceData);
+			});
+		} else if (recurrenceType === "Mois") {
+			selectedDayOfMonth.forEach((day) => {
+				const recurrenceData = {
+					start_date: startDate?.toISOString(),
+					end_date: endDate?.toISOString(),
+					day_of_week: null,
+					day_of_month: day,
+					recurrence_interval: null,
+				};
+				recurrences.push(recurrenceData);
+			});
+		} else if (recurrenceType === "Intervalle") {
+			const recurrenceData = {
+				start_date: startDate?.toISOString(),
+				end_date: endDate?.toISOString(),
+				day_of_week: null,
+				day_of_month: null,
+				recurrence_interval: selectedInterval,
+			};
+			recurrences.push(recurrenceData);
+		}
 
-  const generateRecurrenceData = () => {
-    const recurrences = [];
+		return recurrences;
+	};
 
-    if (recurrenceType === "Unique") {
-      const recurrenceData = {
-        start_date: startDate?.toISOString(),
-        end_date: null,
-        day_of_week: null,
-        day_of_month: null,
-        recurrence_interval: null,
-      };
-      recurrences.push(recurrenceData);
-    } else if (recurrenceType === "Semaine") {
-      selectedWeekDays.forEach((day) => {
-        const recurrenceData = {
-          start_date: startDate?.toISOString(),
-          end_date: endDate?.toISOString(),
-          day_of_week: day,
-          day_of_month: null,
-          recurrence_interval: null,
-        };
-        recurrences.push(recurrenceData);
-      });
-    } else if (recurrenceType === "Mois") {
-      selectedDayOfMonth.forEach((day) => {
-        const recurrenceData = {
-          start_date: startDate?.toISOString(),
-          end_date: endDate?.toISOString(),
-          day_of_week: null,
-          day_of_month: day,
-          recurrence_interval: null,
-        };
-        recurrences.push(recurrenceData);
-      });
-    } else if (recurrenceType === "Intervalle") {
-      const recurrenceData = {
-        start_date: startDate?.toISOString(),
-        end_date: endDate?.toISOString(),
-        day_of_week: null,
-        day_of_month: null,
-        recurrence_interval: selectedInterval,
-      };
-      recurrences.push(recurrenceData);
-    }
+	return (
+		<div className="componentContainer">
+			<div className="componentHeader">
+				<p>Modifier une tâche 💡</p>
+			</div>
+			<form className="bodyContainer" onSubmit={handleFormSubmit}>
+				<div className="inputContainer">
+					<label htmlFor="title">Nom de la tâche</label>
+					<input
+						type="text"
+						id="title"
+						value={title}
+						onChange={(event) => setTitle(event.target.value)}
+						placeholder="Titre de la tâche"
+						required
+					/>
+				</div>
+				<div className="inputContainer">
+					<label htmlFor="recurrenceType">Type de récurrences</label>
+					<select
+						id="recurrenceType"
+						value={recurrenceType}
+						onChange={(event) => setRecurrenceType(event.target.value)}
+					>
+						<option value="Unique">Unique</option>
+						<option value="Semaine">Semaine</option>
+						<option value="Mois">Mois</option>
+						<option value="Intervalle">Intervalle</option>
+					</select>
+				</div>
 
-    return recurrences;
-  };
-
- return (
-    <div className="componentContainer">
-        <div className="componentHeader">
-            <p>Modifier une tâche 💡</p>
-        </div>
-        <form className="bodyContainer" onSubmit={handleFormSubmit}>
-            <div className="inputContainer">
-                <label htmlFor="title">Nom de la tâche</label>
-                <input
-                    type="text"
-                    id="title"
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                    placeholder="Titre de la tâche"
-                    required
-                />
-            </div>
-            <div className="inputContainer">
-                <label htmlFor="recurrenceType">Type de récurrences</label>
-                <select
-                    id="recurrenceType"
-                    value={recurrenceType}
-                    onChange={(event) => setRecurrenceType(event.target.value)}
-                >
-                    <option value="Unique">Unique</option>
-                    <option value="Semaine">Semaine</option>
-                    <option value="Mois">Mois</option>
-                    <option value="Intervalle">Intervalle</option>
-                </select>
-            </div>
-	
-            <div className="inputContainer">
-                <button type="submit">Mettre à jour</button>
-            </div>
-        </form>
-    </div>
-);
-
-
-
-
-
-
+				<div className="inputContainer">
+					<button type="submit">Mettre à jour</button>
+				</div>
+			</form>
+		</div>
+	);
 };
 
 export default TaskFormUpdate;
