@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCreatedGroups, createGroup } from "../../store/dashboard/group";
 
-const GroupForm = () => {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	faPeopleGroup,
+	faPersonCirclePlus,
+	faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
+
+const GroupForm = ({ handleCreateClick, handleJoinClick, handleListClick }) => {
 	const dispatch = useDispatch();
 	const { status, error } = useSelector((state) => state.group);
 	const [groupName, setGroupName] = useState("");
@@ -23,6 +30,17 @@ const GroupForm = () => {
 		<div className="componentContainer">
 			<div className="componentHeader">
 				<p>Créer un groupe 💡</p>
+				<div className="groupIcons">
+					<button className="headerBtn" onClick={handleListClick}>
+						<FontAwesomeIcon icon={faPeopleGroup} />
+					</button>
+					<button className="headerBtn" onClick={handleJoinClick}>
+						<FontAwesomeIcon icon={faPersonCirclePlus} />
+					</button>
+					<button className="headerBtn" onClick={handleCreateClick}>
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</button>
+				</div>
 			</div>
 			<form className="bodyContainer" onSubmit={handleFormSubmit}>
 				<div className="inputContainer">

@@ -3,13 +3,15 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { taskService } from "../../services/taskService";
 import TagList from "../tag/TagList";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleMinus } from "@fortawesome/free-solid-svg-icons";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, taskSliceActions } from "../../store/dashboard/task";
 
 import TagListForForm from "../tag/TagListForForm";
 
-const FormTask = () => {
+const FormTask = ({ handleBackClick }) => {
 	const token = localStorage.getItem("token");
 
 	const dispatch = useDispatch();
@@ -137,6 +139,9 @@ const FormTask = () => {
 		<div className="componentContainer">
 			<div className="componentHeader">
 				<p>Ajouter une tâche 💡</p>
+				<button onClick={handleBackClick} className="closeHeaderBtn">
+					<FontAwesomeIcon icon={faCircleMinus} />
+				</button>
 			</div>
 			<TagListForForm idSelected={idSelected} setIdSelected={setIdSelected} />
 			<form className="bodyContainer" onSubmit={handleFormSubmit}>

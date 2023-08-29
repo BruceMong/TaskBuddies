@@ -8,8 +8,6 @@ import { fetchTaskUsers } from "../../store/dashboard/taskUser";
 // Enregistrement des éléments nécessaires pour ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-import { taskSliceActions } from "../../store/dashboard/task";
-
 const DayDoughnut = () => {
 	const dispatch = useDispatch();
 	const selectedDateStr = useSelector((state) => state.task.selectedDate);
@@ -67,10 +65,10 @@ const DayDoughnut = () => {
 			);
 			// Si la tâche existe et qu'elle a été complétée, on utilise la couleur du tag, sinon on utilise une couleur grise
 			return task && taskUserCounts[label]
-				? task.tags[0].color + "80"
-				: "#80808080";
+				? task.tags[0].color + "30"
+				: "#F1F1F440";
 		}),
-		"#80808080",
+		"#F1F1F440",
 	];
 	// Définition des couleurs de bordure pour le graphique
 	const borderColor = [
@@ -81,9 +79,9 @@ const DayDoughnut = () => {
 					task.tags && task.tags.length > 0 && task.tags[0].title === label
 			);
 			// Si la tâche existe et qu'elle a été complétée, on utilise la couleur du tag, sinon on utilise une couleur grise
-			return task && taskUserCounts[label] ? task.tags[0].color : "#808080";
+			return task && taskUserCounts[label] ? task.tags[0].color : "#F1F1F4";
 		}),
-		"#808080",
+		"#F1F1F4",
 	];
 	// Ajout du label "À réaliser" aux labels existants
 	const labelsWithRemaining = [...labels, "À réaliser"];
@@ -93,29 +91,26 @@ const DayDoughnut = () => {
 		labels: labelsWithRemaining,
 		datasets: [
 			{
-				label: "# of Votes",
+				label: " Tâches",
 				data,
 				backgroundColor,
 				borderColor,
-				borderWidth: 3,
+				borderWidth: 2,
 			},
 		],
 	};
 
-	// Définition des options pour le graphique
-	const chartOptions = {
-		tooltips: {
-			enabled: false,
-		},
-		elements: {
-			arc: {
-				borderWidth: 1,
-			},
-		},
-	};
-
 	// Rendu du composant Doughnut avec les options et les données définies
-	return <Doughnut options={chartOptions} data={chartData} />;
+	return (
+		<div className="componentContainer">
+			<div className="componentHeader">
+				<p>Diagramme de tâches du jour 🍩</p>
+			</div>
+			<div className="bodyContainer">
+				<Doughnut data={chartData} />
+			</div>
+		</div>
+	);
 };
 
 // Exportation du composant DayDoughnut

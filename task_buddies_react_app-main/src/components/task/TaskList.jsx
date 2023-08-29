@@ -10,6 +10,11 @@ import { fetchTasks, taskSliceActions } from "../../store/dashboard/task";
 import { fetchGroupTasks } from "../../store/dashboard/task";
 import { fetchUserGroups } from "../../store/dashboard/group";
 
+import TaskForm from "../task/TaskForm";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+
 const TaskList = () => {
 	//const [tasks, setTasks] = useState([]);
 
@@ -21,6 +26,16 @@ const TaskList = () => {
 	const selectedDate = new Date(selectedDateStr);
 
 	const selectedTags = useSelector((state) => state.task.selectedTags);
+
+	const [showForm, setShowForm] = useState(false);
+
+	const handleButtonClick = () => {
+		setShowForm(true);
+	};
+
+	const handleBackClick = () => {
+		setShowForm(false);
+	};
 
 	useEffect(() => {
 		dispatch(fetchTasks());
@@ -58,14 +73,21 @@ const TaskList = () => {
 		dispatch(taskSliceActions.setSelectedTags(newSelectedTags));
 	};
 
+	if (showForm) {
+		return <TaskForm handleBackClick={handleBackClick} />;
+	}
+
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
 				<p>Tâches à réaliser 💪</p>
+				<button className="headerBtn" onClick={handleButtonClick}>
+					<FontAwesomeIcon icon={faPlusCircle} />
+				</button>
 			</div>
 			<TagList handleAction={handleTagClickFilter} />
 			<div className="bodyContainer">
-				{status === "loading" && <div>Chargement...</div>}
+				{status === "loading"}
 				{error && <div>Erreur : {error}</div>}
 
 				{tasks.map((task) => (

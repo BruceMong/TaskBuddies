@@ -8,6 +8,7 @@ import { tagIcons } from "../../utils/tagData";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupTasks } from "../../store/dashboard/task";
 import { fetchGroupTaskUsers } from "../../store/dashboard/taskUser";
+import { fetchTaskUsers } from "../../store/dashboard/taskUser";
 
 const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 	const isTodaySelected = isToday(selectedDate);
@@ -23,6 +24,7 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 				.then(() => {
 					console.log("Task user removed!");
 					dispatch(fetchGroupTasks([groupId]));
+					dispatch(fetchTaskUsers());
 					dispatch(fetchGroupTaskUsers([groupId]));
 				})
 				.catch((error) => {
@@ -34,6 +36,7 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 				.then(() => {
 					console.log("Task user added!");
 					dispatch(fetchGroupTasks([groupId]));
+					dispatch(fetchTaskUsers());
 					dispatch(fetchGroupTaskUsers([groupId]));
 				})
 				.catch((error) => {
