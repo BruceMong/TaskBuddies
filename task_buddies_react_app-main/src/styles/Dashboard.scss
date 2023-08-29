@@ -1,5 +1,70 @@
 @import "Main.scss";
 
+.columnComponent {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	width: 100%;
+}
+
+.headerBtn {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	height: 20px;
+	width: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 2s;
+	color: $whiteColor;
+}
+
+.headerBtn svg {
+	width: 100%;
+	height: 100%;
+}
+
+.headerBtn:hover {
+	color: $blueDarkColor;
+	transform: rotate(1080deg);
+}
+
+.closeHeaderBtn {
+	color: $redColor;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	height: 20px;
+	width: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 2s;
+	animation: rotateIn 2s;
+}
+
+.closeHeaderBtn svg {
+	width: 100%;
+	height: 100%;
+}
+
+.closeHeaderBtn:hover {
+	color: $whiteColor;
+	transform: rotate(900deg);
+}
+
+@keyframes rotateIn {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(900deg);
+	}
+}
+
 .taskTileContainer {
 	background-color: $grayDarkColor;
 	border-radius: 34px;
@@ -13,6 +78,12 @@
 	width: 100%;
 	box-sizing: border-box;
 	height: 46px;
+}
+
+.groupIcons {
+	display: flex;
+	align-items: center;
+	gap: 12px;
 }
 
 .taskTileContainer:hover {
@@ -45,7 +116,8 @@
 	flex-direction: column;
 	align-items: center;
 	border-radius: 34px;
-	width: 25%;
+	width: 100%;
+	height: 100%;
 	border: solid 1px $grayColor;
 }
 
@@ -56,6 +128,9 @@
 	padding: 6px 24px 0px 24px;
 	width: 100%;
 	box-sizing: border-box;
+
+	justify-content: space-between;
+	align-items: center;
 }
 
 .bodyContainer {

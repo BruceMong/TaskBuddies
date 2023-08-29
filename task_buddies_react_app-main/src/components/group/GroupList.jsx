@@ -7,7 +7,14 @@ import {
 
 import { Link } from "react-router-dom";
 
-const GroupList = () => {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	faPeopleGroup,
+	faPersonCirclePlus,
+	faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
+
+const GroupList = ({ handleCreateClick, handleJoinClick, handleListClick }) => {
 	const dispatch = useDispatch();
 	const { memberGroups, createdGroups, status, error } = useSelector(
 		(state) => state.group
@@ -30,6 +37,17 @@ const GroupList = () => {
 		<div className="componentContainer">
 			<div className="componentHeader">
 				<p>Groupes 💡</p>
+				<div className="groupIcons">
+					<button className="headerBtn" onClick={handleListClick}>
+						<FontAwesomeIcon icon={faPeopleGroup} />
+					</button>
+					<button className="headerBtn" onClick={handleJoinClick}>
+						<FontAwesomeIcon icon={faPersonCirclePlus} />
+					</button>
+					<button className="headerBtn" onClick={handleCreateClick}>
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</button>
+				</div>
 			</div>
 			<div className="bodyContainer">
 				{memberGroups.length > 0 && (
