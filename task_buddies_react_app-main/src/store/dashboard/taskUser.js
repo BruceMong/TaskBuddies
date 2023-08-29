@@ -16,6 +16,21 @@ export const fetchTaskUsers = createAsyncThunk(
 	}
 );
 
+export const fetchTaskUsersDateRange = createAsyncThunk(
+	"taskUser/fetchTaskUsersDateRange",
+	async ({ startDate, endDate }, { rejectWithValue }) => {
+		try {
+			const fetchedTaskUsers = await taskService.fetchTaskUsersDateRange(
+				startDate.toISOString(),
+				endDate.toISOString()
+			);
+			return fetchedTaskUsers;
+		} catch (err) {
+			return rejectWithValue(err.message);
+		}
+	}
+);
+
 export const fetchGroupTaskUsers = createAsyncThunk(
 	"taskUser/fetchGroupTaskUsers",
 	async (groupIds, { getState, rejectWithValue }) => {
@@ -44,6 +59,7 @@ const taskUserSlice = createSlice({
 	initialState: {
 		taskUsers: {},
 		groupTaskUsers: {},
+		taskUsersDateRange: {},
 		status: "idle",
 		error: null,
 	},
@@ -58,6 +74,17 @@ const taskUserSlice = createSlice({
 				state.taskUsers = action.payload;
 			})
 			.addCase(fetchTaskUsers.rejected, (state, action) => {
+				state.status = "idle";
+				state.error = action.error.message;
+			})
+			.addCase(fetchTaskUsersDateRange.pending, (state) => {
+				state.status = "loading";
+			})
+			.addCase(fetchTaskUsersDateRange.fulfilled, (state, action) => {
+				state.status = "idle";
+				state.taskUsersDateRange = action.payload;
+			})
+			.addCase(fetchTaskUsersDateRange.rejected, (state, action) => {
 				state.status = "idle";
 				state.error = action.error.message;
 			})
