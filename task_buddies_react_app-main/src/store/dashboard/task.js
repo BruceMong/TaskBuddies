@@ -69,6 +69,11 @@ export const fetchGroupTasks = createAsyncThunk(
 	}
 );
 
+// Fonction helper pour calculer le nombre total de tâches et de tâches de groupe
+const calculateTotalTasks = (state) => {
+	return state.tasks.length + Object.values(state.groupTasks).flat().length;
+};
+
 // Création du slice de tâche avec Redux Toolkit.
 const taskSlice = createSlice({
 	name: "task", // Le nom du slice.
@@ -76,6 +81,7 @@ const taskSlice = createSlice({
 		// L'état initial du slice.
 		tasks: [], // La liste des tâches.
 		groupTasks: {}, // La liste des tâches de groupe.
+		totalTasks: 0, // Le nombre total de tâches.
 		status: "idle", // Le statut de l'état (idle, loading, etc.).
 		error: null, // L'erreur éventuelle lors de la récupération des tâches.
 		selectedDate: new Date().toISOString(), // La date sélectionnée.
@@ -107,6 +113,8 @@ const taskSlice = createSlice({
 			.addCase(fetchTasks.fulfilled, (state, action) => {
 				state.status = "idle";
 				state.tasks = action.payload;
+				// Utilisation de la fonction helper pour calculer le nombre total de tâches
+				state.totalTasks = calculateTotalTasks(state);
 			})
 			.addCase(fetchTasks.rejected, (state, action) => {
 				state.status = "idle";
@@ -119,6 +127,8 @@ const taskSlice = createSlice({
 			.addCase(fetchGroupTasks.fulfilled, (state, action) => {
 				state.status = "idle";
 				state.groupTasks = { ...state.groupTasks, ...action.payload };
+				// Utilisation de la fonction helper pour calculer le nombre total de tâches
+				state.totalTasks = calculateTotalTasks(state);
 			})
 
 			.addCase(fetchGroupTasks.rejected, (state, action) => {

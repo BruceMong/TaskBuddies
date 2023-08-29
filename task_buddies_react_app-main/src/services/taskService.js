@@ -225,6 +225,47 @@ export const taskService = {
                 }
             );
 
+			if (response.ok) {
+				const taskUsers = await response.json();
+				console.log("taskUsers", taskUsers);
+				return taskUsers.map((taskUser) => ({
+					id: taskUser.id,
+					title: taskUser.task.title,
+					taskId: taskUser.task.id,
+					tags: taskUser.task.tags[0],
+					doneAt: taskUser.doneAt,
+				}));
+			} else {
+				throw new Error(
+					"Erreur lors de la récupération des utilisateurs de tâches"
+				);
+			}
+		} catch (error) {
+			console.error(
+				"Erreur lors de la récupération des utilisateurs de tâches :",
+				error
+			);
+			throw error;
+		}
+	},
+
+	async createTaskWithGroup(title, recurrences, groupId, idSelected) {
+		const token = localStorage.getItem("token");
+		const selectedTags = [idSelected];
+		try {
+			const response = await fetch(`${API_BASE_URL}/task/group/${groupId}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({
+					title,
+					recurrences,
+					tags: selectedTags.map((tagId) => ({ id: tagId })),
+				}),
+			});
+
             if (response.ok) {
                 const data = await response.json();
                 return data;
@@ -252,6 +293,7 @@ export const taskService = {
                     tags: selectedTags.map((tagId) => ({ id: tagId })),
                 }),
             });
+
 
             if (!response.ok) {
                 throw new Error("Failed to create task");
