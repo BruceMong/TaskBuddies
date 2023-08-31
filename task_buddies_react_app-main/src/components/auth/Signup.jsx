@@ -1,4 +1,3 @@
-// src/components/auth/Signup.js
 import React, { useState } from "react";
 import { authService } from "../../services/authService";
 
@@ -6,25 +5,31 @@ const Signup = ({ toggleShowSignup }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [username, setUsername] = useState("");
-	const [isSigned, setIsSigned] = useState(false); // Ajout de l'état pour suivre l'état de connexion
+	const [isSigned, setIsSigned] = useState(false);
+	const [passwordError, setPasswordError] = useState(""); // Ajout de l'état pour suivre les erreurs de mot de passe
+
+	const validatePassword = (password) => {
+		const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+		return regex.test(password);
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		try {
-			await authService.signup({ email, password, username });
-			// Redirect to login or show success message
-			setIsSigned(true); // Met à jour l'état de connexion après une connexion réussie
-
-		} catch (error) {
-			console.error("Error during signup:", error);
+		if (validatePassword(password)) {
+			try {
+				await authService.signup({ email, password, username });
+				setIsSigned(true);
+			} catch (error) {
+				console.error("Error during signup:", error);
+			}
+		} else {
+			setPasswordError("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.");
 		}
 	};
 
-	// Si l'utilisateur est connecté, redirige vers le tableau de bord
 	if (isSigned) {
-		toggleShowSignup()
+		toggleShowSignup();
 	}
-
 
 	return (
 		<div className="authContainer">
@@ -50,6 +55,7 @@ const Signup = ({ toggleShowSignup }) => {
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
+				{passwordError && <p className="passwordError">{passwordError}</p>}
 				<div className="authBtnContainer">
 					<button onClick={toggleShowSignup} className="secondaryBtn">
 						Déjà un compte ? Connectez-vous
