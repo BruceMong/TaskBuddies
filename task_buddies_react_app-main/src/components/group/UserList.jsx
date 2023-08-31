@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react"; // Importez useState
+import { tagColors } from "../../utils/tagData";
+
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCountTaskUsersByGroupAndUserOnDateRange } from "../../store/dashboard/taskUser";
 import { Bar } from "react-chartjs-2";
@@ -24,15 +26,20 @@ ChartJS.register(
 );
 
 const UserList = ({ users, createdBy, groupId }) => {
+	const [timeframe, setTimeframe] = useState("week"); // Ajoutez cette ligne
 	const dispatch = useDispatch();
 	const countTaskUsersByUser = useSelector(
 		(state) => state.taskUser.countTaskUsersByUser
 	);
 
-	// Définir les dates sur les 7 derniers jours
+	// Définir les dates sur les 7 derniers jours ou les 30 derniers jours en fonction de timeframe
 	const endDate = new Date();
 	const startDate = new Date();
-	startDate.setDate(endDate.getDate() - 7);
+	if (timeframe === "week") {
+		startDate.setDate(endDate.getDate() - 7);
+	} else if (timeframe === "month") {
+		startDate.setDate(endDate.getDate() - 30);
+	}
 
 	useEffect(() => {
 		users.forEach((user) => {
@@ -45,9 +52,8 @@ const UserList = ({ users, createdBy, groupId }) => {
 				})
 			);
 		});
-	}, [dispatch, users, groupId, startDate, endDate]);
+	}, [dispatch, users, groupId, startDate, endDate, timeframe]); // Ajoutez timeframe ici
 
-	// Créer les données pour le graphique
 	const chartData = {
 		labels: users.map((user) => user.username),
 		datasets: [
@@ -55,7 +61,7 @@ const UserList = ({ users, createdBy, groupId }) => {
 				label: "Nombre de tâches",
 				data: users.map((user) => countTaskUsersByUser[user.id] || 0),
 				backgroundColor:
-					"#" + Math.floor(Math.random() * 16777215).toString(16),
+					tagColors[Math.floor(Math.random() * tagColors.length)].color, // Utilisez une couleur aléatoire de tagColors
 			},
 		],
 	};
@@ -67,6 +73,13 @@ const UserList = ({ users, createdBy, groupId }) => {
 		>
 			<div className="componentHeader">
 				<p>Liste des utilisateurs :</p>
+				<select
+					onChange={(e) => setTimeframe(e.target.value)}
+					value={timeframe}
+				>
+					<option value="week">7 derniers jours</option>
+					<option value="month">30 derniers jours</option>
+				</select>
 			</div>
 
 			<div style={{ width: "100%", height: "100%" }}>

@@ -12,7 +12,10 @@ import {
 	faPeopleGroup,
 	faPersonCirclePlus,
 	faPenToSquare,
+	faCrown, // Importez l'icône de la couronne
 } from "@fortawesome/free-solid-svg-icons";
+
+import "../../styles/Dashboard.scss";
 
 const GroupList = ({ handleCreateClick, handleJoinClick, handleListClick }) => {
 	const dispatch = useDispatch();
@@ -42,26 +45,19 @@ const GroupList = ({ handleCreateClick, handleJoinClick, handleListClick }) => {
 				</div>
 			</div>
 			<div className="bodyContainer">
-				{memberGroups.length > 0 && (
-					<>
-						<h2>Groupes auxquels j'appartiens</h2>
-						{memberGroups.map((group) => (
-							<div key={group.id}>
-								<Link to={`/group/${group.id}`}>{group.name}</Link>
-							</div>
-						))}
-					</>
-				)}
-				{createdGroups.length > 0 && (
-					<>
-						<h2>Groupes que j'ai créés</h2>
-						{createdGroups.map((group) => (
-							<div key={group.id}>
-								<Link to={`/group/${group.id}`}>{group.name}</Link>
-							</div>
-						))}
-					</>
-				)}
+				{memberGroups.length > 0 &&
+					memberGroups.map((group) => (
+						<div key={group.id} className="commentTileContainer">
+							<Link to={`/group/${group.id}`}>{group.name}</Link>
+						</div>
+					))}
+				{createdGroups.length > 0 &&
+					createdGroups.map((group) => (
+						<div key={group.id} className="commentTileContainer">
+							<Link to={`/group/${group.id}`}>{group.name}</Link>
+							<FontAwesomeIcon icon={faCrown} />{" "}
+						</div>
+					))}
 			</div>
 		</div>
 	);

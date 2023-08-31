@@ -6,6 +6,7 @@ import GroupTaskForm from "../components/group/GroupTaskForm";
 import GroupTaskList from "../components/group/GroupTaskList";
 import GroupTaskUserList from "../components/group/GroupTaskUserList";
 import GroupTagForm from "../components/tag/GroupTagForm";
+import "../styles/Dashboard.scss";
 
 const GroupPage = () => {
 	const { id } = useParams();
@@ -21,13 +22,26 @@ const GroupPage = () => {
 
 	return (
 		<div className="dashboardPage">
-			<h1>{group.name}</h1>
-			<p>Code d'entrée : {group.entryCode}</p>
-			<UserList users={group.users} createdBy={group.createdBy} groupId={id} />
-			<GroupTaskForm groupId={id} />
-			<GroupTagForm groupId={id} />
-			<GroupTaskList groupId={id} />
-			<GroupTaskUserList groupId={id} />
+			<div className="columnComponent">
+				<h1>{group.name}</h1>
+				<p>Code d'entrée : {group.entryCode}</p>
+			</div>
+
+			<div className="columnComponent">
+				<GroupTaskList groupId={id} />
+			</div>
+
+			<div className="columnComponent">
+				<GroupTaskUserList groupId={id} />
+				<UserList
+					users={group.users}
+					createdBy={group.createdBy}
+					groupId={id}
+				/>
+			</div>
+
+			{/* <GroupTaskForm groupId={id} />
+			<GroupTagForm groupId={id} /> */}
 		</div>
 	);
 };
