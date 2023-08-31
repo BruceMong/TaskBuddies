@@ -171,6 +171,33 @@ export class TaskUserService {
       .getMany();
   }
 
+  async fetchCountTaskUsersByGroupAndUserOnDateRange(
+    groupId: number,
+    userId: number,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
+    // Définir les heures pour les dates de début et de fin
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    // Requête pour obtenir le nombre de tâches de l'utilisateur dans un groupe spécifique entre les dates spécifiées
+    return this.taskUserRepository
+      .createQueryBuilder('taskUser')
+      .innerJoin('taskUser.user', 'user')
+      .innerJoin('taskUser.task', 'task')
+      .where('user.id = :userId', { userId }) // Utilisez l'ID de l'utilisateur
+      .andWhere('task.group.id = :groupId', { groupId }) // Utilisez l'ID du groupe
+      .andWhere('taskUser.doneAt >= :start AND taskUser.doneAt <= :end', {
+        start,
+        end,
+      })
+      .getCount();
+  }
+
   async fetchTasksByUserAndDateRange(
     @User() user: UserEntity,
     startDate: Date,

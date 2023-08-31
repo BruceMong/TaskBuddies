@@ -107,12 +107,15 @@ const DayDoughnut = () => {
 
 	// Rendu du composant Doughnut avec les options et les données définies
 	return (
-		<div className="componentContainer">
+		<div className="componentContainer" id="dayDoughtNutComponent">
 			<div className="componentHeader">
 				<p>Diagramme de tâches du jour 🍩</p>
 			</div>
 			<div className="bodyContainer">
-				<Doughnut data={chartData} />
+				<Doughnut
+					data={chartData}
+					options={{ responsive: true, maintainAspectRatio: false }}
+				/>
 			</div>
 		</div>
 	);

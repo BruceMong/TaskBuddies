@@ -70,6 +70,24 @@ export const fetchTaskUsersInGroupByDateRange = createAsyncThunk(
 	}
 );
 
+export const fetchCountTaskUsersByGroupAndUserOnDateRange = createAsyncThunk(
+	"taskUser/fetchCountTaskUsersByGroupAndUserOnDateRange",
+	async ({ groupId, userId, startDate, endDate }, { rejectWithValue }) => {
+		try {
+			const count =
+				await taskService.fetchCountTaskUsersByGroupAndUserOnDateRange(
+					groupId,
+					userId,
+					startDate.toISOString(),
+					endDate.toISOString()
+				);
+			return count;
+		} catch (err) {
+			return rejectWithValue(err.message);
+		}
+	}
+);
+
 const taskUserSlice = createSlice({
 	name: "taskUser",
 	initialState: {
@@ -77,6 +95,7 @@ const taskUserSlice = createSlice({
 		groupTaskUsers: {},
 		taskUsersDateRange: {},
 		TaskUsersInGroupByDateRange: {},
+		countTaskUsersByUser: {},
 		status: "idle",
 		error: null,
 	},
@@ -128,7 +147,28 @@ const taskUserSlice = createSlice({
 			.addCase(fetchTaskUsersInGroupByDateRange.rejected, (state, action) => {
 				state.status = "idle";
 				state.error = action.error.message;
-			});
+			})
+
+			.addCase(
+				fetchCountTaskUsersByGroupAndUserOnDateRange.pending,
+				(state) => {
+					state.status = "loading";
+				}
+			)
+			.addCase(
+				fetchCountTaskUsersByGroupAndUserOnDateRange.fulfilled,
+				(state, action) => {
+					state.status = "idle";
+					state.countTaskUsersByUser[action.meta.arg.userId] = action.payload;
+				}
+			)
+			.addCase(
+				fetchCountTaskUsersByGroupAndUserOnDateRange.rejected,
+				(state, action) => {
+					state.status = "idle";
+					state.error = action.error.message;
+				}
+			);
 	},
 });
 

@@ -38,11 +38,10 @@ const DashboardPage = () => {
 	};
 	return (
 		<div className="dashboardPage">
-			<TaskList />
-
-			<div className="columnComponent">
-				<DayDoughnut />
-
+			<div className="columnComponent" id="firstColumn">
+				<TaskList />
+			</div>
+			<div className="columnComponent" id="secondColumn">
 				{showJoinForm && (
 					<GroupJoin
 						handleCreateClick={handleCreateClick}
@@ -64,22 +63,13 @@ const DashboardPage = () => {
 						handleListClick={handleListClick}
 					/>
 				)}
+				<DayDoughnut />
 			</div>
 
-			<div className="columnComponent">
-				<StatLine />
+			<div className="columnComponent" id="thirdColumn">
 				<CommentsCenter />
-			</div>
-			<div className="columnComponent">
 				<StatLine />
-				<CommentsCenter />
-				{/* <FetchTaskUsersLastWeek /> */}
-				{/* <FetchTaskUsersLastWeek /> */}
 			</div>
-
-			{/* <FetchTaskUsersLastWeek /> */}
-			{/* <GroupForm /> */}
-			{/* <GroupJoin /> */}
 		</div>
 	);
 };

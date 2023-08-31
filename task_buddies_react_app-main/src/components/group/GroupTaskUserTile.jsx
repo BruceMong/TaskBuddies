@@ -25,7 +25,11 @@ const GroupTaskUserTile = ({ taskUser }) => {
 					<small style={{ color: taskUser.tags.color }}>
 						{taskUser.title}{" "}
 					</small>
-					à {doneAt.getHours()}:{doneAt.getMinutes()}
+					à{" "}
+					{doneAt.toLocaleTimeString("fr-FR", {
+						hour: "2-digit",
+						minute: "2-digit",
+					})}
 				</p>
 			</div>
 			<button onClick={handleCommentButtonClick}>Commenter</button>

@@ -44,6 +44,7 @@ const GroupTaskUserList = ({ groupId }) => {
 								comment={comment}
 								taskTitle={taskUser.title}
 								tagColor={taskUser.tags.color}
+								taskDoneAt={taskUser.doneAt}
 							/>
 						))}
 					</div>

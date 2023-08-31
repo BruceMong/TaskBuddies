@@ -23,7 +23,7 @@ const GroupPage = () => {
 		<div className="dashboardPage">
 			<h1>{group.name}</h1>
 			<p>Code d'entrée : {group.entryCode}</p>
-			<UserList users={group.users} createdBy={group.createdBy} />
+			<UserList users={group.users} createdBy={group.createdBy} groupId={id} />
 			<GroupTaskForm groupId={id} />
 			<GroupTagForm groupId={id} />
 			<GroupTaskList groupId={id} />

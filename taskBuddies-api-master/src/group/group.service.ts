@@ -144,15 +144,19 @@ export class GroupService {
         .innerJoin('group.users', 'user', 'user.id = :userId', {
           userId: user.id,
         })
+        .leftJoinAndSelect('group.tags', 'tags')
         .getMany();
 
       if (!groups) {
-        throw new Error('No groups found for the provided user.');
+        throw new Error("Aucun groupe trouvé pour l'utilisateur fourni.");
       }
 
       return groups;
     } catch (error) {
-      console.error('Error finding groups by user:', error);
+      console.error(
+        'Erreur lors de la recherche des groupes par utilisateur:',
+        error,
+      );
       throw error;
     }
   }
@@ -163,6 +167,8 @@ export class GroupService {
         where: { createdBy: { id: user.id } },
         relations: ['users'],
       });
+
+      console.log('Groups found by creator user:', groups);
 
       if (!groups) {
         throw new Error('No groups found for the provided user.');

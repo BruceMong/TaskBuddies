@@ -84,6 +84,7 @@ const StatLine = () => {
 			label: tag,
 			data: data,
 			fill: false,
+			resoponsive: true,
 			borderColor:
 				tagColors[tag] ||
 				"#" + Math.floor(Math.random() * 16777215).toString(16), // Utiliser la couleur du tag ou une couleur aléatoire si la couleur du tag n'est pas définie
@@ -93,15 +94,23 @@ const StatLine = () => {
 	};
 
 	return (
-		<div className="componentContainer">
+		<div className="componentContainer" id="statLineComponent">
 			<div className="componentHeader">
 				<p>Statistiques des tâches 📈</p>
+				<select
+					onChange={(e) => setTimeframe(e.target.value)}
+					value={timeframe}
+				>
+					<option value="week">7 derniers jours</option>
+					<option value="month">30 derniers jours</option>
+				</select>
 			</div>
-			<select onChange={(e) => setTimeframe(e.target.value)} value={timeframe}>
-				<option value="week">7 derniers jours</option>
-				<option value="month">30 derniers jours</option>
-			</select>
-			<Line data={chartData} />
+			<div className="bodyContainer">
+				<Line
+					data={chartData}
+					options={{ responsive: true, maintainAspectRatio: false }}
+				/>
+			</div>
 		</div>
 	);
 };

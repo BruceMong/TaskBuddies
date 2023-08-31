@@ -106,6 +106,21 @@ export class TaskUserController {
     );
   }
 
+  @Get('count/:groupId/:userId/date-range/:startDate/:endDate')
+  async fetchCountTaskUsersByUserOnDateRange(
+    @Param('groupId') groupId: number,
+    @Param('userId') userId: number,
+    @Param('startDate') startDate: string,
+    @Param('endDate') endDate: string,
+  ): Promise<number> {
+    return this.taskUserService.fetchCountTaskUsersByGroupAndUserOnDateRange(
+      groupId,
+      userId,
+      new Date(startDate),
+      new Date(endDate),
+    );
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('user/date/:onDate')
   async fetchTasksByUserAndDate(

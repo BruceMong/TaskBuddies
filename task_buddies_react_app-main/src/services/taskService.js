@@ -338,6 +338,7 @@ export const taskService = {
 					title: taskUser.task.title,
 					tags: taskUser.task.tags[0],
 					doneAt: taskUser.doneAt,
+					group: taskUser.task.group,
 				}));
 			} else {
 				throw new Error("Failed to load tasks");
@@ -374,6 +375,35 @@ export const taskService = {
 			}
 		} catch (error) {
 			throw new Error("Échec du chargement des tâches");
+		}
+	},
+	async fetchCountTaskUsersByGroupAndUserOnDateRange(
+		groupId,
+		userId,
+		startDate,
+		endDate
+	) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(
+				`${API_BASE_URL}/task-user/count/${groupId}/${userId}/date-range/${startDate}/${endDate}`,
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			if (response.ok) {
+				const count = await response.json();
+				return count;
+			} else {
+				throw new Error("Failed to fetch count of TaskUsers");
+			}
+		} catch (error) {
+			throw new Error("Failed to fetch count of TaskUsers");
 		}
 	},
 };

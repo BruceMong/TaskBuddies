@@ -47,7 +47,7 @@ const CommentsCenter = () => {
 			<div className="componentHeader">
 				<p>Commentaires des 7 derniers jours 💬</p>
 			</div>
-			<div className="componentBody">
+			<div className="bodyContainer">
 				{TaskUsersInGroupByDateRange &&
 					Object.values(TaskUsersInGroupByDateRange).map((taskUser) => (
 						<div key={taskUser.id}>
@@ -58,6 +58,7 @@ const CommentsCenter = () => {
 										comment={comment}
 										taskTitle={taskUser.title}
 										tagColor={taskUser.tags.color}
+										taskDoneAt={taskUser.doneAt}
 									/>
 								))}
 						</div>
