@@ -5,10 +5,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskEntity } from './entities/task.entity';
 import { TagEntity } from 'src/tag/entities/tag.entity';
 import { GroupEntity } from 'src/group/entities/group.entity';
+import { TaskRecurrenceEntity } from 'src/task_recurrence/entities/task_recurrence.entity';
 
 @Module({
   controllers: [TaskController],
   providers: [TaskService],
-  imports: [TypeOrmModule.forFeature([TaskEntity, TagEntity, GroupEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      TaskEntity,
+      TagEntity,
+      GroupEntity,
+      TaskRecurrenceEntity,
+    ]),
+  ],
 })
 export class TaskModule {}

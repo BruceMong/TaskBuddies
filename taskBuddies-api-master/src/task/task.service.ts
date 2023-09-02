@@ -5,6 +5,7 @@ import { TaskEntity } from './entities/task.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { TagEntity } from 'src/tag/entities/tag.entity';
 import { GroupEntity } from 'src/group/entities/group.entity';
+import { TaskRecurrenceEntity } from 'src/task_recurrence/entities/task_recurrence.entity';
 
 @Injectable()
 export class TaskService {
@@ -15,6 +16,8 @@ export class TaskService {
     private tagRepository: Repository<TagEntity>,
     @InjectRepository(GroupEntity)
     private groupRepository: Repository<GroupEntity>,
+    @InjectRepository(TaskRecurrenceEntity)
+    private recurrenceRepository: Repository<TaskRecurrenceEntity>,
   ) {}
 
   private async assignUserToTag(tag: TagEntity, user: UserEntity) {
@@ -77,7 +80,59 @@ export class TaskService {
   }
 
   async update(id: number, updateTaskDto) {
-    return this.taskRepository.update(id, updateTaskDto);
+    console.log('updateTaskDto:', updateTaskDto);
+
+    // Récupérez la tâche à mettre à jour
+    const task = await this.taskRepository.findOne({
+      where: { id: id },
+      relations: ['recurrences'],
+    });
+    console.log('task:', task);
+    if (!task) {
+      throw new Error(`La tâche avec l'id ${id} n'a pas été trouvée`);
+    }
+
+    // Modifiez les propriétés de la tâche
+    Object.assign(task, updateTaskDto);
+
+    // Si updateTaskDto contient des récurrences, mettez à jour les récurrences
+    if (updateTaskDto.recurrences) {
+      // Supprimez toutes les récurrences existantes
+
+      await this.recurrenceRepository.remove(
+        task.recurrences.filter((recurrence) => recurrence.id),
+      );
+
+      // Créez de nouvelles récurrences
+      const newRecurrences = this.recurrenceRepository.create(
+        updateTaskDto.recurrences,
+      );
+      task.recurrences = await this.recurrenceRepository.save(newRecurrences);
+    }
+
+    // Si updateTaskDto contient des tags, mettez à jour les tags
+    if (updateTaskDto.tags) {
+      // Retirez tous les tags existants de la tâche
+      task.tags = [];
+
+      // Ajoutez les nouveaux tags à la tâche
+      const newTags = await this.tagRepository.findByIds(updateTaskDto.tags);
+      task.tags = newTags;
+    }
+
+    // Sauvegardez la tâche
+    const updatedTask = await this.taskRepository.save(task);
+
+    console.log('updatedTask:', updatedTask);
+
+    // Attendez que la mise à jour soit terminée avant d'afficher la tâche mise à jour
+    const taskUpdated = await this.taskRepository.findOne({
+      where: { id: id },
+      relations: ['recurrences'],
+    });
+    console.log('taskUpdateeeeeeed', taskUpdated);
+
+    return updatedTask;
   }
 
   async remove(id: number) {

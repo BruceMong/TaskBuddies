@@ -19,12 +19,44 @@ export const taskService = {
 					id: task.id,
 					title: task.title,
 					tags: task.tags,
+					recurrences: task.recurrences,
 				}));
 			} else {
 				throw new Error("Failed to load tasks");
 			}
 		} catch (error) {
 			throw new Error("Failed to load tasks");
+		}
+	},
+
+	async updateTask(id, title, recurrences, idSelected) {
+		const token = localStorage.getItem("token");
+		const selectedTags = [idSelected];
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/task/${id}`, {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({
+					title,
+					recurrences,
+					tags: selectedTags.map((tagId) => ({ id: tagId })),
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to update task");
+			}
+
+			const data = await response.json();
+			console.log("data", data);
+			return data;
+		} catch (error) {
+			console.error("Error:", error);
+			throw new Error("Failed to update task");
 		}
 	},
 
