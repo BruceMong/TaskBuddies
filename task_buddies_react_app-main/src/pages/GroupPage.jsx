@@ -33,6 +33,9 @@ const GroupPage = () => {
 
 			<div className="columnComponent">
 				<GroupTaskUserList groupId={id} />
+			</div>
+
+			<div className="columnComponent">
 				<UserList
 					users={group.users}
 					createdBy={group.createdBy}

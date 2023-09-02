@@ -47,13 +47,13 @@ const GroupList = ({ handleCreateClick, handleJoinClick, handleListClick }) => {
 			<div className="bodyContainer">
 				{memberGroups.length > 0 &&
 					memberGroups.map((group) => (
-						<div key={group.id} className="commentTileContainer">
+						<div key={group.id} className="tileContainer">
 							<Link to={`/group/${group.id}`}>{group.name}</Link>
 						</div>
 					))}
 				{createdGroups.length > 0 &&
 					createdGroups.map((group) => (
-						<div key={group.id} className="commentTileContainer">
+						<div key={group.id} className="tileContainer">
 							<Link to={`/group/${group.id}`}>{group.name}</Link>
 							<FontAwesomeIcon icon={faCrown} />{" "}
 						</div>

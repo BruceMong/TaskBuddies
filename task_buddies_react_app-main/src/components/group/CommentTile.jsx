@@ -6,17 +6,17 @@ const CommentTile = ({ comment, taskTitle, tagColor, taskDoneAt }) => {
 		<div key={comment.id} className="commentTileContainer">
 			<div className="userCommentText">
 				<p style={{ color: tagColor }}>{comment.author.username}</p>
-				<p> : {comment.content}</p>
+				<small style={{ color: tagColor }}>
+					{taskTitle} -{" "}
+					{new Date(taskDoneAt).toLocaleString("fr-FR", {
+						hour: "2-digit",
+						minute: "2-digit",
+						day: "2-digit",
+						month: "2-digit",
+					})}
+				</small>
 			</div>
-			<small style={{ color: tagColor }}>
-				{taskTitle} -{" "}
-				{new Date(taskDoneAt).toLocaleString("fr-FR", {
-					hour: "2-digit",
-					minute: "2-digit",
-					day: "2-digit",
-					month: "2-digit",
-				})}
-			</small>
+			<p> {comment.content}</p>
 		</div>
 	);
 };

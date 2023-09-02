@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import TagTile from "./TagTile";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTagsByUser } from "../../store/dashboard/tag";
 import { fetchTasks, taskSliceActions } from "../../store/dashboard/task"; // Import fetchTasks action
 
-const TagListForForm = ({ idSelected, setIdSelected }) => {
+const TagListForForm = ({ idSelected, setIdSelected, onAddTag }) => {
 	// Utilisez 'null' au lieu de 'nulls'
 	const dispatch = useDispatch();
 	const { tags, status, error } = useSelector((state) => state.tag);
@@ -27,6 +29,9 @@ const TagListForForm = ({ idSelected, setIdSelected }) => {
 		<div className="tagsContainer">
 			{status === "loading" && <div>Chargement...</div>}
 			{error && <div>Erreur : {error}</div>}
+			<button className="headerBtn" onClick={onAddTag}>
+				<FontAwesomeIcon icon={faPlusCircle} style={{ width: 20 }} />
+			</button>
 			{tags.map((tag) => (
 				<TagTile
 					key={tag.id}

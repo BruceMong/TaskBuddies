@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import CommentForm from "./CommentForm";
 import { fetchCommentsByTaskUser } from "../../store/dashboard/comment";
-import { Color } from "three";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShare } from "@fortawesome/free-solid-svg-icons";
 
 const GroupTaskUserTile = ({ taskUser }) => {
 	const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const GroupTaskUserTile = ({ taskUser }) => {
 
 	return (
 		<div>
-			<div>
+			<div className="tileContainer">
 				<p>
 					{taskUser.user.username} a réalisé{" "}
 					<small style={{ color: taskUser.tags.color }}>
@@ -31,8 +32,10 @@ const GroupTaskUserTile = ({ taskUser }) => {
 						minute: "2-digit",
 					})}
 				</p>
+				<button className="headerBtn" onClick={handleCommentButtonClick}>
+					<FontAwesomeIcon icon={faShare} />
+				</button>
 			</div>
-			<button onClick={handleCommentButtonClick}>Commenter</button>
 			{showCommentForm && <CommentForm taskUserId={taskUser.id} />}
 		</div>
 	);

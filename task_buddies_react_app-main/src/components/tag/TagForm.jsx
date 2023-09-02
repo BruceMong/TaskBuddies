@@ -8,7 +8,7 @@ import { tagService } from "../../services/tagService";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTagsByUser } from "../../store/dashboard/tag";
 
-const TagForm = () => {
+const TagForm = ({ setShowTagForm }) => {
 	const dispatch = useDispatch();
 
 	const [title, setTitle] = useState("");
@@ -28,17 +28,15 @@ const TagForm = () => {
 			await tagService.addTag(title, icon, hexColor);
 			initForm();
 			dispatch(fetchTagsByUser());
+			setShowTagForm(false);
 		} catch (error) {
 			console.error("Failed to add tag:", error);
 		}
 	};
 
 	return (
-		<div className="componentContainer">
-			<div className="componentHeader">
-				<p>Ajouter un tag 🏷️</p>
-			</div>
-			<form className="bodyContainer" onSubmit={handleFormSubmit}>
+		<>
+			<form onSubmit={handleFormSubmit}>
 				<div className="inputContainer">
 					<label htmlFor="title">Nom du tag</label>
 					<input
@@ -88,7 +86,7 @@ const TagForm = () => {
 					<button type="submit">Ajouter</button>
 				</div>
 			</form>
-		</div>
+		</>
 	);
 };
 

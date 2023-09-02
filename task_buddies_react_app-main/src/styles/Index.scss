@@ -113,9 +113,9 @@ input:focus-visible {
 	display: flex;
 	width: 100vw;
 	height: 90vh;
-	padding: 24px 32px;
+	padding: 12px 16px;
+	justify-content: space-between;
 	box-sizing: border-box;
-	gap: 24px;
 }
 
 .loginPage {
