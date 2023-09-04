@@ -35,6 +35,23 @@ export const fetchTasks = createAsyncThunk(
 	}
 );
 
+export const fetchAllPersonnalTasks = createAsyncThunk(
+	"task/fetchAllPersonnalTasks",
+	async (_, { getState, rejectWithValue }) => {
+		try {
+			const fetchedTasks = await taskService.fetchTasks();
+			return fetchedTasks.map((task) => ({
+				id: task.id,
+				title: task.title,
+				tags: task.tags,
+				recurrences: task.recurrences, // Assurez-vous que les recurrences sont incluses ici
+			}));
+		} catch (err) {
+			return rejectWithValue(err.message);
+		}
+	}
+);
+
 // L'action asynchrone pour récupérer les tâches de groupe.
 export const fetchGroupTasks = createAsyncThunk(
 	"task/fetchGroupTasks",
@@ -82,6 +99,7 @@ const taskSlice = createSlice({
 		tasks: [], // La liste des tâches.
 		groupTasks: {}, // La liste des tâches de groupe.
 		totalTasks: 0, // Le nombre total de tâches.
+		personnalTasks: [],
 		status: "idle", // Le statut de l'état (idle, loading, etc.).
 		error: null, // L'erreur éventuelle lors de la récupération des tâches.
 		selectedDate: new Date().toISOString(), // La date sélectionnée.
@@ -132,6 +150,18 @@ const taskSlice = createSlice({
 			})
 
 			.addCase(fetchGroupTasks.rejected, (state, action) => {
+				state.status = "idle";
+				state.error = action.error.message;
+			})
+
+			.addCase(fetchAllPersonnalTasks.pending, (state) => {
+				state.status = "loading";
+			})
+			.addCase(fetchAllPersonnalTasks.fulfilled, (state, action) => {
+				state.status = "idle";
+				state.personnalTasks = action.payload;
+			})
+			.addCase(fetchAllPersonnalTasks.rejected, (state, action) => {
 				state.status = "idle";
 				state.error = action.error.message;
 			});

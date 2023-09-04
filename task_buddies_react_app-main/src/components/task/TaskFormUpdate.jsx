@@ -1,3 +1,4 @@
+// Importation des dépendances nécessaires
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { taskService } from "../../services/taskService";
@@ -5,11 +6,15 @@ import { useDispatch } from "react-redux";
 import { fetchTasks } from "../../store/dashboard/task";
 import TagListForForm from "../tag/TagListForForm";
 
+// Définition du composant TaskFormUpdate
 const TaskFormUpdate = ({ currentTask }) => {
+	// Récupération du token dans le localStorage
 	const token = localStorage.getItem("token");
 
+	// Initialisation de useDispatch pour les actions Redux
 	const dispatch = useDispatch();
 
+	// Définition des jours de la semaine
 	const weekDays = [
 		{ name: "L", value: 1 },
 		{ name: "M", value: 2 },
@@ -20,10 +25,13 @@ const TaskFormUpdate = ({ currentTask }) => {
 		{ name: "D", value: 7 },
 	];
 
+	// Création d'un tableau pour les jours du mois
 	const dayOfMonthOptions = Array.from({ length: 31 }, (_, index) => index + 1);
 
+	// Initialisation des états du composant
 	const [title, setTitle] = useState(currentTask.title);
 
+	// Récupération des jours de récurrence de la tâche actuelle
 	const [selectedWeekDays, setSelectedWeekDays] = useState(
 		currentTask.recurrences.map((recurrence) => recurrence.day_of_week)
 	);
@@ -33,17 +41,20 @@ const TaskFormUpdate = ({ currentTask }) => {
 	const [selectedInterval, setSelectedInterval] = useState(
 		currentTask.selectedInterval
 	);
+	// Conversion de la date de début en objet Date si elle existe
 	const [startDate, setStartDate] = useState(
 		currentTask.startDate ? new Date(currentTask.startDate) : null
 	);
 	console.log("Initial startDate:", startDate);
 
+	// Conversion de la date de fin en objet Date si elle existe
 	const [endDate, setEndDate] = useState(
 		currentTask.endDate ? new Date(currentTask.endDate) : null
 	);
 	console.log("Initial endDate:", endDate);
 	const [idSelected, setIdSelected] = useState(currentTask.idSelected);
 
+	// Fonction pour déterminer le type de récurrence de la tâche
 	const determineRecurrenceType = (task) => {
 		if (task.recurrences && task.recurrences[0]) {
 			const recurrence = task.recurrences[0];
@@ -61,10 +72,12 @@ const TaskFormUpdate = ({ currentTask }) => {
 		}
 	};
 
+	// Initialisation de l'état du type de récurrence
 	const [recurrenceType, setRecurrenceType] = useState(
 		determineRecurrenceType(currentTask)
 	);
 
+	// Fonction pour initialiser le formulaire
 	const initForm = () => {
 		setTitle(currentTask.title);
 		setRecurrenceType(determineRecurrenceType(currentTask));
@@ -105,10 +118,12 @@ const TaskFormUpdate = ({ currentTask }) => {
 		setIdSelected(currentTask.tags[0].id);
 	};
 
+	// Utilisation de useEffect pour initialiser le formulaire à chaque changement de tâche
 	useEffect(() => {
 		initForm();
 	}, [currentTask]);
 
+	// Fonction pour gérer la soumission du formulaire
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
 
@@ -116,13 +131,16 @@ const TaskFormUpdate = ({ currentTask }) => {
 			const recurrences = generateRecurrenceData();
 			console.log("Recurrencesdqzdqzdqzd:", recurrences); // Ajoutez cette ligne
 
+			// Appel du service pour mettre à jour la tâche
 			await taskService.updateTask(
 				currentTask.id,
 				title,
 				recurrences,
 				idSelected
 			);
+			// Mise à jour des tâches dans le store Redux
 			dispatch(fetchTasks());
+			// Réinitialisation du formulaire
 			initForm();
 			console.log("currentTask:", currentTask);
 		} catch (error) {
@@ -130,6 +148,7 @@ const TaskFormUpdate = ({ currentTask }) => {
 		}
 	};
 
+	// Fonction pour gérer le changement de jour de la semaine
 	const handleWeekDayToggle = (day) => {
 		const updatedWeekDays = [...selectedWeekDays];
 		const index = updatedWeekDays.indexOf(day);
@@ -143,6 +162,7 @@ const TaskFormUpdate = ({ currentTask }) => {
 		setSelectedWeekDays(updatedWeekDays);
 	};
 
+	// Fonction pour gérer le changement de jour du mois
 	const handleDayOfMonthToggle = (day) => {
 		const updatedDaysOfMonth = [...selectedDayOfMonth];
 		const index = updatedDaysOfMonth.indexOf(day);
@@ -156,6 +176,7 @@ const TaskFormUpdate = ({ currentTask }) => {
 		setSelectedDayOfMonth(updatedDaysOfMonth);
 	};
 
+	// Fonction pour générer les données de récurrence
 	const generateRecurrenceData = () => {
 		const recurrences = [];
 
@@ -207,6 +228,7 @@ const TaskFormUpdate = ({ currentTask }) => {
 	console.log(determineRecurrenceType(currentTask));
 	console.log("selectedWeekDays:", selectedWeekDays);
 
+	// Rendu du composant
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
@@ -312,4 +334,5 @@ const TaskFormUpdate = ({ currentTask }) => {
 	);
 };
 
+// Exportation du composant
 export default TaskFormUpdate;

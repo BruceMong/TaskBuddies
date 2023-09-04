@@ -29,6 +29,23 @@ export const taskService = {
 		}
 	},
 
+	async removeTask(id) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/task/${id}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+		} catch (error) {
+			console.error("Error:", error);
+			throw new Error("Failed to delete task");
+		}
+	},
+
 	async updateTask(id, title, recurrences, idSelected) {
 		const token = localStorage.getItem("token");
 		const selectedTags = [idSelected];
@@ -118,6 +135,7 @@ export const taskService = {
 			throw new Error("Failed to add task");
 		}
 	},
+
 	async addTaskUser(taskId) {
 		const token = localStorage.getItem("token");
 

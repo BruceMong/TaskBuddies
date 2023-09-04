@@ -43,7 +43,7 @@ export class TaskEntity extends Timestamp {
   tags: TagEntity[];
 
   @OneToMany(() => TaskUserEntity, (taskUser) => taskUser.task, {
-    cascade: true,
+    cascade: ['insert', 'update'],
   })
   taskUsers: TaskUserEntity[];
 }
