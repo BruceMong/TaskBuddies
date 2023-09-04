@@ -33,7 +33,9 @@ const TaskTileUpdate = ({ task, setTaskUpdated }) => {
 
 	return (
 		<div className={`taskTileContainer `}>
-			<p style={{ color: tags[0].color }}>{title}</p>
+			<p style={{ color: tags && tags[0] ? tags[0].color : "default" }}>
+				{title}
+			</p>
 
 			<div className="groupIcons">
 				<FontAwesomeIcon icon={faPen} onClick={handleValidate} />

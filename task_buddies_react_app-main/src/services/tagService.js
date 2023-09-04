@@ -30,6 +30,22 @@ export const tagService = {
 		}
 	},
 
+	async deleteTag(tagId) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/tag/${tagId}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+		} catch (error) {
+			throw new Error("Failed to delete tag");
+		}
+	},
+
 	async fetchTagsByUser() {
 		const token = localStorage.getItem("token");
 

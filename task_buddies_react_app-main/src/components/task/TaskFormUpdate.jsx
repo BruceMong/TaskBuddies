@@ -115,7 +115,11 @@ const TaskFormUpdate = ({ currentTask }) => {
 				? new Date(currentTask.recurrences[0].end_date)
 				: null
 		);
-		setIdSelected(currentTask.tags[0].id);
+		setIdSelected(
+			currentTask.tags && currentTask.tags[0]
+				? currentTask.tags[0].id
+				: "default"
+		);
 	};
 
 	// Utilisation de useEffect pour initialiser le formulaire à chaque changement de tâche
