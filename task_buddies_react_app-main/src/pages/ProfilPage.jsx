@@ -6,13 +6,14 @@ import TagListUpdate from "../components/tag/TagListUpdate";
 
 const ProfilPage = () => {
 	const [taskUpdated, setTaskUpdated] = useState(null);
+	const [tagUpdated, setTagUpdated] = useState(null);
 	console.log(taskUpdated);
 
 	return (
 		<div className="dashboardPage">
 			<div className="columnComponent">
 				<TaskListUpdate setTaskUpdated={setTaskUpdated} />
-				<TagListUpdate />
+				<TagListUpdate setTagUpdated={setTagUpdated} />
 			</div>
 			<div className="columnComponent"></div>
 			{taskUpdated && <TaskFormUpdate currentTask={taskUpdated} />}

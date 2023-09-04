@@ -4,8 +4,12 @@ import { tagIcons } from "../../utils/tagData";
 
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { tagService } from "../../services/tagService";
+import { useDispatch } from "react-redux";
+import { fetchTagsByUser } from "../../store/dashboard/tag";
 
 const TagTileUpdate = ({ tag, setTagUpdated }) => {
+	const dispatch = useDispatch();
+
 	const handleClick = () => {
 		setTagUpdated(tag);
 	};
@@ -27,7 +31,6 @@ const TagTileUpdate = ({ tag, setTagUpdated }) => {
 				color: tag.color,
 				border: "1px solid #e0e0e0",
 			}}
-			onClick={handleClick}
 		>
 			<div className="tagIcon">
 				<FontAwesomeIcon
