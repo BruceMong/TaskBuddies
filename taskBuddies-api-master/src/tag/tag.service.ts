@@ -54,7 +54,9 @@ export class TagService {
 
   async update(id: number, updateTagDto: UpdateTagDto) {
     try {
+      console.log('updateTagDto', updateTagDto);
       const tag = await this.tagRepository.update(id, updateTagDto);
+      console.log('tag', tag);
       return tag;
     } catch (error) {
       throw new Error('Error updating tag');

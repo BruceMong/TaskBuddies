@@ -42,7 +42,7 @@ const TagTileUpdate = ({ tag, setTagUpdated }) => {
 				<p>{tag.title}</p>
 			</div>
 			<div className="groupIcons">
-				<FontAwesomeIcon icon={faPen} />
+				<FontAwesomeIcon icon={faPen} onClick={handleClick} />
 				<FontAwesomeIcon icon={faTrashAlt} onClick={handleDelete} />
 			</div>
 		</div>

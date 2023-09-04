@@ -46,6 +46,28 @@ export const tagService = {
 		}
 	},
 
+	async updateTag(tagId, title, icon, color) {
+		const token = localStorage.getItem("token");
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/tag/${tagId}`, {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({
+					title,
+					icon,
+					color,
+				}),
+			});
+			return response;
+		} catch (error) {
+			throw new Error("Failed to update tag");
+		}
+	},
+
 	async fetchTagsByUser() {
 		const token = localStorage.getItem("token");
 
