@@ -14,6 +14,8 @@ const TagForm = ({ setShowTagForm }) => {
 	const [title, setTitle] = useState("");
 	const [icon, setIcon] = useState("");
 	const [hexColor, setHexColor] = useState("#F1F1F4");
+	const [errorText, setErrorText] = useState("");
+
 
 	const initForm = () => {
 		setTitle("");
@@ -23,6 +25,23 @@ const TagForm = ({ setShowTagForm }) => {
 
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
+
+		setErrorText("");
+
+		if (icon == "") {
+			setErrorText("Veuillez choisir une icone.");
+			return;
+		}
+		
+		if (!title) {
+			setErrorText("Le champ 'Nom de la tâche' est obligatoire.");
+			return;
+		}
+	
+		if (!hexColor || hexColor == "#F1F1F4") {
+			setErrorText("Veuillez choisir une couleur.");
+			return;
+		}
 
 		try {
 			await tagService.addTag(title, icon, hexColor);
@@ -83,6 +102,8 @@ const TagForm = ({ setShowTagForm }) => {
 					</div>
 				</div>
 				<div className="inputContainer">
+				{errorText && <div className="errorText">{errorText}</div>}
+
 					<button type="submit">Ajouter</button>
 				</div>
 			</form>

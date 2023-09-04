@@ -36,7 +36,6 @@ const GroupTagForm = ({ groupId }) => {
 	
 		if (!hexColor) {
 			setErrorText("Veuillez choisir une couleur.");
-
 			return;
 		}
 
