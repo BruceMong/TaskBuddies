@@ -3,19 +3,25 @@ import GroupTaskTile from "./GroupTaskTile";
 import GroupTagList from "../tag/GroupTagList";
 import GroupTaskForm from "./GroupTaskForm"; // Importez GroupTaskForm
 
+import jwt_decode from "jwt-decode";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupTasks, taskSliceActions } from "../../store/dashboard/task";
 
-const GroupTaskList = ({ groupId }) => {
+const GroupTaskList = ({ authorId, groupId }) => {
 	const dispatch = useDispatch();
 	const { groupTasks, status, error } = useSelector((state) => state.task);
 	const selectedDateStr = useSelector((state) => state.task.selectedDate);
 	const selectedDate = new Date(selectedDateStr);
 	const selectedTags = useSelector((state) => state.task.selectedTags);
-	// GroupTaskList.jsx
+
+	const token = localStorage.getItem("token"); // Remplacez 'token' par la clé que vous utilisez pour stocker le token
+	const decodedToken = jwt_decode(token);
+	const currentUserId = decodedToken.id; // Remplacez 'userId' par la clé que vous utilisez pour stocker l'ID de l'utilisateur dans le token
+
 	useEffect(() => {
 		dispatch(fetchGroupTasks([groupId]));
 	}, [dispatch, selectedTags, groupId, selectedDateStr]);
@@ -56,9 +62,11 @@ const GroupTaskList = ({ groupId }) => {
 		<div className="componentContainer">
 			<div className="componentHeader">
 				<p>Tâches de groupe à réaliser 💪</p>
-				<button className="headerBtn" onClick={handleButtonClick}>
-					<FontAwesomeIcon icon={faPlusCircle} />
-				</button>
+				{currentUserId === authorId && (
+					<button className="headerBtn" onClick={handleButtonClick}>
+						<FontAwesomeIcon icon={faPlusCircle} />
+					</button>
+				)}
 			</div>
 			<GroupTagList groupId={groupId} />
 			<div className="bodyContainer">

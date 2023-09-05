@@ -23,16 +23,19 @@ const GroupPage = () => {
 		return <div>Chargement...</div>;
 	}
 
+	console.log(group);
+
 	return (
 		<div className="dashboardPage">
 			<div className="columnComponent">
 				<h1>{group.name}</h1>
+
 				<p>Code d'entrée : {group.entryCode}</p>
 				<UserRankingList users={group.users} groupId={id} />
 			</div>
 
 			<div className="columnComponent">
-				<GroupTaskList groupId={id} />
+				<GroupTaskList authorId={group.createdBy.id} groupId={id} />
 			</div>
 
 			<div className="columnComponent" id="">
