@@ -11,6 +11,8 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from 'src/config/decorators/user.decorator';
+import { UserEntity } from './entities/user.entity';
 
 @Controller('users')
 export class UserController {
@@ -31,12 +33,13 @@ export class UserController {
     return this.userService.findById(id);
   }
 
-  @Patch(':id')
+  @Patch()
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @User() user: UserEntity,
     @Body() updateUserDto: UpdateUserDto,
+    @Body('currentPassword') currentPassword: string,
   ) {
-    return this.userService.update(id, updateUserDto);
+    return this.userService.update(user.id, updateUserDto, currentPassword);
   }
 
   @Delete(':id')

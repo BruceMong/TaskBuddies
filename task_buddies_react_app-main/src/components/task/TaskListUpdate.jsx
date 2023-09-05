@@ -21,14 +21,15 @@ const TaskListUpdate = ({ setTaskUpdated }) => {
 			<div className="componentHeader">
 				<p>Liste des tâches :</p>
 			</div>
-
-			{tasks.map((task) => (
-				<TaskTileUpdate
-					key={task.id}
-					task={task}
-					setTaskUpdated={setTaskUpdated}
-				/>
-			))}
+			<div className="bodyContainer">
+				{tasks.map((task) => (
+					<TaskTileUpdate
+						key={task.id}
+						task={task}
+						setTaskUpdated={setTaskUpdated}
+					/>
+				))}
+			</div>
 		</div>
 	);
 };

@@ -73,9 +73,25 @@ export class UserService {
     }
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    currentPassword: string,
+  ): Promise<UserEntity> {
     const user = await this.findById(id);
     const { username, email, password } = updateUserDto;
+
+    // Vérifiez si le mot de passe actuel est correct
+    const isPasswordMatching = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    );
+    if (!isPasswordMatching) {
+      throw new HttpException(
+        'Current password is incorrect',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     if (username) {
       const existingUser = await this.userRepository.findOne({

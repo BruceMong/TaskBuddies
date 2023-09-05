@@ -218,11 +218,9 @@
 	border-radius: 34px;
 	gap: 12px;
 }
-
 #monthDayList {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
 	gap: 12px;
 	padding: 24px;
 }
@@ -303,20 +301,24 @@
 	justify-content: space-between;
 	align-items: center;
 	gap: 8px;
-	padding: 24px;
+	padding: 12px;
 	box-sizing: border-box;
 	background-color: $grayDarkColor;
 	border-radius: 34px;
+	width: fit-content;
 }
 
 .colorContainer {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: space-between;
 	align-items: center;
-	padding: 24px;
+	gap: 8px;
+	padding: 16px;
 	box-sizing: border-box;
 	background-color: $grayDarkColor;
 	border-radius: 34px;
+	width: fit-content;
 }
 
 .colorContainer::after {
@@ -373,4 +375,46 @@
 .tagListUpdateContainer {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.tagListUpdateContainer > .tagTileContainer {
+	margin: 12px 6px 0px 0px;
+}
+
+.formComment {
+	display: flex;
+	align-items: center;
+	height: 36px;
+	width: 100%;
+}
+
+.btnComment {
+	background-color: transparent;
+	border: solid 1px $grayColor;
+	cursor: pointer;
+	padding: 0px 12px 0px 6px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 0.5s;
+	height: 100%;
+	border-radius: 0px 34px 34px 0px;
+	border-left: none;
+}
+
+.inputComment {
+	background-color: $grayDarkColor;
+	border-radius: 34px 0px 0px 34px;
+	border: solid 1px $grayColor;
+	padding: 0px 18px;
+	margin: 5px 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	transition: all 0.2s ease-in-out;
+	box-sizing: border-box;
+	height: 36px;
+	border-right: none;
 }

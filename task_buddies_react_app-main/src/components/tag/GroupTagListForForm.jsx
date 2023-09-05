@@ -5,7 +5,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupTags } from "../../store/dashboard/tag"; // Import fetchGroupTags action
 import { fetchGroupTasks, taskSliceActions } from "../../store/dashboard/task"; // Import fetchGroupTasks action
 
-const GroupTagListForForm = ({ groupId, idSelected, setIdSelected }) => {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+
+const GroupTagListForForm = ({
+	groupId,
+	idSelected,
+	setIdSelected,
+	onAddTag,
+}) => {
 	const dispatch = useDispatch();
 	const { groupTags, status, error } = useSelector((state) => state.tag);
 	const selectedTags = useSelector((state) => state.task.selectedTags);
@@ -16,6 +24,9 @@ const GroupTagListForForm = ({ groupId, idSelected, setIdSelected }) => {
 		<div className="tagsContainer">
 			{status === "loading" && <div>Chargement...</div>}
 			{error && <div>Erreur : {error}</div>}
+			<button className="headerBtn" onClick={onAddTag}>
+				<FontAwesomeIcon icon={faPlusCircle} style={{ width: 20 }} />
+			</button>
 			{groupTags[groupId]?.map((tag) => (
 				<TagTile
 					key={tag.id}

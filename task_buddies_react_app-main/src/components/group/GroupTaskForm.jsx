@@ -5,11 +5,14 @@ import { taskService } from "../../services/taskService";
 import TagList from "../tag/TagList";
 import { fetchGroupTasks } from "../../store/dashboard/task";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleMinus } from "@fortawesome/free-solid-svg-icons";
+
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, taskSliceActions } from "../../store/dashboard/task";
 import GroupTagListForForm from "../tag/GroupTagListForForm";
 
-const GroupTaskForm = ({ groupId }) => {
+const GroupTaskForm = ({ groupId, handleBackClick }) => {
 	const token = localStorage.getItem("token");
 
 	const dispatch = useDispatch();
@@ -47,6 +50,8 @@ const GroupTaskForm = ({ groupId }) => {
 			);
 			dispatch(fetchGroupTasks([groupId]));
 			initForm();
+			// Fermez le formulaire
+			handleBackClick();
 		} catch (error) {
 			console.error("Failed to add group task:", error);
 		}
@@ -138,10 +143,15 @@ const GroupTaskForm = ({ groupId }) => {
 
 	const dayOfMonthOptions = Array.from({ length: 31 }, (_, index) => index + 1);
 
+	console.log("groupId", groupId);
+
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
 				<p>Ajouter une tâche 💡</p>
+				<button onClick={handleBackClick} className="closeHeaderBtn">
+					<FontAwesomeIcon icon={faCircleMinus} />
+				</button>
 			</div>
 			<GroupTagListForForm
 				groupId={[groupId]}

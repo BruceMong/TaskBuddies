@@ -31,6 +31,7 @@ export class TaskRecurrenceService {
 
   async remove(id: number) {
     const recurrenceToRemove = await this.findOne(id);
+    console.log('recurrenceToRemove:', recurrenceToRemove);
     return this.taskRecurrenceRepository.remove(recurrenceToRemove);
   }
 }

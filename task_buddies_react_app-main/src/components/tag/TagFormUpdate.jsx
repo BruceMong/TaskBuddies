@@ -31,43 +31,61 @@ const TagFormUpdate = ({ currentTag }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<label htmlFor="title">Titre</label>
-			<input
-				type="text"
-				id="title"
-				value={title}
-				onChange={(event) => setTitle(event.target.value)}
-			/>
-			<label htmlFor="icon">Icône</label>
-			<div className="iconContainer">
-				{Object.keys(tagIcons).map((key) => (
-					<button
-						type="button"
-						className={`tagIcon ${icon === key ? "active" : ""}`}
-						key={key}
-						onClick={() => setIcon(key)}
-					>
-						<FontAwesomeIcon icon={tagIcons[key]} style={{ color: color }} />
-					</button>
-				))}
+		<div className="componentContainer">
+			<div className="componentHeader">
+				<p>Modifier un tag</p>
 			</div>
-			<label htmlFor="color">Couleur</label>
-			<div className="colorContainer">
-				{tagColors.map((colorOption) => (
-					<button
-						type="button"
-						className={`tagColor ${
-							color === colorOption.color ? "active" : ""
-						}`}
-						key={colorOption.name}
-						onClick={() => setColor(colorOption.color)}
-						style={{ backgroundColor: colorOption.color }}
-					></button>
-				))}
+			<div className="bodyContainer">
+				<form onSubmit={handleSubmit}>
+					<div className="inputContainer">
+						<label htmlFor="title">Titre</label>
+						<input
+							type="text"
+							id="title"
+							value={title}
+							onChange={(event) => setTitle(event.target.value)}
+						/>
+					</div>
+					<div className="inputContainer">
+						<label htmlFor="icon">Icône</label>
+						<div className="iconContainer">
+							{Object.keys(tagIcons).map((key) => (
+								<button
+									type="button"
+									className={`tagIcon ${icon === key ? "active" : ""}`}
+									key={key}
+									onClick={() => setIcon(key)}
+								>
+									<FontAwesomeIcon
+										icon={tagIcons[key]}
+										style={{ color: color }}
+									/>
+								</button>
+							))}
+						</div>
+					</div>
+					<div className="inputContainer">
+						<label htmlFor="color">Couleur</label>
+						<div className="colorContainer">
+							{tagColors.map((colorOption) => (
+								<button
+									type="button"
+									className={`tagColor ${
+										color === colorOption.color ? "active" : ""
+									}`}
+									key={colorOption.name}
+									onClick={() => setColor(colorOption.color)}
+									style={{ backgroundColor: colorOption.color }}
+								></button>
+							))}
+						</div>
+					</div>
+					<div className="inputContainer">
+						<button type="submit">Mettre à jour</button>
+					</div>
+				</form>
 			</div>
-			<button type="submit">Mettre à jour</button>
-		</form>
+		</div>
 	);
 };
 

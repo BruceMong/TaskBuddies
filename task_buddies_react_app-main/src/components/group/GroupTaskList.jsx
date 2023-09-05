@@ -1,6 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GroupTaskTile from "./GroupTaskTile";
 import GroupTagList from "../tag/GroupTagList";
+import GroupTaskForm from "./GroupTaskForm"; // Importez GroupTaskForm
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupTasks, taskSliceActions } from "../../store/dashboard/task";
@@ -33,10 +37,28 @@ const GroupTaskList = ({ groupId }) => {
 		dispatch(taskSliceActions.setSelectedTags(newSelectedTags));
 	};
 
+	const [showForm, setShowForm] = useState(false); // Ajoutez cet état
+
+	const handleButtonClick = () => {
+		setShowForm(true);
+	};
+
+	const handleBackClick = () => {
+		setShowForm(false);
+	};
+	if (showForm) {
+		return (
+			<GroupTaskForm groupId={groupId} handleBackClick={handleBackClick} />
+		);
+	}
+
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
 				<p>Tâches de groupe à réaliser 💪</p>
+				<button className="headerBtn" onClick={handleButtonClick}>
+					<FontAwesomeIcon icon={faPlusCircle} />
+				</button>
 			</div>
 			<GroupTagList groupId={groupId} />
 			<div className="bodyContainer">

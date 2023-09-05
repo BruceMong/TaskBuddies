@@ -80,28 +80,20 @@ export class TaskService {
   }
 
   async update(id: number, updateTaskDto) {
-    console.log('updateTaskDto:', updateTaskDto);
-
     // Récupérez la tâche à mettre à jour
     const task = await this.taskRepository.findOne({
       where: { id: id },
       relations: ['recurrences'],
     });
-    console.log('task:', task);
+
     if (!task) {
       throw new Error(`La tâche avec l'id ${id} n'a pas été trouvée`);
     }
 
-    // Modifiez les propriétés de la tâche
-    Object.assign(task, updateTaskDto);
-
     // Si updateTaskDto contient des récurrences, mettez à jour les récurrences
     if (updateTaskDto.recurrences) {
       // Supprimez toutes les récurrences existantes
-
-      await this.recurrenceRepository.remove(
-        task.recurrences.filter((recurrence) => recurrence.id),
-      );
+      await this.recurrenceRepository.remove(task.recurrences);
 
       // Créez de nouvelles récurrences
       const newRecurrences = this.recurrenceRepository.create(

@@ -30,7 +30,6 @@ const FormTask = ({ handleBackClick }) => {
 
 	const [errorText, setErrorText] = useState("");
 
-
 	const initForm = () => {
 		setTitle("");
 		setRecurrenceType("Unique");
@@ -44,53 +43,53 @@ const FormTask = ({ handleBackClick }) => {
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
 
-
-
 		try {
-		// Réinitialisez le texte d'erreur
-		setErrorText("");
+			// Réinitialisez le texte d'erreur
+			setErrorText("");
 
-		// Vérifiez si les champs obligatoires sont remplis
-		if (!idSelected) {
-			setErrorText("Veuillez choisir un tag.");
-			return;
-		}
-	
-		if (!title) {
-			setErrorText("Le champ 'Nom de la tâche' est obligatoire.");
-			return;
-		}
-	
-		if (recurrenceType === "Semaine" && selectedWeekDays.length === 0) {
-			setErrorText("Veuillez sélectionner au moins un jour de la semaine.");
-			return;
-		}
-	
-		if (recurrenceType === "Mois" && selectedDayOfMonth.length === 0) {
-			setErrorText("Veuillez sélectionner au moins un jour du mois.");
-			return;
-		}
-	
-		if (recurrenceType === "Intervalle" && !selectedInterval) {
-			setErrorText("Veuillez sélectionner un intervalle.");
-			return;
-		}
-	
-		if (!startDate) {
-			setErrorText("Veuillez sélectionner une date de début.");
-			return;
-		}
-	
-		if (recurrenceType !== "Unique" && !endDate) {
-			setErrorText("Veuillez sélectionner une date de fin.");
-			return;
-		}
+			// Vérifiez si les champs obligatoires sont remplis
+			if (!idSelected) {
+				setErrorText("Veuillez choisir un tag.");
+				return;
+			}
+
+			if (!title) {
+				setErrorText("Le champ 'Nom de la tâche' est obligatoire.");
+				return;
+			}
+
+			if (recurrenceType === "Semaine" && selectedWeekDays.length === 0) {
+				setErrorText("Veuillez sélectionner au moins un jour de la semaine.");
+				return;
+			}
+
+			if (recurrenceType === "Mois" && selectedDayOfMonth.length === 0) {
+				setErrorText("Veuillez sélectionner au moins un jour du mois.");
+				return;
+			}
+
+			if (recurrenceType === "Intervalle" && !selectedInterval) {
+				setErrorText("Veuillez sélectionner un intervalle.");
+				return;
+			}
+
+			if (!startDate) {
+				setErrorText("Veuillez sélectionner une date de début.");
+				return;
+			}
+
+			if (recurrenceType !== "Unique" && !endDate) {
+				setErrorText("Veuillez sélectionner une date de fin.");
+				return;
+			}
 
 			const recurrences = generateRecurrenceData();
 
 			await taskService.addTask(title, recurrences, idSelected);
 			dispatch(fetchTasks());
 			initForm();
+
+			// Fermez le formulaire
 			handleBackClick();
 		} catch (error) {
 			console.error("Failed to add task:", error);
