@@ -418,3 +418,25 @@
 	height: 36px;
 	border-right: none;
 }
+
+.redBtn {
+	color: $whiteColor;
+	text-decoration: none;
+	cursor: pointer;
+
+	border: solid 1px $redColor;
+	background: none;
+
+	width: fit-content;
+}
+
+.redBtn:hover {
+	color: $redColor;
+	border: solid 1px $redColor;
+}
+
+.btnGroup {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}

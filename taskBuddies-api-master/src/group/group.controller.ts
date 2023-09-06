@@ -50,12 +50,17 @@ export class GroupController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.groupService.remove(+id);
+  remove(@Param('id') id: string, @User() user: UserEntity) {
+    return this.groupService.remove(+id, user);
   }
 
   @Post('join/:entryCode')
   joinGroup(@Param('entryCode') entryCode: string, @User() user: UserEntity) {
     return this.groupService.joinGroup(entryCode, user);
+  }
+
+  @Post('leave/:id')
+  leaveGroup(@Param('id') id: string, @User() user: UserEntity) {
+    return this.groupService.leaveGroup(+id, user);
   }
 }

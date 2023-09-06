@@ -22,8 +22,6 @@ const GroupTagListForForm = ({
 
 	return (
 		<div className="tagsContainer">
-			{status === "loading" && <div>Chargement...</div>}
-			{error && <div>Erreur : {error}</div>}
 			<button className="headerBtn" onClick={onAddTag}>
 				<FontAwesomeIcon icon={faPlusCircle} style={{ width: 20 }} />
 			</button>

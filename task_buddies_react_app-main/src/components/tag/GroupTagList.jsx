@@ -29,8 +29,6 @@ const GroupTagList = ({ groupId }) => {
 
 	return (
 		<div className="tagsContainer">
-			{status === "loading" && <div>Chargement...</div>}
-			{error && <div>Erreur : {error}</div>}
 			{groupTags[groupId]?.map((tag) => (
 				<TagTile
 					key={tag.id}

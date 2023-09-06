@@ -68,6 +68,11 @@ export class TaskController {
     return this.taskService.createWithGroup(task, user, groupId);
   }
 
+  @Get('group/:groupId')
+  findAllTasksByGroup(@Param('groupId') groupId: number) {
+    return this.taskService.findAllTasksByGroup(groupId);
+  }
+
   @Get('group/:groupId/date/:date')
   getOnDateWithGroup(
     @Param('groupId') groupId: number,

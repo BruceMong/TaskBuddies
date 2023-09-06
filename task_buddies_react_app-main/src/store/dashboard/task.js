@@ -86,6 +86,26 @@ export const fetchGroupTasks = createAsyncThunk(
 	}
 );
 
+// L'action asynchrone pour récupérer toutes les tâches par groupe.
+export const fetchAllTasksByGroup = createAsyncThunk(
+	"task/fetchAllTasksByGroup",
+	async (groupId, { rejectWithValue }) => {
+		try {
+			// Tentative de récupération des tâches à partir de l'API.
+			const fetchedTasks = await taskService.findAllTasksByGroup(groupId);
+			return fetchedTasks.map((task) => ({
+				id: task.id,
+				title: task.title,
+				tags: task.tags,
+				recurrences: task.recurrences, // Assurez-vous que les recurrences sont incluses ici
+			}));
+		} catch (err) {
+			// En cas d'erreur, rejet de la valeur avec le message d'erreur.
+			return rejectWithValue(err.message);
+		}
+	}
+);
+
 // Fonction helper pour calculer le nombre total de tâches et de tâches de groupe
 const calculateTotalTasks = (state) => {
 	return state.tasks.length + Object.values(state.groupTasks).flat().length;
@@ -100,6 +120,7 @@ const taskSlice = createSlice({
 		groupTasks: {}, // La liste des tâches de groupe.
 		totalTasks: 0, // Le nombre total de tâches.
 		personnalTasks: [],
+		allGroupTasks: [],
 		status: "idle", // Le statut de l'état (idle, loading, etc.).
 		error: null, // L'erreur éventuelle lors de la récupération des tâches.
 		selectedDate: new Date().toISOString(), // La date sélectionnée.
@@ -162,6 +183,17 @@ const taskSlice = createSlice({
 				state.personnalTasks = action.payload;
 			})
 			.addCase(fetchAllPersonnalTasks.rejected, (state, action) => {
+				state.status = "idle";
+				state.error = action.error.message;
+			})
+			.addCase(fetchAllTasksByGroup.pending, (state) => {
+				state.status = "loading";
+			})
+			.addCase(fetchAllTasksByGroup.fulfilled, (state, action) => {
+				state.status = "idle";
+				state.allGroupTasks = action.payload;
+			})
+			.addCase(fetchAllTasksByGroup.rejected, (state, action) => {
 				state.status = "idle";
 				state.error = action.error.message;
 			});

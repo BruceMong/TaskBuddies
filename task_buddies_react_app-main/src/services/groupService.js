@@ -230,4 +230,52 @@ export const groupService = {
 			throw error;
 		}
 	},
+	async leaveGroup(groupId) {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/group/leave/${groupId}`, {
+				method: "POST",
+				headers: config.headers,
+			});
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error("Erreur lors de la tentative de quitter le groupe");
+			}
+		} catch (error) {
+			console.error(
+				"Erreur lors de la tentative de quitter le groupe :",
+				error
+			);
+			throw error;
+		}
+	},
+
+	async deleteGroup(groupId) {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/group/${groupId}`, {
+				method: "DELETE",
+				headers: config.headers,
+			});
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error("Erreur lors de la suppression du groupe");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la suppression du groupe :", error);
+			throw error;
+		}
+	},
 };

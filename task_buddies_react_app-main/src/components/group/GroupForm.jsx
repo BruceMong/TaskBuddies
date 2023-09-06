@@ -59,8 +59,6 @@ const GroupForm = ({ handleCreateClick, handleJoinClick, handleListClick }) => {
 					</button>
 				</div>
 			</form>
-			{status === "loading" && <p>Chargement...</p>}
-			{error && <p>Erreur : {error}</p>}
 		</div>
 	);
 };

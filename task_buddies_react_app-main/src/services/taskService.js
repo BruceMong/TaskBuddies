@@ -456,4 +456,34 @@ export const taskService = {
 			throw new Error("Failed to fetch count of TaskUsers");
 		}
 	},
+
+	// Dans votre fichier taskService.js
+	findAllTasksByGroup(groupId) {
+		const token = localStorage.getItem("token");
+
+		return fetch(`${API_BASE_URL}/task/group/${groupId}`, {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		})
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error("Failed to load tasks");
+				}
+			})
+			.then((tasks) => {
+				return tasks.map((task) => ({
+					id: task.id,
+					title: task.title,
+					tags: task.tags,
+					recurrences: task.recurrences,
+				}));
+			})
+			.catch((error) => {
+				throw new Error("Failed to load tasks");
+			});
+	},
 };

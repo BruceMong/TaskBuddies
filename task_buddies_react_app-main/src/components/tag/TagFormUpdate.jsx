@@ -1,12 +1,12 @@
 // TagFormUpdate.jsx
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fetchTagsByUser } from "../../store/dashboard/tag";
+import { fetchTagsByUser, fetchGroupTags } from "../../store/dashboard/tag";
 import { tagService } from "../../services/tagService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { tagColors, tagIcons } from "../../utils/tagData";
 
-const TagFormUpdate = ({ currentTag }) => {
+const TagFormUpdate = ({ currentTag, groupId, setCurrentTag }) => {
 	const dispatch = useDispatch();
 	const [title, setTitle] = useState(currentTag.title);
 	const [color, setColor] = useState(currentTag.color);
@@ -25,6 +25,8 @@ const TagFormUpdate = ({ currentTag }) => {
 		try {
 			await tagService.updateTag(currentTag.id, title, icon, color);
 			dispatch(fetchTagsByUser());
+			dispatch(fetchGroupTags([groupId]));
+			setCurrentTag(null);
 		} catch (error) {
 			console.error(error);
 		}

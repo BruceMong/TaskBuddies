@@ -45,8 +45,6 @@ const TagList = ({ handleAction }) => {
 
 	return (
 		<div className="tagsContainer">
-			{status === "loading" && <div>Chargement...</div>}
-			{error && <div>Erreur : {error}</div>}
 			{allTags.map((tag) => (
 				<TagTile
 					key={tag.id}

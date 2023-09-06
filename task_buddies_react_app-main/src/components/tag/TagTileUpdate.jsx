@@ -5,7 +5,7 @@ import { tagIcons } from "../../utils/tagData";
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { tagService } from "../../services/tagService";
 import { useDispatch } from "react-redux";
-import { fetchTagsByUser } from "../../store/dashboard/tag";
+import { fetchTagsByUser, fetchGroupTags } from "../../store/dashboard/tag";
 
 const TagTileUpdate = ({ tag, setTagUpdated }) => {
 	const dispatch = useDispatch();
@@ -18,6 +18,7 @@ const TagTileUpdate = ({ tag, setTagUpdated }) => {
 		try {
 			await tagService.deleteTag(tag.id);
 			dispatch(fetchTagsByUser());
+			dispatch(fetchGroupTags([groupId]));
 			console.log("delete");
 		} catch (error) {
 			console.error(error);

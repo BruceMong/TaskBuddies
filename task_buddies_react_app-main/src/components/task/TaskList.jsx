@@ -87,9 +87,6 @@ const TaskList = () => {
 			</div>
 			<TagList handleAction={handleTagClickFilter} />
 			<div className="bodyContainer">
-				{status === "loading"}
-				{error && <div>Erreur : {error}</div>}
-
 				{tasks.map((task) => (
 					<TaskTile key={task.id} task={task} selectedDate={selectedDate} />
 				))}

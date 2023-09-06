@@ -213,6 +213,13 @@ export class TaskService {
     return this.taskRepository.save(newTask);
   }
 
+  async findAllTasksByGroup(groupId: number) {
+    return this.taskRepository.find({
+      where: { group: { id: groupId } },
+      relations: ['recurrences', 'author', 'taskUsers', 'tags', 'group'],
+    });
+  }
+
   async getTasksOnDateWithGroup(
     groupId: number,
     date: Date = new Date(),

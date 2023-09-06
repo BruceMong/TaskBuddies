@@ -10,6 +10,7 @@ import "../styles/Dashboard.scss";
 import GroupTagList from "../components/tag/GroupTagList";
 import GroupTagListForForm from "../components/tag/GroupTagListForForm";
 import UserRankingList from "../components/group/UserRankingList";
+import GroupInfos from "../components/group/GroupInfos";
 
 const GroupPage = () => {
 	const { id } = useParams();
@@ -28,9 +29,7 @@ const GroupPage = () => {
 	return (
 		<div className="dashboardPage">
 			<div className="columnComponent">
-				<h1>{group.name}</h1>
-
-				<p>Code d'entrée : {group.entryCode}</p>
+				<GroupInfos group={group} />
 				<UserRankingList users={group.users} groupId={id} />
 			</div>
 

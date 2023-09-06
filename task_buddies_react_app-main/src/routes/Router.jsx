@@ -5,6 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
 import ProfilPage from "../pages/ProfilPage";
 import GroupPage from "../pages/GroupPage";
+import GroupSettingsPage from "../pages/GroupSettingsPage";
 
 const Routers = () => {
 	return (
@@ -14,6 +15,7 @@ const Routers = () => {
 			<Route path="/dashboard" element={<DashboardPage />} />
 			<Route path="/profil" element={<ProfilPage />} />
 			<Route path="/group/:id" element={<GroupPage />} />
+			<Route path="/group/:id/settings" element={<GroupSettingsPage />} />
 		</Routes>
 	);
 };

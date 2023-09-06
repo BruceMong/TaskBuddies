@@ -92,16 +92,24 @@ export class GroupService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: number, user: UserEntity) {
     try {
-      const group = await this.groupRepository.findBy({ id });
+      const group = await this.groupRepository.findOne({
+        where: { id },
+        relations: ['createdBy'],
+      });
       if (!group) {
-        throw new Error(`Group with id ${id} not found.`);
+        throw new Error(`Groupe avec l'id ${id} non trouvé.`);
       }
-      await this.groupRepository.remove(group);
-      return `Group with id ${id} successfully removed.`;
+      if (group.createdBy.id !== user.id) {
+        throw new Error(
+          "Vous n'êtes pas le créateur du groupe, vous ne pouvez pas le supprimer.",
+        );
+      }
+      await this.groupRepository.softDelete(id);
+      return `Groupe avec l'id ${id} supprimé avec succès.`;
     } catch (error) {
-      console.error('Error removing group:', error);
+      console.error('Erreur lors de la suppression du groupe:', error);
       throw error;
     }
   }
@@ -133,6 +141,37 @@ export class GroupService {
       return updatedGroup;
     } catch (error) {
       console.error('Error joining group:', error);
+      throw error;
+    }
+  }
+
+  async leaveGroup(groupId: number, user: UserEntity) {
+    try {
+      // Trouver le groupe avec l'ID donné
+      const group = await this.groupRepository.findOne({
+        where: { id: groupId },
+        relations: ['users'],
+      });
+
+      if (!group) {
+        throw new Error("Groupe non trouvé avec l'ID fourni.");
+      }
+
+      // Vérifier si l'utilisateur fait partie du groupe
+      const userIndex = group.users.findIndex((u) => u.id === user.id);
+      if (userIndex === -1) {
+        throw new Error("L'utilisateur n'est pas membre du groupe.");
+      }
+
+      // Supprimer l'utilisateur de la liste des utilisateurs du groupe
+      group.users.splice(userIndex, 1);
+
+      // Enregistrer le groupe mis à jour
+      const updatedGroup = await this.groupRepository.save(group);
+
+      return updatedGroup;
+    } catch (error) {
+      console.error('Erreur lors de la sortie du groupe:', error);
       throw error;
     }
   }

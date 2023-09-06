@@ -3,11 +3,13 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { taskService } from "../../services/taskService";
 import { useDispatch } from "react-redux";
-import { fetchAllPersonnalTasks, fetchTasks } from "../../store/dashboard/task";
+import { fetchAllTasksByGroup } from "../../store/dashboard/task";
+
 import TagListForForm from "../tag/TagListForForm";
+import GroupTagListForForm from "../tag/GroupTagListForForm";
 
 // Définition du composant TaskFormUpdate
-const TaskFormUpdate = ({ currentTask }) => {
+const TaskFormUpdate = ({ currentTask, groupId, setCurrentTask }) => {
 	// Récupération du token dans le localStorage
 	const token = localStorage.getItem("token");
 
@@ -143,9 +145,9 @@ const TaskFormUpdate = ({ currentTask }) => {
 				idSelected
 			);
 			// Mise à jour des tâches dans le store Redux
-			dispatch(fetchAllPersonnalTasks());
+			dispatch(fetchAllTasksByGroup(groupId));
 			// Réinitialisation du formulaire
-			initForm();
+			setCurrentTask(null);
 			console.log("currentTask:", currentTask);
 		} catch (error) {
 			console.error("Failed to update task:", error);
@@ -238,7 +240,13 @@ const TaskFormUpdate = ({ currentTask }) => {
 			<div className="componentHeader">
 				<p>Modifier une tâche 💡</p>
 			</div>
-			<TagListForForm idSelected={idSelected} setIdSelected={setIdSelected} />
+			<GroupTagListForForm
+				groupId={groupId}
+				idSelected={idSelected}
+				setIdSelected={setIdSelected}
+			/>
+			{console.log("idSelected:", idSelected)}
+			{console.log("groupId:", groupId)}
 			<form className="bodyContainer" onSubmit={handleFormSubmit}>
 				<div className="inputContainer">
 					<label htmlFor="title">Nom de la tâche</label>

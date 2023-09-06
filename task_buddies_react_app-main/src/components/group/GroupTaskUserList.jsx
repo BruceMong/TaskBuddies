@@ -33,8 +33,6 @@ const GroupTaskUserList = ({ groupId }) => {
 				<p>Utilisateurs de tâches de groupe 💪</p>
 			</div>
 			<div className="bodyContainer">
-				{status === "loading" && <div>Chargement...</div>}
-				{error && <div>Erreur : {error}</div>}
 				{groupTaskUsers[groupId]?.map((taskUser) => (
 					<div key={taskUser.id}>
 						<GroupTaskUserTile taskUser={taskUser} />
