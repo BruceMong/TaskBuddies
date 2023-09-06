@@ -6,6 +6,8 @@ import TaskFormUpdate from "../components/task/TaskFormUpdate";
 import TagFormUpdate from "../components/tag/TagFormUpdate";
 import GroupTaskFormUpdate from "../components/group/GroupTaskFormUpdate";
 import GroupTagListUpdate from "../components/group/GroupTagListUpdate";
+import GroupUpdateForm from "../components/group/GroupUpdateForm";
+import GroupUserListUpdate from "../components/group/GroupUserListUpdate";
 
 const GroupSettingsPage = () => {
 	const [taskUpdated, setTaskUpdated] = useState(null);
@@ -20,7 +22,10 @@ const GroupSettingsPage = () => {
 
 	return (
 		<div className="dashboardPage">
-			<div className="columnComponent"></div>
+			<div className="columnComponent">
+				<GroupUpdateForm />
+				<GroupUserListUpdate />
+			</div>
 			<div className="columnComponent">
 				<GroupTaskListUpdate
 					setTaskUpdated={setTaskUpdated}

@@ -63,4 +63,13 @@ export class GroupController {
   leaveGroup(@Param('id') id: string, @User() user: UserEntity) {
     return this.groupService.leaveGroup(+id, user);
   }
+
+  @Delete(':groupId/user/:userId')
+  async removeUserFromGroup(
+    @Param('groupId') groupId: string,
+    @Param('userId') userId: string,
+    @User() user: UserEntity,
+  ) {
+    return this.groupService.removeUserFromGroup(+groupId, +userId, user);
+  }
 }

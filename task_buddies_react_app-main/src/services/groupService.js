@@ -278,4 +278,65 @@ export const groupService = {
 			throw error;
 		}
 	},
+
+	async updateGroup(groupId, groupName) {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+		};
+
+		const bodyParameters = {
+			name: groupName,
+		};
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/group/${groupId}`, {
+				method: "PATCH",
+				headers: config.headers,
+				body: JSON.stringify(bodyParameters),
+			});
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error("Erreur lors de la mise à jour du groupe");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la mise à jour du groupe :", error);
+			throw error;
+		}
+	},
+	async removeUserFromGroup(groupId, userId) {
+		const token = localStorage.getItem("token");
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+
+		try {
+			const response = await fetch(
+				`${API_BASE_URL}/group/${groupId}/user/${userId}`,
+				{
+					method: "DELETE",
+					headers: config.headers,
+				}
+			);
+
+			if (response.ok) {
+				return await response.json();
+			} else {
+				throw new Error(
+					"Erreur lors de la tentative de retirer l'utilisateur du groupe"
+				);
+			}
+		} catch (error) {
+			console.error(
+				"Erreur lors de la tentative de retirer l'utilisateur du groupe :",
+				error
+			);
+			throw error;
+		}
+	},
 };

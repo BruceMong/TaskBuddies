@@ -77,15 +77,16 @@ export class GroupService {
     return group;
   }
 
-  async update(id: number, updateGroupDto: UpdateGroupDto) {
+  async update(id, updateGroupDto: UpdateGroupDto) {
     try {
-      const group = await this.groupRepository.findBy({ id });
+      const group = await this.groupRepository.findOne({ where: { id: id } });
       if (!group) {
         throw new Error(`Group with id ${id} not found.`);
       }
-      const updatedGroup = Object.assign(group, updateGroupDto);
-      await this.groupRepository.save(updatedGroup);
-      return updatedGroup;
+      group.name = updateGroupDto.name;
+      await this.groupRepository.save(group);
+      console.log('Group updated successfully:', group);
+      return group;
     } catch (error) {
       console.error('Error updating group:', error);
       throw error;
@@ -216,6 +217,50 @@ export class GroupService {
       return groups;
     } catch (error) {
       console.error('Error finding groups by user:', error);
+      throw error;
+    }
+  }
+  async removeUserFromGroup(
+    groupId: number,
+    userId: number,
+    creator: UserEntity,
+  ) {
+    try {
+      // Trouver le groupe avec l'ID donné
+      const group = await this.groupRepository.findOne({
+        where: { id: groupId },
+        relations: ['users', 'createdBy'],
+      });
+
+      if (!group) {
+        throw new Error(`Groupe avec l'id ${groupId} non trouvé.`);
+      }
+
+      // Vérifier si l'utilisateur est le créateur du groupe
+      if (group.createdBy.id !== creator.id) {
+        throw new Error(
+          "Vous n'êtes pas le créateur du groupe, vous ne pouvez pas retirer des utilisateurs.",
+        );
+      }
+
+      // Vérifier si l'utilisateur à retirer fait partie du groupe
+      const userIndex = group.users.findIndex((u) => u.id === userId);
+      if (userIndex === -1) {
+        throw new Error("L'utilisateur à retirer n'est pas membre du groupe.");
+      }
+
+      // Retirer l'utilisateur de la liste des utilisateurs du groupe
+      group.users.splice(userIndex, 1);
+
+      // Enregistrer le groupe mis à jour
+      const updatedGroup = await this.groupRepository.save(group);
+
+      return updatedGroup;
+    } catch (error) {
+      console.error(
+        "Erreur lors du retrait de l'utilisateur du groupe:",
+        error,
+      );
       throw error;
     }
   }
