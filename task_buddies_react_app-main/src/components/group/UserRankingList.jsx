@@ -7,21 +7,29 @@ import { faMedal } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCountTaskUsersByGroupAndUserOnDateRange } from "../../store/dashboard/taskUser";
 
+// Le composant UserRankingList prend en entrée une liste d'utilisateurs et un identifiant de groupe
 const UserRankingList = ({ users, groupId }) => {
+	// Le cadre temporel est initialisé à "semaine"
 	const [timeframe, setTimeframe] = useState("week");
 	const dispatch = useDispatch();
+	// countTaskUsersByUser est un objet qui stocke le nombre de tâches par utilisateur
 	const countTaskUsersByUser = useSelector(
 		(state) => state.taskUser.countTaskUsersByUser
 	);
 
+	// Les dates de début et de fin sont initialisées à la date actuelle
 	const endDate = new Date();
 	const startDate = new Date();
+	// Si le cadre temporel est "semaine", la date de début est définie à 7 jours avant la date de fin
 	if (timeframe === "week") {
 		startDate.setDate(endDate.getDate() - 7);
+		// Si le cadre temporel est "mois", la date de début est définie à 30 jours avant la date de fin
 	} else if (timeframe === "month") {
 		startDate.setDate(endDate.getDate() - 30);
 	}
 
+	// À chaque fois que le cadre temporel, les utilisateurs, l'identifiant du groupe, la date de début ou la date de fin changent,
+	// une action est dispatchée pour chaque utilisateur afin de récupérer le nombre de tâches pour cet utilisateur dans le groupe et la plage de dates spécifiés
 	useEffect(() => {
 		users.forEach((user) => {
 			dispatch(
@@ -35,12 +43,14 @@ const UserRankingList = ({ users, groupId }) => {
 		});
 	}, [dispatch, users, groupId, startDate, endDate, timeframe]);
 
+	// Les utilisateurs sont triés en fonction du nombre de tâches (stocké dans countTaskUsersByUser)
 	const sortedUsers = [...users].sort((a, b) => {
 		const countA = countTaskUsersByUser[a.id] || 0;
 		const countB = countTaskUsersByUser[b.id] || 0;
 		return countB - countA;
 	});
 
+	// Le composant retourne une liste d'utilisateurs triés avec le nombre de tâches pour chaque utilisateur
 	return (
 		<div
 			className="componentContainer"
