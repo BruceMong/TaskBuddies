@@ -21,18 +21,17 @@ export const authService = {
 	// src/services/authService.js
 
 	async login({ email, password }) {
-		try {
-			const response = await fetch(`${API_URL}/auth/signin`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email, password }),
-			});
-
-			return response.json();
-		} catch (error) {
-			console.error("Error during login:", error);
-			throw error;
+		const response = await fetch(`${API_URL}/auth/signin`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ email, password }),
+		});
+		if (!response.ok) {
+			throw new Error(
+				"Il semblerait que votre email ou votre mot de passe soit incorrect."
+			);
 		}
+		return response.json();
 	},
 
 	logout() {

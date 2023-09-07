@@ -47,6 +47,11 @@ input {
 	justify-content: space-between;
 }
 
+.errorMsg {
+	color: $redColor;
+	font-size: 12px;
+}
+
 // Responsive
 
 @media screen and (max-width: 768px) {

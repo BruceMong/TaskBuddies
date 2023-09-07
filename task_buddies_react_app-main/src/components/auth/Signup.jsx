@@ -23,7 +23,9 @@ const Signup = ({ toggleShowSignup }) => {
 				console.error("Error during signup:", error);
 			}
 		} else {
-			setPasswordError("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.");
+			setPasswordError(
+				"Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre."
+			);
 		}
 	};
 
@@ -55,7 +57,7 @@ const Signup = ({ toggleShowSignup }) => {
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
-				{passwordError && <p className="passwordError">{passwordError}</p>}
+				{passwordError && <p className="errorMsg">{passwordError}</p>}
 				<div className="authBtnContainer">
 					<button onClick={toggleShowSignup} className="secondaryBtn">
 						Déjà un compte ? Connectez-vous
