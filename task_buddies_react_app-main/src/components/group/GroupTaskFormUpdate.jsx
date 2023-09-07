@@ -256,7 +256,6 @@ const TaskFormUpdate = ({ currentTask, groupId, setCurrentTask }) => {
 						value={title}
 						onChange={(event) => setTitle(event.target.value)}
 						placeholder="Titre de la tâche"
-						required
 					/>
 				</div>
 				<div className="inputContainer">
