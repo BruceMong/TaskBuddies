@@ -32,14 +32,9 @@ const UserList = ({ users, createdBy, groupId }) => {
 		(state) => state.taskUser.countTaskUsersByUser
 	);
 
-	// Définir les dates sur les 7 derniers jours ou les 30 derniers jours en fonction de timeframe
 	const endDate = new Date();
 	const startDate = new Date();
-	if (timeframe === "week") {
-		startDate.setDate(endDate.getDate() - 7);
-	} else if (timeframe === "month") {
-		startDate.setDate(endDate.getDate() - 30);
-	}
+	startDate.setDate(endDate.getDate() - 7);
 
 	useEffect(() => {
 		users.forEach((user) => {
@@ -73,13 +68,6 @@ const UserList = ({ users, createdBy, groupId }) => {
 		>
 			<div className="componentHeader">
 				<p>Liste des utilisateurs :</p>
-				<select
-					onChange={(e) => setTimeframe(e.target.value)}
-					value={timeframe}
-				>
-					<option value="week">7 derniers jours</option>
-					<option value="month">30 derniers jours</option>
-				</select>
 			</div>
 
 			<div style={{ width: "100%", height: "100%" }}>
