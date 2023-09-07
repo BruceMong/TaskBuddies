@@ -7,10 +7,13 @@ import { tagIcons } from "../../utils/tagData";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupTasks } from "../../store/dashboard/task";
-import { fetchGroupTaskUsers } from "../../store/dashboard/taskUser";
+import {
+	fetchGroupTaskUsers,
+	fetchTaskUsersDateRange,
+} from "../../store/dashboard/taskUser";
 import { fetchTaskUsers } from "../../store/dashboard/taskUser";
 
-const GroupTaskTile = ({ task, selectedDate, groupId }) => {
+const GroupTaskTile = ({ task, selectedDate, groupId, startDate, endDate }) => {
 	const isTodaySelected = isToday(selectedDate);
 	const { id, title, validated, tags } = task;
 	const tagColor = tags && tags.length > 0 ? tags[0].color : "defaultColor";
@@ -25,6 +28,7 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 					dispatch(fetchGroupTasks([groupId]));
 					dispatch(fetchTaskUsers());
 					dispatch(fetchGroupTaskUsers([groupId]));
+					dispatch(fetchTaskUsersDateRange({ startDate, endDate }));
 				})
 				.catch((error) => {
 					console.error("Failed to remove task user:", error);
@@ -36,6 +40,7 @@ const GroupTaskTile = ({ task, selectedDate, groupId }) => {
 					dispatch(fetchGroupTasks([groupId]));
 					dispatch(fetchTaskUsers());
 					dispatch(fetchGroupTaskUsers([groupId]));
+					dispatch(fetchTaskUsersDateRange({ startDate, endDate }));
 				})
 				.catch((error) => {
 					console.error("Failed to add task user:", error);

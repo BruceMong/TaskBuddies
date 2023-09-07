@@ -19,6 +19,9 @@ const DashboardPage = () => {
 	const [showJoinForm, setShowJoinForm] = useState(false);
 	const [showCreateForm, setShowCreateForm] = useState(false);
 
+	const [startDate, setStartDate] = useState(new Date());
+	const [endDate, setEndDate] = useState(new Date());
+
 	const handleListClick = () => {
 		setShowList(true);
 		setShowJoinForm(false);
@@ -39,7 +42,7 @@ const DashboardPage = () => {
 	return (
 		<div className="dashboardPage">
 			<div className="columnComponent" id="firstColumn">
-				<TaskList />
+				<TaskList startDate={startDate} endDate={endDate} />
 			</div>
 			<div className="columnComponent" id="secondColumn">
 				{showJoinForm && (
@@ -68,7 +71,7 @@ const DashboardPage = () => {
 
 			<div className="columnComponent" id="thirdColumn">
 				<CommentsCenter />
-				<StatLine />
+				<StatLine setStartDate={setStartDate} setEndDate={setEndDate} />
 			</div>
 		</div>
 	);

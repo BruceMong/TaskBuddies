@@ -15,7 +15,7 @@ import TaskForm from "../task/TaskForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
-const TaskList = () => {
+const TaskList = ({ startDate, endDate }) => {
 	//const [tasks, setTasks] = useState([]);
 
 	const dispatch = useDispatch();
@@ -88,7 +88,13 @@ const TaskList = () => {
 			<TagList handleAction={handleTagClickFilter} />
 			<div className="bodyContainer">
 				{tasks.map((task) => (
-					<TaskTile key={task.id} task={task} selectedDate={selectedDate} />
+					<TaskTile
+						key={task.id}
+						task={task}
+						selectedDate={selectedDate}
+						startDate={startDate}
+						endDate={endDate}
+					/>
 				))}
 				{userGroups.map(
 					(group) =>
@@ -101,6 +107,8 @@ const TaskList = () => {
 										task={task}
 										selectedDate={selectedDate}
 										groupId={group.id}
+										startDate={startDate}
+										endDate={endDate}
 									/>
 								))}
 							</div>

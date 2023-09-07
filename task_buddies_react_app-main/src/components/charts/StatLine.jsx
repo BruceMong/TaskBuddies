@@ -24,7 +24,7 @@ ChartJS.register(
 	LineElement
 );
 
-const StatLine = () => {
+const StatLine = ({ setStartDate, setEndDate }) => {
 	const [timeframe, setTimeframe] = useState("week"); // 'week' ou 'month'
 	const dispatch = useDispatch();
 	const taskUsersData = useSelector(
@@ -42,8 +42,12 @@ const StatLine = () => {
 			startDate.setDate(endDate.getDate() - 29);
 		}
 
+		// Mettre à jour startDate et endDate dans le composant parent
+		setStartDate(startDate);
+		setEndDate(endDate);
+
 		dispatch(fetchTaskUsersDateRange({ startDate, endDate }));
-	}, [dispatch, timeframe]);
+	}, [dispatch, timeframe, setStartDate, setEndDate]);
 
 	// Créer le tableau abscisseDate
 	const abscisseDate = [];
