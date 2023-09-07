@@ -47,13 +47,12 @@ const TaskFormUpdate = ({ currentTask, groupId, setCurrentTask }) => {
 	const [startDate, setStartDate] = useState(
 		currentTask.startDate ? new Date(currentTask.startDate) : null
 	);
-	console.log("Initial startDate:", startDate);
 
 	// Conversion de la date de fin en objet Date si elle existe
 	const [endDate, setEndDate] = useState(
 		currentTask.endDate ? new Date(currentTask.endDate) : null
 	);
-	console.log("Initial endDate:", endDate);
+
 	const [idSelected, setIdSelected] = useState(currentTask.idSelected);
 
 	// Fonction pour déterminer le type de récurrence de la tâche
@@ -135,7 +134,6 @@ const TaskFormUpdate = ({ currentTask, groupId, setCurrentTask }) => {
 
 		try {
 			const recurrences = generateRecurrenceData();
-			console.log("Recurrencesdqzdqzdqzd:", recurrences); // Ajoutez cette ligne
 
 			// Appel du service pour mettre à jour la tâche
 			await taskService.updateTask(
@@ -148,7 +146,6 @@ const TaskFormUpdate = ({ currentTask, groupId, setCurrentTask }) => {
 			dispatch(fetchAllTasksByGroup(groupId));
 			// Réinitialisation du formulaire
 			setCurrentTask(null);
-			console.log("currentTask:", currentTask);
 		} catch (error) {
 			console.error("Failed to update task:", error);
 		}
@@ -231,9 +228,6 @@ const TaskFormUpdate = ({ currentTask, groupId, setCurrentTask }) => {
 		return recurrences;
 	};
 
-	console.log(determineRecurrenceType(currentTask));
-	console.log("selectedWeekDays:", selectedWeekDays);
-
 	// Rendu du composant
 	return (
 		<div className="componentContainer">
@@ -245,8 +239,7 @@ const TaskFormUpdate = ({ currentTask, groupId, setCurrentTask }) => {
 				idSelected={idSelected}
 				setIdSelected={setIdSelected}
 			/>
-			{console.log("idSelected:", idSelected)}
-			{console.log("groupId:", groupId)}
+
 			<form className="bodyContainer" onSubmit={handleFormSubmit}>
 				<div className="inputContainer">
 					<label htmlFor="title">Nom de la tâche</label>

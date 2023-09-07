@@ -146,8 +146,6 @@ const GroupTaskForm = ({ groupId, handleBackClick }) => {
 
 	const dayOfMonthOptions = Array.from({ length: 31 }, (_, index) => index + 1);
 
-	console.log("groupId", groupId);
-
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">

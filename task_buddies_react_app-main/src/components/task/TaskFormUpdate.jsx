@@ -7,7 +7,7 @@ import { fetchAllPersonnalTasks, fetchTasks } from "../../store/dashboard/task";
 import TagListForForm from "../tag/TagListForForm";
 
 // Définition du composant TaskFormUpdate
-const TaskFormUpdate = ({ currentTask }) => {
+const TaskFormUpdate = ({ currentTask, setTaskUpdated }) => {
 	// Récupération du token dans le localStorage
 	const token = localStorage.getItem("token");
 
@@ -45,31 +45,29 @@ const TaskFormUpdate = ({ currentTask }) => {
 	const [startDate, setStartDate] = useState(
 		currentTask.startDate ? new Date(currentTask.startDate) : null
 	);
-	console.log("Initial startDate:", startDate);
 
 	// Conversion de la date de fin en objet Date si elle existe
 	const [endDate, setEndDate] = useState(
 		currentTask.endDate ? new Date(currentTask.endDate) : null
 	);
-	console.log("Initial endDate:", endDate);
+
 	const [idSelected, setIdSelected] = useState(currentTask.idSelected);
 
 	// Fonction pour déterminer le type de récurrence de la tâche
 	const determineRecurrenceType = (task) => {
-		if (task.recurrences && task.recurrences[0]) {
-			const recurrence = task.recurrences[0];
-			if (recurrence.day_of_week) {
-				return "Semaine";
-			} else if (recurrence.day_of_month) {
-				return "Mois";
-			} else if (recurrence.recurrence_interval) {
-				return "Intervalle";
-			} else {
-				return "Unique";
+		if (task.recurrences) {
+			for (let i = 0; i < task.recurrences.length; i++) {
+				const recurrence = task.recurrences[i];
+				if (recurrence.day_of_week) {
+					return "Semaine";
+				} else if (recurrence.day_of_month) {
+					return "Mois";
+				} else if (recurrence.recurrence_interval) {
+					return "Intervalle";
+				}
 			}
-		} else {
-			return "Unique"; // ou une autre valeur par défaut
 		}
+		return "Unique"; // ou une autre valeur par défaut
 	};
 
 	// Initialisation de l'état du type de récurrence
@@ -133,7 +131,6 @@ const TaskFormUpdate = ({ currentTask }) => {
 
 		try {
 			const recurrences = generateRecurrenceData();
-			console.log("Recurrencesdqzdqzdqzd:", recurrences); // Ajoutez cette ligne
 
 			// Appel du service pour mettre à jour la tâche
 			await taskService.updateTask(
@@ -146,7 +143,7 @@ const TaskFormUpdate = ({ currentTask }) => {
 			dispatch(fetchAllPersonnalTasks());
 			// Réinitialisation du formulaire
 			initForm();
-			console.log("currentTask:", currentTask);
+			setTaskUpdated(null);
 		} catch (error) {
 			console.error("Failed to update task:", error);
 		}
@@ -228,9 +225,6 @@ const TaskFormUpdate = ({ currentTask }) => {
 
 		return recurrences;
 	};
-
-	console.log(determineRecurrenceType(currentTask));
-	console.log("selectedWeekDays:", selectedWeekDays);
 
 	// Rendu du composant
 	return (

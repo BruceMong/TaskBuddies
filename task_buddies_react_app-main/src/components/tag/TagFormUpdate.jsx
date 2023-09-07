@@ -18,14 +18,12 @@ const TagFormUpdate = ({ currentTag, groupId, setCurrentTag }) => {
 		setIcon(currentTag.icon);
 	}, [currentTag]);
 
-	console.log("currentTag", currentTag);
-
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
 			await tagService.updateTag(currentTag.id, title, icon, color);
 			dispatch(fetchTagsByUser());
-			dispatch(fetchGroupTags([groupId]));
+
 			setCurrentTag(null);
 		} catch (error) {
 			console.error(error);

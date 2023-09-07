@@ -13,8 +13,6 @@ const TaskListUpdate = ({ setTaskUpdated, groupId }) => {
 		dispatch(fetchAllTasksByGroup(groupId));
 	}, [dispatch, groupId]);
 
-	console.log(tasks);
-
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">

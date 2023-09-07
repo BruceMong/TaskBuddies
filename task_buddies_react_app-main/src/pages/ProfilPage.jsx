@@ -21,7 +21,12 @@ const ProfilPage = () => {
 				<TagListUpdate setTagUpdated={setTagUpdated} />
 			</div>
 			<div className="columnComponent">
-				{taskUpdated && <TaskFormUpdate currentTask={taskUpdated} />}
+				{taskUpdated && (
+					<TaskFormUpdate
+						currentTask={taskUpdated}
+						setTaskUpdated={setTaskUpdated}
+					/>
+				)}
 				{tagUpdated && (
 					<TagFormUpdate
 						currentTag={tagUpdated}

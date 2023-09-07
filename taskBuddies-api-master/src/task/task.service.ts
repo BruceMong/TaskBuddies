@@ -91,16 +91,15 @@ export class TaskService {
     }
 
     // Si updateTaskDto contient des récurrences, mettez à jour les récurrences
-    if (updateTaskDto.recurrences) {
-      // Supprimez toutes les récurrences existantes
-      await this.recurrenceRepository.remove(task.recurrences);
 
-      // Créez de nouvelles récurrences
-      const newRecurrences = this.recurrenceRepository.create(
-        updateTaskDto.recurrences,
-      );
-      task.recurrences = await this.recurrenceRepository.save(newRecurrences);
-    }
+    // Supprimez toutes les récurrences existantes
+    task.recurrences = [];
+
+    // Créez de nouvelles récurrences
+    const newRecurrences = this.recurrenceRepository.create(
+      updateTaskDto.recurrences,
+    );
+    task.recurrences = await this.recurrenceRepository.save(newRecurrences);
 
     // Si updateTaskDto contient des tags, mettez à jour les tags
     if (updateTaskDto.tags) {

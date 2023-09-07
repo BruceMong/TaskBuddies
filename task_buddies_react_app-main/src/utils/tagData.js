@@ -1,18 +1,98 @@
-import { faGamepad, faGolfBall } from "@fortawesome/free-solid-svg-icons";
+import {
+	faGamepad,
+	faGolfBall,
+	faBriefcase,
+	faHeart,
+	faCat,
+	faDog,
+	faHorse,
+	faGlobe,
+	faMusic,
+	faFilm,
+	faBook,
+	faPalette,
+	faDumbbell,
+	faUtensils,
+	faTheaterMasks,
+	faRunning,
+	faBiking,
+	faSwimmer,
+	faHiking,
+	faMountain,
+	faCampground,
+	faCaravan,
+	faCouch,
+	faBed,
+	faUsers,
+	faFire,
+	faTree,
+	faSnowflake,
+	faSun,
+	faCloud,
+	faWater,
+	faSeedling,
+	faLeaf,
+	faLaptopCode,
+	faWallet,
+	faHandshake,
+	faShirt,
+} from "@fortawesome/free-solid-svg-icons";
 
-// export const tagIcons = [
-// 	{
-// 		name: "golf",
-// 		icon: faGolfBall,
-// 	},
-// 	{
-// 		name: "gamepad",
-// 		icon: faGamepad,
-// 	},
-// ];
 export const tagIcons = {
-	golf: faGolfBall,
+	// Jeux et loisirs
 	gamepad: faGamepad,
+	golf: faGolfBall,
+	music: faMusic,
+	film: faFilm,
+	book: faBook,
+	theater: faTheaterMasks,
+
+	// Travail et étude
+	briefcase: faBriefcase,
+	wallet: faWallet,
+	handshake: faHandshake,
+	laptop: faLaptopCode,
+	globe: faGlobe,
+
+	// Art et créativité
+	palette: faPalette,
+
+	// Sport et activités physiques
+	dumbbell: faDumbbell,
+	running: faRunning,
+	biking: faBiking,
+	swimming: faSwimmer,
+	hiking: faHiking,
+
+	// Animaux
+	cat: faCat,
+	dog: faDog,
+	horse: faHorse,
+
+	// Nature et plein air
+	mountain: faMountain,
+	campground: faCampground,
+	caravan: faCaravan,
+	fire: faFire,
+	tree: faTree,
+	snowflake: faSnowflake,
+	sun: faSun,
+	cloud: faCloud,
+
+	water: faWater,
+	seedling: faSeedling,
+	leaf: faLeaf,
+
+	// Maison et confort
+	couch: faCouch,
+	bed: faBed,
+	shirt: faShirt,
+	utensils: faUtensils,
+
+	// Amour et relations
+	heart: faHeart,
+
+	users: faUsers,
 };
 
 export const tagColors = [

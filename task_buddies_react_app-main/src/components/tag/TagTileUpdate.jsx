@@ -19,7 +19,6 @@ const TagTileUpdate = ({ tag, setTagUpdated }) => {
 			await tagService.deleteTag(tag.id);
 			dispatch(fetchTagsByUser());
 			dispatch(fetchGroupTags([groupId]));
-			console.log("delete");
 		} catch (error) {
 			console.error(error);
 		}
