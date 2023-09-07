@@ -78,11 +78,6 @@ const FormTask = ({ handleBackClick }) => {
 				return;
 			}
 
-			if (recurrenceType !== "Unique" && !endDate) {
-				setErrorText("Veuillez sélectionner une date de fin.");
-				return;
-			}
-
 			const recurrences = generateRecurrenceData();
 
 			await taskService.addTask(title, recurrences, idSelected);
@@ -207,7 +202,6 @@ const FormTask = ({ handleBackClick }) => {
 							value={title}
 							onChange={(event) => setTitle(event.target.value)}
 							placeholder="Titre de la tâche"
-							required
 						/>
 					</div>
 					<div className="inputContainer">

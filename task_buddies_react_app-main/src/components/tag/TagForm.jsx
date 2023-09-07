@@ -34,7 +34,7 @@ const TagForm = ({ setShowTagForm }) => {
 		}
 		
 		if (!title) {
-			setErrorText("Le champ 'Nom de la tâche' est obligatoire.");
+			setErrorText("Le champ nom du tag est obligatoire.");
 			return;
 		}
 	
@@ -64,7 +64,6 @@ const TagForm = ({ setShowTagForm }) => {
 						value={title}
 						onChange={(event) => setTitle(event.target.value)}
 						placeholder="Titre du tag"
-						required
 					/>
 				</div>
 				<div className="inputContainer">
