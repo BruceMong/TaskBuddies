@@ -10,7 +10,8 @@ import {
 	faUserGear,
 	faTableColumns,
 } from "@fortawesome/free-solid-svg-icons";
-
+import { fr } from "date-fns/locale";
+import { format } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, taskSliceActions } from "../store/dashboard/task";
 
@@ -23,6 +24,11 @@ const Navbar = () => {
 
 	const selectedDateStr = useSelector((state) => state.task.selectedDate);
 	const selectedDate = new Date(selectedDateStr);
+
+	const capitalize = (s) => {
+		if (typeof s !== "string") return "";
+		return s.charAt(0).toUpperCase() + s.slice(1);
+	};
 
 	useEffect(() => {
 		dispatch(fetchTasks());
@@ -37,31 +43,30 @@ const Navbar = () => {
 		localStorage.removeItem("token");
 		navigate("/login");
 	};
-
-	// Format de la date personnalisé
 	const customFormatDate = (date) => {
 		let diff = moment(date)
 			.startOf("day")
 			.diff(moment().startOf("day"), "days");
-		let formattedDate = "";
+		let day = format(date, "eee", { locale: fr });
+		let rest = format(date, "d MMM", { locale: fr });
+		let formattedDate = `${capitalize(day)} ${capitalize(rest)}`;
 
 		switch (diff) {
 			case 0:
-				formattedDate = `Aujourd'hui, ${moment(date).format("ddd D MMM")}`;
+				formattedDate = `Aujourd'hui, ${formattedDate}`;
 				break;
 			case -1:
-				formattedDate = `Hier, ${moment(date).format("ddd D MMM")}`;
+				formattedDate = `Hier, ${formattedDate}`;
 				break;
 			case 1:
-				formattedDate = `Demain, ${moment(date).format("ddd D MMM")}`;
+				formattedDate = `Demain, ${formattedDate}`;
 				break;
 			default:
-				formattedDate = moment(date).format("ddd D MMM");
+				break;
 		}
 
 		return formattedDate;
 	};
-
 	let formattedDate = customFormatDate(selectedDate);
 
 	return (
@@ -77,6 +82,7 @@ const Navbar = () => {
 					id="datePicker"
 					selected={selectedDate}
 					onChange={(date) => handleDateChange(date)}
+					locale={fr}
 					customInput={
 						<FontAwesomeIcon className="calendarIcon" icon={faCalendarDay} />
 					}
