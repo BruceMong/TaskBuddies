@@ -20,17 +20,7 @@ const UserRankingList = ({ users, groupId }) => {
 	// Les dates de début et de fin sont initialisées à la date actuelle
 	const endDate = new Date();
 	const startDate = new Date();
-<<<<<<< Updated upstream
-	// Si le cadre temporel est "semaine", la date de début est définie à 7 jours avant la date de fin
-	if (timeframe === "week") {
-		startDate.setDate(endDate.getDate() - 7);
-		// Si le cadre temporel est "mois", la date de début est définie à 30 jours avant la date de fin
-	} else if (timeframe === "month") {
-		startDate.setDate(endDate.getDate() - 30);
-	}
-=======
 	startDate.setDate(endDate.getDate() - 7);
->>>>>>> Stashed changes
 
 	// À chaque fois que le cadre temporel, les utilisateurs, l'identifiant du groupe, la date de début ou la date de fin changent,
 	// une action est dispatchée pour chaque utilisateur afin de récupérer le nombre de tâches pour cet utilisateur dans le groupe et la plage de dates spécifiés

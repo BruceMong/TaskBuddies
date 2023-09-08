@@ -17,12 +17,11 @@ const GroupUserListUpdate = () => {
 
 	const handleRemoveUser = async (userId) => {
 		try {
-			setErrorText("");
 			await groupService.removeUserFromGroup(id, userId);
-			setUsers(users.filter((user) => user.id !== userId));
+			// Rafraîchir la liste des utilisateurs après la suppression
+			groupService.fetchGroupById(id).then((group) => setUsers(group.users));
 		} catch (error) {
 			console.error("Remove error:", error);
-			setErrorText("Échec de la suppression de l'utilisateur");
 		}
 	};
 
@@ -35,7 +34,11 @@ const GroupUserListUpdate = () => {
 				{users.map((user) => (
 					<div key={user.id} className="tileContainer">
 						<p>{user.username}</p>
-						<button onClick={handleRemoveUser} className="headerBtn">
+						<p>{user.id}</p>
+						<button
+							onClick={() => handleRemoveUser(user.id)}
+							className="headerBtn"
+						>
 							<FontAwesomeIcon icon={faTrashAlt} />
 						</button>
 					</div>
