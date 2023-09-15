@@ -1,4 +1,4 @@
-import { Timestamp } from 'src/Generic/timestamp.entity';
+import { Timestamp } from '../../Generic/timestamp.entity';
 import { TagEntity } from '../../tag/entities/tag.entity';
 import { TaskEntity } from '../../task/entities/task.entity';
 import { UserEntity } from '../../user/entities/user.entity';

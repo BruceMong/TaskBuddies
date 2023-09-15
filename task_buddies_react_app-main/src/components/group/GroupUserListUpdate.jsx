@@ -13,8 +13,6 @@ const GroupUserListUpdate = () => {
 		groupService.fetchGroupById(id).then((group) => setUsers(group.users));
 	}, [id]);
 
-	console.log(users);
-
 	const handleRemoveUser = async (userId) => {
 		try {
 			await groupService.removeUserFromGroup(id, userId);
@@ -34,7 +32,7 @@ const GroupUserListUpdate = () => {
 				{users.map((user) => (
 					<div key={user.id} className="tileContainer">
 						<p>{user.username}</p>
-						<p>{user.id}</p>
+
 						<button
 							onClick={() => handleRemoveUser(user.id)}
 							className="headerBtn"

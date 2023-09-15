@@ -375,7 +375,8 @@
 .tagListUpdateContainer {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-around;
+	justify-content: flex-start;
+	padding: 12px;
 }
 
 .tagListUpdateContainer > .tagTileContainer {
@@ -439,4 +440,31 @@
 	display: flex;
 	align-items: center;
 	gap: 12px;
+}
+
+@media (max-width: 750px) {
+	.dashboardPage {
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.columnComponent {
+		width: 100% !important;
+	}
+
+	#dayDoughtNutComponent {
+		height: 450px;
+	}
+
+	.bodyContainer {
+		height: 100%;
+	}
+
+	.logoNav {
+		height: 24px !important;
+	}
+
+	.navBar p {
+		font-size: 10px;
+	}
 }

@@ -9,7 +9,7 @@ import {
 import { UserEntity } from '../../user/entities/user.entity';
 import { GroupEntity } from '../../group/entities/group.entity';
 import { TaskEntity } from '../../task/entities/task.entity';
-import { Timestamp } from 'src/Generic/timestamp.entity';
+import { Timestamp } from '../../Generic/timestamp.entity';
 
 @Entity('tag')
 export class TagEntity extends Timestamp {

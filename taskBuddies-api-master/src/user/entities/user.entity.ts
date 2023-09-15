@@ -11,7 +11,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Role } from '../../config/enum/roles.enum';
-import { TaskUserEntity } from 'src/task_user/entities/task_user.entity';
+import { TaskUserEntity } from '../../task_user/entities/task_user.entity';
 
 @Entity('user')
 export class UserEntity {

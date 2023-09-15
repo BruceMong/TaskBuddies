@@ -30,7 +30,7 @@ const GroupTaskUserList = ({ groupId }) => {
 	return (
 		<div className="componentContainer">
 			<div className="componentHeader">
-				<p>Utilisateurs de tâches de groupe 💪</p>
+				<p>Tâches validées 👊</p>
 			</div>
 			<div className="bodyContainer">
 				{groupTaskUsers[groupId]?.map((taskUser) => (

@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull } from 'typeorm';
 import { TaskEntity } from './entities/task.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
-import { TagEntity } from 'src/tag/entities/tag.entity';
-import { GroupEntity } from 'src/group/entities/group.entity';
-import { TaskRecurrenceEntity } from 'src/task_recurrence/entities/task_recurrence.entity';
+import { UserEntity } from '../user/entities/user.entity';
+import { TagEntity } from '../tag/entities/tag.entity';
+import { GroupEntity } from '../group/entities/group.entity';
+import { TaskRecurrenceEntity } from '../task_recurrence/entities/task_recurrence.entity';
 
 @Injectable()
 export class TaskService {

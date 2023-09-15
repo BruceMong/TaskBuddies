@@ -36,11 +36,13 @@ import {
 	faWallet,
 	faHandshake,
 	faShirt,
+	faVolleyball,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const tagIcons = {
 	// Jeux et loisirs
 	gamepad: faGamepad,
+	volleyball: faVolleyball,
 	golf: faGolfBall,
 	music: faMusic,
 	film: faFilm,

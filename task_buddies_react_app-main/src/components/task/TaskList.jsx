@@ -16,8 +16,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 const TaskList = ({ startDate, endDate }) => {
-	//const [tasks, setTasks] = useState([]);
-
 	const dispatch = useDispatch();
 	const { tasks, status, error } = useSelector((state) => state.task);
 	const { groupTasks } = useSelector((state) => state.task);

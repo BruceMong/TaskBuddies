@@ -67,7 +67,7 @@ const UserList = ({ users, createdBy, groupId }) => {
 			style={{ width: "100%", height: "100%" }}
 		>
 			<div className="componentHeader">
-				<p>Liste des utilisateurs :</p>
+				<p>Statistiques du groupe 🚶‍♂️</p>
 			</div>
 
 			<div style={{ width: "100%", height: "100%" }}>
