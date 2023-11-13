@@ -268,7 +268,7 @@ const FormTask = ({ handleBackClick }) => {
 						</div>
 					)}
 					<div className="inputContainer">
-						<label>Date{recurrenceType != "Unique" && "de début"} :</label>
+						<label>Date{recurrenceType != "Unique" && " de début"} :</label>
 						<DatePicker
 							selected={startDate}
 							onChange={(date) => setStartDate(date)}
